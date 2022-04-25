@@ -30,6 +30,7 @@ const uauth = new UAuth({
   .then((user) => {
     // user exists
     console.log("User information:", user)
+    
   })
   .catch(() => {
     // user does not exist
