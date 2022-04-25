@@ -7,103 +7,217 @@
 //                                      //
 //////////////////////////////////////////
 
-import { ethers } from "ethers";
-import detectEthereumProvider from "@metamask/detect-provider";
-import "../public/app.scss";
-import {sha256} from 'crypto-hash';
-const client = require('ipfs-http-client');
-// console.log(client);
-const ipfs = client.create({host: "ipfs.infura.io",
-port: "5001",
-protocol: "https"});
-// const s0xiety = require("../build/contracts/s0xiety.json");
-const dynMem = require("../build/contracts/dynMem.json");
-const provider = new ethers.providers.Web3Provider(window.ethereum);
-const signer = provider.getSigner();
-const onboardButton = document.getElementById('connectButton');
-const mlqButton = document.getElementById('mlqButton');
-const networkButton = document.getElementById('networkButton'); 
-const uFormButton = document.getElementById('uFormButton');
-const walletButton = document.getElementById('walletButton');
-const account = document.getElementById('account');
-const stage = document.getElementById('stage');
-const form = document.getElementById('form');
-const formBtn = document.getElementById('formBtn');
-form.style.display = 'none';
-const fuid = document.getElementById("fuid");
-const fname = document.getElementById("fname");
-const fstatus = document.getElementById("fstatus");
-const frank = document.getElementById("frank");
-const fbday = document.getElementById("fbday");
-const fsince = document.getElementById("fsince");
-const links = document.getElementById('links');
-links.style.display = "none";
-const allMemBtn = document.getElementById('allMemBtn');
-const myProBtn = document.getElementById('myProBtn');
-const allMem = document.getElementById('allMem');
-const myPro = document.getElementById('myPro');
-const proCard = document.getElementById('proCard');
-const board = document.getElementById('board');
-allMem.style.display = "none";
-// myPro.style.display = "none";
+import { ethers } from "ethers"
+import detectEthereumProvider from "@metamask/detect-provider"
+import "../public/app.scss"
+import { sha256 } from "crypto-hash"
+import UAuth from '@uauth/js'
+let accounts
+let network
+let user
+const client = require("ipfs-http-client")
+const ipfs = client.create({
+  host: "ipfs.infura.io",
+  port: "5001",
+  protocol: "https",
+})
+const uauth = new UAuth({
+    clientID: '101df3a0-41df-4c22-8edf-0cf4db92a61c',
+    redirectUri: 'http://127.0.0.1:5000/callback',
+  })
 
-function Countstep(){
-    this.init();
-    return this.count;
+  uauth.user()
+  .then((user) => {
+    // user exists
+    console.log("User information:", user)
+  })
+  .catch(() => {
+    // user does not exist
+  })
+  
+const affilly8 = require("../build/contracts/Affilly8.json")
+// links & buttons
 
- }
+// main navbar
+const campaigns_btn = document.getElementById("campaigns_btn")
+const links_btn = document.getElementById("links_btn")
+const trxs_btn = document.getElementById("trxs_btn")
+// defi navbar
+const profile_btn = document.getElementById("profile_btn")
+const wallet_btn = document.getElementById("wallet_btn")
+const net_btn = document.getElementById("net_btn")
 
-Countstep.prototype={
- init:function(){
-     var _this=this;
-     _this.flag=false;
-     _this.count=[];
-     _this.count[0]=0;
-    function motionHandler(event) {  
-             var accGravity = event.accelerationIncludingGravity;  
-             _this.yg=accGravity.y;
-             return false;
-    }
-     function orientationHandler(event){
-          if ((_this.yg-10*Math.sin(event.beta*Math.PI/180))>1) {
-              _this.flag=true;
-          }
-          if((_this.yg-10*Math.sin(event.beta*Math.PI/180))<-1){
-                  if(_this.flag==true){
-                     _this.count[0]++;
-                     _this.flag=false;  
-                   
-                  };
-                  
-              }
-     }
+// subnav bar
 
-      if (window.DeviceMotionEvent&&window.DeviceOrientationEvent) {  
-       window.addEventListener("devicemotion",motionHandler, false); 
-       window.addEventListener("deviceorientation",orientationHandler, false); 
-       return _this.count;
-     }
-      else {  
-       alert('Your browser does not support this step counting plugin');
-     }  
+// pagination
 
- },
+// stages
+const campaign_stage = document.getElementById("campaign_stage")
+const link_stage = document.getElementById("link_stage")
+const tx_stage = document.getElementById("tx_stage")
+const profile_stage = document.getElementById("tx_stage")
+const wallet_stage = document.getElementById("tx_stage")
+const net_stage = document.getElementById("tx_stage")
 
-
+// navigation functions
+const goCampaigns = (e) => {
+  e.preventDefault()
+  console.log("campaigns stage opened")
+  campaign_stage.style.display = "grid"
+  link_stage.style.display = "none"
+  tx_stage.style.display = "none"
 }
-window.Countstep=Countstep;
 
-let count=new Countstep();
-	 window.addEventListener("devicemotion",function(){
-	 	document.querySelector('.count').innerHTML=count[0];
-	 }, false); 
+const goLinks = (e) => {
+  e.preventDefault()
+  console.log("links stage opened")
+  campaign_stage.style.display = "none"
+  link_stage.style.display = "grid"
+  tx_stage.style.display = "none"
+}
+
+const goTxs = (e) => {
+  e.preventDefault()
+  console.log("txs stage opened")
+  campaign_stage.style.display = "none"
+  link_stage.style.display = "none"
+  tx_stage.style.display = "grid"
+}
+
+const goProfile = (e) => {
+  e.preventDefault()
+  console.log("connected")
+}
+
+const onClickConnect = async (e) => {
+  e.preventDefault()
+  try {
+    // set label for profile button
+    console.log("connecting")
+    profile_btn.innerHTML = "connecting ..."
+    // set eventlistener for profile button
+    profile_btn.removeEventListener("click", onClickConnect)
+    profile_btn.addEventListener("click", goProfile)
+    // get wallet address and account data of client and store in main state accounts
+    accounts = await ethereum.request({ method: "eth_requestAccounts" })
+    // get network data
+    network = await ethereum.request({ method: "net_version" })
+    var networkTag = "Switch Network"
+    // evaluate legal networks
+    if (Number(network) === 1) networkTag = "ETH"
+    if (Number(network) === 137) networkTag = "Polygon"
+    if (Number(network) === 100) networkTag = "xDai"
+    if (Number(network) === 10) networkTag = "Optimism"
+    if (Number(network) === 200) networkTag = "Arbitrum"
+    if (Number(network) === 43224) networkTag = "Avalanche"
+    if (Number(network) === 1312) networkTag = "ACAB"
+    if (Number(network) === 80001) networkTag = "Mumbai"
+    net_btn.innerHTML = networkTag;
+    user = await log()
+  } catch (error) {
+    console.error("connect error", error)
+    profile_btn.innerText = "Connect"
+  }
+}
+
+const log = async () => {
+  const afl8 = await affilly8()
+  // ask contract about user
+  const isUser = await afl8.isUser()
+  if (isUser) {
+      // is a user
+    const uc = await afl8.myId(accounts[0])
+    const user = await afl8.users(uc)
+    if (false) {
+      // user is admin
+    }
+    if (false) {
+      // user is producer
+    }
+    if (false) {
+      // user is promoter
+    }
+    if (false) {
+      // user is guest
+    } else {
+      // user is new
+    }
+  }
+  else{
+      // is not a user
+
+  }
+}
+// unstoppable login tool
+window.login = async () => {
+    try {
+      const authorization = await uauth.loginWithPopup()
+   
+      console.log(authorization)
+    } catch (error) {
+      console.error(error)
+    }
+  }
 
 
+// navigation event listeners
+campaigns_btn.addEventListener("click", goCampaigns)
+links_btn.addEventListener("click", goLinks)
+trxs_btn.addEventListener("click", goTxs)
+
+/* IMPORTANT FUNCTION WEB3INIT DO NOT EDIT  //
 //////////////////////////////////////////
 //                                      //
 //          Init Metamask               //
 //                                      //
 //////////////////////////////////////////
+
+
+Function initializes dapp for Defi interaction
+
+requirements :
+- a button with id:'profile_btn'
+- a button with id:'net_btn'
+- a button with id: 'wallet_btn' 
+- a div with class: 'stage' and id: 'profile_stage'
+
+*/
+const web3init = async () => {
+  const isMetaMaskInstalled = () => {
+    //Have to check the ethereum binding on the window object to see if it's installed
+    const { ethereum } = window
+    return Boolean(ethereum && ethereum.isMetaMask)
+  }
+  const clickInstall = (e) => {
+    e.preventDefault()
+    alert(
+      "You are being redirected to the official download of Metamask.io ... Please Follow their installation instructions."
+    )
+    window.open("https://metamask.io")
+  }
+  const MetaMaskClientCheck = () => {
+    //Now we check to see if MetaMask is installed
+    if (!isMetaMaskInstalled()) {
+      //If it isn't installed we ask the user to click to install it
+      profile_btn.innerText = "install metamask!"
+      profile_btn.addEventListener("click", clickInstall)
+    } else {
+      //If it is installed we change our button text
+      profile_btn.innerText = "connect"
+      profile_btn.addEventListener("click", onClickConnect)
+    }
+  }
+  MetaMaskClientCheck()
+}
+// IMPRTANT INITIAL FUNCTION CALL
+web3init()
+// IMPORTANT FUNCTION WEB3INIT DO NOT EDIT END //
+/*
+
+
+
+
+
 
 
 const initialize = () => {
@@ -302,7 +416,7 @@ const s0xData = async () => {
             .address, s0xiety.abi, signer
     );
 }
-*/
+
 const memData = async () => {
     
     const deploymentKey = Object.keys(dynMem.networks)[0];
@@ -344,3 +458,5 @@ const checkMailIn = (e) => {
 document.addEventListener('DOMContentLoaded', () => {
     initialize();
 });
+
+*/
