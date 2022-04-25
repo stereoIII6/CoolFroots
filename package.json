@@ -28,6 +28,7 @@
     "@openzeppelin/contracts": "^4.4.1",
     "@openzeppelin/test-helpers": "^0.5.15",
     "@truffle/hdwallet-provider": "^2.0.0",
+    "@uauth/js": "^1.1.0",
     "accelerometer": "^1.2.0",
     "bignumber": "^1.1.0",
     "crypto-hash": "^2.0.1",
