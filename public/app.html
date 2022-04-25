@@ -13,48 +13,85 @@
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     </head>
-    <body id="light">
-        <div class="body">
-        <div class="navbar">
-            <nav>
-            <ul>
-                <li id="home"><button><%= htmlWebpackPlugin.options.title %></button></li>
-                
-            
-                <li id="defi">
-                <button id="mlqButton">5 MLQ</button>
-                <button id="balanceButton">1 ETH</button>
-                <button id="connectButton">Connect</button>
-                <button id="networkButton">Network</button>
-                <button id="walletButton"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-wallet2" viewBox="0 0 16 16">
-                    <path d="M12.136.326A1.5 1.5 0 0 1 14 1.78V3h.5A1.5 1.5 0 0 1 16 4.5v9a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 0 13.5v-9a1.5 1.5 0 0 1 1.432-1.499L12.136.326zM5.562 3H13V1.78a.5.5 0 0 0-.621-.484L5.562 3zM1.5 4a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5h13a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5h-13z"/>
-                </svg></button>
-                <button id="toggle-nav" class="toggle-nav">
-                    <span class="bar"></span>
-                    <span class="bar"></span>
-                    <span class="bar"></span>
-                </button>
-            </li>
-            </ul></nav>
-        </div>
-        <div class="stage">
-            <div id='form'>
-                <input type='hidden' id="fuid">
-                <input type='text' placeholder='name'id="fname" />
-                <input type='text' placeholder='status' id="fstatus" />
-                <input type='date' id="fbday" />
-                <input type='number' id="frank" />
-                <button id='formBtn' >Create Account</button>
+    <body>
+        <div id="head">
+          <div id="nav">
+            <div id="logo">
+              <i>affilly8</i>
             </div>
             <div id="links">
-                <button id="myProBtn">My Profile</button>
-                <button id="allMemBtn">All Members</button>
+              <div id="campaigns_btn" class="btn">campaigns</div>
+              <div id="links_btn" class="btn">links</div>
+              <div id="trxs_btn" class="btn">transactions</div>
             </div>
-            <div id="myPro">
-                <div id="board"><div id="proCard"></div></div>
+            <div id="log">
+              <div id="new">
+                <div onclick="login()" id="ud" class="btn">unstoppable</div>
+                <div id="profile_btn" class="btn">connect</div>
+              </div>
+              <div id="guest">
+                <div id="net_btn" class="btn">network</div>
+                <div id="wallet_btn" class="btn">0 MLQ</div>
+                <div id="profile_btn" class="btn">my profile</div>
+                <div id="produce_btn" class="btn">i produce</div>
+                <div id="promote_btn" class="btn">i promote</div>
+              </div>
+              <div id="producer">
+                <div id="net_btn" class="btn">network</div>
+                <div id="wallet_btn" class="btn">0 MLQ</div>
+                <div id="profile_btn" class="btn">my profile</div>
+                <div id="makecampaign_btn" class="btn">make a campaign</div>
+                <div id="mycampaigns_btn" class="btn">my campaigns</div>
+              </div>
+              <div id="promoter">
+                <div id="net_btn" class="btn">network</div>
+                <div id="wallet_btn" class="btn">0 MLQ</div>
+                <div id="profile_btn" class="btn">my profile</div>
+                <div id="link_btn" class="btn">make a link</div>
+                <div id="links_btn" class="btn">my links</div>
+              </div>
+              <div id="admin">
+                <div id="net_btn" class="btn">network</div>
+                <div id="wallet_btn" class="btn">0 MLQ</div>
+                <div id="profile_btn" class="btn">my profile</div>
+                <div id="greylist_btn" class="btn">make a campaign</div>
+                <div id="blacklist_btn" class="btn">my campaigns</div>
+                <div id="admin_btn" class="btn">admin tools</div>
+              </div>
             </div>
-            <div id="allMem"><div id="board"></div></div>
+          </div>
         </div>
-    </div>
-  </body>
+        <div id="body">
+          <div id="home_stage">
+            <h2>create campaigns <br/>promote campaigns <br/><i>affilly8</i></h2>
+          </div>
+          <div id="campaign_stage">
+          <div id="campaign_list" class="list">
+            <h2>active campaigns</h2>
+            <ul>
+              <li class="list_item">shoe spring sale 10% for clients |  0.003ETH / Per Sale</li>
+              <li class="list_item">shoe spring sale 10% for clients |  0.003ETH / Per Sale</li>
+              <li class="list_item">shoe spring sale 10% for clients |  0.003ETH / Per Sale</li>
+              <li class="list_item">shoe spring sale 10% for clients |  0.003ETH / Per Sale</li>
+              <li class="list_item">shoe spring sale 10% for clients |  0.003ETH / Per Sale</li>
+              <li class="list_item">shoe spring sale 10% for clients |  0.003ETH / Per Sale</li>
+              <li class="list_item">shoe spring sale 10% for clients |  0.003ETH / Per Sale</li>
+              <li class="list_item">shoe spring sale 10% for clients |  0.003ETH / Per Sale</li>
+            </ul>
+          </div>
+            <div id="campaign_detail"  class="detail"><h2>information</h2></div>
+          </div>
+          <div id="link_stage">
+          <div id="link_list" class="list"><h2>active links</h2></div>
+          <div id="link_detail" class="detail"><h2>information</h2></div>
+          </div>
+          <div id="tx_stage">
+          <div id="tx_list" class="list"><h2>transactions</h2></div>
+          <div id="tx_detail" class="detail"><h2>information</h2></div>
+          </div>
+        </div>
+        <div id="foot">
+          &copy; affilly8 2022-2025. All rights reserved.
+        </div>
+      </body>
 </html>

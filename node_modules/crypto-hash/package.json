@@ -1,0 +1,52 @@
+{
+	"name": "crypto-hash",
+	"version": "2.0.1",
+	"description": "Tiny hashing module that uses the native crypto API in Node.js and the browser",
+	"license": "MIT",
+	"repository": "sindresorhus/crypto-hash",
+	"funding": "https://github.com/sponsors/sindresorhus",
+	"author": {
+		"name": "Sindre Sorhus",
+		"email": "sindresorhus@gmail.com",
+		"url": "https://sindresorhus.com"
+	},
+	"type": "module",
+	"exports": {
+		"node": "./index.js",
+		"default": "./browser.js"
+	},
+	"engines": {
+		"node": "^12.20.0 || ^14.13.1 || >=16.0.0"
+	},
+	"scripts": {
+		"test": "xo && ava test.js && karmatic test-browser.js && tsd"
+	},
+	"files": [
+		"index.js",
+		"index.d.ts",
+		"browser.js",
+		"browser.d.ts",
+		"thread.js"
+	],
+	"keywords": [
+		"crypto",
+		"hash",
+		"isomorphic",
+		"hashing",
+		"hasher",
+		"cryptography",
+		"sha1",
+		"sha256",
+		"sha384",
+		"sha512",
+		"browser"
+	],
+	"devDependencies": {
+		"@sindresorhus/is": "^4.2.0",
+		"ava": "^3.15.0",
+		"hash.js": "^1.1.7",
+		"karmatic": "2.1.0",
+		"tsd": "^0.18.0",
+		"xo": "^0.45.0"
+	}
+}
