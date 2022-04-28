@@ -21,6 +21,10 @@ module.exports = {
     devServer: {
         watchFiles: path.resolve(__dirname, "build"),
         compress: true,
+        client: {
+            reconnect: true,
+          },
+        allowedHosts: ['127.0.0.1'],
         port: 5000,
         open: true,
         hot: true,

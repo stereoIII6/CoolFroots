@@ -63,9 +63,6 @@ You should be ready to go !
 > If you edit the sourcecode your Server automatically updates the website on save.
 
 
-
-
-
 ## Directory Structure & Important Files
 
 ```root
