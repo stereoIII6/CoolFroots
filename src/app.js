@@ -37,6 +37,8 @@ const uauth = new UAuth({
   })
   
 const affilly8 = require("../build/contracts/Affilly8.json")
+const provider = new ethers.providers.Web3Provider(window.ethereum)
+const signer = provider.getSigner()
 // links & buttons
 
 // main navbar
@@ -120,9 +122,19 @@ const onClickConnect = async (e) => {
     profile_btn.innerText = "Connect"
   }
 }
+const afl8Data = async () => {
+    
+  const deploymentKey = Object.keys(affilly8.networks)[0];
+  // console.log(s0xiety.abi,provider);
+  return new ethers.Contract(
+          affilly8
+          .networks[deploymentKey]
+          .address, affilly8.abi, signer
+  );
+}
 
 const log = async () => {
-  const afl8 = await affilly8()
+  const afl8 = await afl8Data()
   // ask contract about user
   const isUser = await afl8.isUser()
   if (isUser) {
