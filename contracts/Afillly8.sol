@@ -56,7 +56,7 @@ import "@openzeppelin/contracts/token/ERC1155/IERC1155.sol";
 // import "@chainlink/contracts/src/v0.8/VRFConsumerBase.sol";
 
 contract Init{
-    address public author = 0x5B38Da6a701c568545dCfcB03FcB875f56beddC4;
+    address public author = 0x1Cd6F4D329D38043a6bDB3665c3a7b06F79B5242;
     mapping(address => uint256) public role;
     mapping(address => bytes) public uData;
     uint256 public maxSupply;
@@ -104,14 +104,13 @@ contract Init{
 }
 contract Affilly8 is Init {
 
-    constructor(address _mlq){                                                                                  // feed with utility token address
+    constructor(){                                                                                              // feed with utility token address
         require(msg.sender == author);                                                                          // only author can build
         role[msg.sender] = 99;                                                                                  // make author admin
         uData[msg.sender] = bytes('{"username":"@stereoiii6","email":"type.stereo@pm.me"}');                    // set user data
         isUser[msg.sender] = true;                                                                              // set is user true
         emit Log(logs,msg.sender,address(this),999,bytes("contract created"),block.timestamp);                  // log
-        logs++;                                                                                                 // iterate log
-        MLQ = IERC20(_mlq);                                                                                     // grab utility token 
+        logs++;                                                                                                 // grab utility token 
     }
       
     struct Campaign{  
@@ -148,27 +147,27 @@ contract Affilly8 is Init {
         _;
     }
     modifier isProd(){
-        require(role[msg.sender] == 1 || role[msg.sender] == 3 || role[msg.sender] == 99, "you are not producer");
+        require(role[msg.sender] == 2 || role[msg.sender] == 4 || role[msg.sender] == 99, "you are not producer");
         _;
     }
     modifier isProm(){
-        require(role[msg.sender] == 2 || role[msg.sender] == 3 || role[msg.sender] == 99, "you are not promoter");
+        require(role[msg.sender] == 3 || role[msg.sender] == 4 || role[msg.sender] == 99, "you are not promoter");
         _;
     }
     // become a producer 
     function beProducer() external isU() returns(bool){
-        require(role[msg.sender] != 1, "you are producer");
-        if(role[msg.sender] == 0) { role[msg.sender] = 1;}                                                      // if user is guest
-        if(role[msg.sender] == 2) { role[msg.sender] = 3;}                                                      // is user is promoter
+        require(role[msg.sender] != 2, "you are producer");
+        if(role[msg.sender] == 1) { role[msg.sender] = 2;}                                                      // if user is guest
+        if(role[msg.sender] == 3) { role[msg.sender] = 4;}                                                      // is user is promoter
         emit Log(logs,msg.sender,address(this),999,bytes("became producer"),block.timestamp);
         logs++;
         return true;
     }
     // become a promoter
     function bePromoter() external isU() returns(bool){
-        require(role[msg.sender] != 2, "you are promoter");
-        if(role[msg.sender] == 0) { role[msg.sender] = 2;}                                                      // if user is guest 
-        if(role[msg.sender] == 1) { role[msg.sender] = 3;}                                                      // if user is producer
+        require(role[msg.sender] != 3, "you are promoter");
+        if(role[msg.sender] == 1) { role[msg.sender] = 3;}                                                      // if user is guest 
+        if(role[msg.sender] == 2) { role[msg.sender] = 4;}                                                      // if user is producer
         emit Log(logs,msg.sender,address(this),999,bytes("became promoter"),block.timestamp);
         logs++;
         return true;
@@ -209,7 +208,7 @@ contract Affilly8 is Init {
         )   
         external payable isU() isProd() returns(bool){  
         if(_type == 0) require(_safeIn*digits >= _fee*digits * 50*digits);  
-        MLQ.transferFrom(msg.sender, address(this),_safeIn * digits);                                           // transfer mlq to campaign safe
+        MLQ.transferFrom(msg.sender, address(this),_safeIn * digits);                                          // transfer mlq to campaign safe
         campaigns.push(                                                                                         // push campaign to mapping 
             Campaign(   
                 _type,  

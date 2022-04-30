@@ -55,12 +55,17 @@ const net_btn = document.getElementById("net_btn")
 // pagination
 
 // stages
+const home_stage = document.getElementById("home_stage")
 const campaign_stage = document.getElementById("campaign_stage")
 const link_stage = document.getElementById("link_stage")
 const tx_stage = document.getElementById("tx_stage")
 const profile_stage = document.getElementById("tx_stage")
 const wallet_stage = document.getElementById("tx_stage")
 const net_stage = document.getElementById("tx_stage")
+
+
+// formfields 
+const logform = document.getElementById("logform")
 
 // navigation functions
 const goCampaigns = (e) => {
@@ -100,7 +105,6 @@ const onClickConnect = async (e) => {
     profile_btn.innerHTML = "connecting ..."
     // set eventlistener for profile button
     profile_btn.removeEventListener("click", onClickConnect)
-    profile_btn.addEventListener("click", goProfile)
     // get wallet address and account data of client and store in main state accounts
     accounts = await ethereum.request({ method: "eth_requestAccounts" })
     // get network data
@@ -136,28 +140,54 @@ const afl8Data = async () => {
 const log = async () => {
   const afl8 = await afl8Data()
   // ask contract about user
-  const isUser = await afl8.isUser()
+  const isUser = await afl8.isUser(accounts[0])
   if (isUser) {
       // is a user
-    const uc = await afl8.myId(accounts[0])
-    const user = await afl8.users(uc)
-    if (false) {
+    const uc = await afl8.showU()
+    const txt = uc[0]
+    const json = JSON.parse(txt)
+    console.log(json)
+    const role = await afl8.role(accounts[0])
+    console.log(Number(role._hex))
+    if (Number(role._hex) === 99) {
       // user is admin
+      profile_btn.innerHTML = json.username
+      profile_btn.addEventListener("click", goProfile)
+      // show admin menu
     }
-    if (false) {
+    if (Number(role._hex) === 4) {
+      // user is both
+      profile_btn.innerHTML = json.username
+      profile_btn.addEventListener("click", goProfile)
+    }
+    if (Number(role._hex) === 3) {
       // user is producer
+      profile_btn.innerHTML = json.username
+      profile_btn.addEventListener("click", goProfile)
+      // show promoter button
+      
     }
-    if (false) {
+    if (Number(role._hex) === 2) {
       // user is promoter
-    }
-    if (false) {
-      // user is guest
-    } else {
-      // user is new
+      profile_btn.innerHTML = json.username
+      profile_btn.addEventListener("click", goProfile)
+      // show producer button
+      
+    } 
+    if (Number(role._hex) === 1) {
+      // user is signed but has no role
+      profile_btn.innerHTML = json.username
+      profile_btn.addEventListener("click", goProfile)
+      // show producer button
+      // show promoter button
     }
   }
   else{
       // is not a user
+      profile_btn.innerHTML = accounts[0].slice(0,4)+'...'+accounts[0].slice(accounts[0].length -4,accounts[0].length)
+      // open login form
+      logform.style.display = "grid"
+
 
   }
 }

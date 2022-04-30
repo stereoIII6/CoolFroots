@@ -31,6 +31,7 @@ body{
   #log{
     grid-column: 4/6;
   }
+  #logform{display:none;}
   #profile_btn{grid-column:4/6;}
   #ud{grid-column: 3;}
   .btn{background:none;text-align:center;border:1px solid lightgrey; border-radius: 9px;padding:0.5em;font-size:0.7em;}
