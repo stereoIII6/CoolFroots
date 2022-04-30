@@ -31,10 +31,14 @@ body{
   #log{
     grid-column: 4/6;
   }
-  #logform{display:none;}
+  #logform{
+    display:none;
+    grid-column: 5/-1;
+    grid-template-rows:1fr 1fr 1fr 1fr 1fr;
+    grid-gap: 1em;}
   #profile_btn{grid-column:4/6;}
   #ud{grid-column: 3;}
-  .btn{background:none;text-align:center;border:1px solid lightgrey; border-radius: 9px;padding:0.5em;font-size:0.7em;}
+  .btn, input{background:white;text-align:center;border:1px solid lightgrey; border-radius: 9px;padding:0.5em;font-size:0.7em;}
   .btn:hover{background: lightgrey;}
   #new, #guest, #promoter, #producer, #admin{ 
     display: none;
@@ -52,14 +56,13 @@ body{
     grid-template-columns: 1fr;
     grid-gap: 1em;
   }
-  #campaign_stage, #link_stage, #tx_stage{
+  #home_stage, #campaign_stage, #link_stage, #tx_stage{
     display: none;
     grid-template-rows:1fr;
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
-    grid-gap: 1em;
-    
-    
+    grid-gap: 1em;    
   }
+  #home_stage{display: grid;}
   h2{
       margin: 0.5em;
       background: black; 
@@ -68,6 +71,7 @@ body{
       font-family: impact;
       transform: rotate(-1deg);
       width: 300px;
+      height:110px;
       padding: 0.5em;
       text-align:center;
     }

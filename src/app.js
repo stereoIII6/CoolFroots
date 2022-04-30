@@ -66,6 +66,10 @@ const net_stage = document.getElementById("tx_stage")
 
 // formfields 
 const logform = document.getElementById("logform")
+const signup = document.getElementById("signup")
+const inputusername = document.getElementById("input-username")
+const inputemail = document.getElementById("input-email")
+const inputavt = document.getElementById("input-avt")
 
 // navigation functions
 const goCampaigns = (e) => {
@@ -96,7 +100,17 @@ const goProfile = (e) => {
   e.preventDefault()
   console.log("connected")
 }
-
+const makeUser = async (e) => {
+  e.preventDefault()
+  console.log
+  if(inputusername.value.length > 5 && inputemail.value.length > 10 && inputavt.value.length > 5){
+  const obj = `{"name":"${inputusername.value}","email":"${inputemail.value}","avt":"${inputavt.value}","created": "${Date.now()}"}`
+  console.log(obj)
+  const afl8 = await afl8Data()
+  const makeUser = await afl8.makeU(obj)
+  if(makeUser) logform.style.display = "none"
+  }
+}
 const onClickConnect = async (e) => {
   e.preventDefault()
   try {
@@ -187,7 +201,7 @@ const log = async () => {
       profile_btn.innerHTML = accounts[0].slice(0,4)+'...'+accounts[0].slice(accounts[0].length -4,accounts[0].length)
       // open login form
       logform.style.display = "grid"
-
+      signup.addEventListener("click", makeUser)
 
   }
 }
