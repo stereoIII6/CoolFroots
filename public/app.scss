@@ -31,7 +31,7 @@ body{
   #log{
     grid-column: 4/6;
   }
-  #logform{
+  #logform, #profile{
     display:none;
     grid-column: 5/-1;
     grid-template-rows:1fr 1fr 1fr 1fr 1fr;

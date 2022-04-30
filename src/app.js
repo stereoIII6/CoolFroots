@@ -66,10 +66,17 @@ const net_stage = document.getElementById("tx_stage")
 
 // formfields 
 const logform = document.getElementById("logform")
+const profile = document.getElementById("profile")
 const signup = document.getElementById("signup")
 const inputusername = document.getElementById("input-username")
 const inputemail = document.getElementById("input-email")
 const inputavt = document.getElementById("input-avt")
+const bProm = document.getElementById("bProm")
+const bProd = document.getElementById("bProd")
+const aScanUsers = document.getElementById("aScanUsers")
+const aScanCampaigns = document.getElementById("aScanCampaigns")
+const aScanTxs = document.getElementById("aScanTxs")
+const cCampaign = document.getElementById("cCampaign")
 
 // navigation functions
 const goCampaigns = (e) => {
@@ -96,9 +103,14 @@ const goTxs = (e) => {
   tx_stage.style.display = "grid"
 }
 
-const goProfile = (e) => {
+const goProfile = async (e) => {
   e.preventDefault()
   console.log("connected")
+  const afl8 = await afl8Data()
+  const showUser = await afl8.showU()
+  const obj = JSON.parse(showUser[0])
+  console.log(obj)
+  
 }
 const makeUser = async (e) => {
   e.preventDefault()
@@ -108,7 +120,10 @@ const makeUser = async (e) => {
   console.log(obj)
   const afl8 = await afl8Data()
   const makeUser = await afl8.makeU(obj)
-  if(makeUser) logform.style.display = "none"
+  if(makeUser) {
+    logform.style.display = "none"
+    profile.style.display = "grid"
+  }
   }
 }
 const onClickConnect = async (e) => {
@@ -168,32 +183,65 @@ const log = async () => {
       profile_btn.innerHTML = json.username
       profile_btn.addEventListener("click", goProfile)
       // show admin menu
+      profile.style.display = "grid"
+      bProd.style.display = "none"
+      bProm.style.display = "none"
+      aScanUsers.style.display = "block"
+      aScanCampaigns.style.display = "block"
+      aScanTxs.style.display = "block"
+      cCampaign.style.display = "block"
     }
     if (Number(role._hex) === 4) {
       // user is both
       profile_btn.innerHTML = json.username
       profile_btn.addEventListener("click", goProfile)
+      profile.style.display = "grid"
+      bProd.style.display = "none"
+      bProm.style.display = "none"
+      aScanUsers.style.display = "none"
+      aScanCampaigns.style.display = "none"
+      aScanTxs.style.display = "none"
+      cCampaign.style.display = "block"
     }
     if (Number(role._hex) === 3) {
       // user is producer
       profile_btn.innerHTML = json.username
       profile_btn.addEventListener("click", goProfile)
+      profile.style.display = "grid"
       // show promoter button
+      bProd.style.display = "none"
+      bProm.style.display = "block"
+      aScanUsers.style.display = "none"
+      aScanCampaigns.style.display = "none"
+      aScanTxs.style.display = "none"
+      cCampaign.style.display = "block"
       
     }
     if (Number(role._hex) === 2) {
       // user is promoter
       profile_btn.innerHTML = json.username
       profile_btn.addEventListener("click", goProfile)
+      profile.style.display = "grid"
       // show producer button
+      bProd.style.display = "block"
+      bProm.style.display = "none"
+      aScanUsers.style.display = "none"
+      aScanCampaigns.style.display = "none"
+      aScanTxs.style.display = "none"
+      cCampaign.style.display = "none"
       
     } 
     if (Number(role._hex) === 1) {
       // user is signed but has no role
       profile_btn.innerHTML = json.username
       profile_btn.addEventListener("click", goProfile)
-      // show producer button
-      // show promoter button
+      profile.style.display = "grid"
+      bProd.style.display = "block"
+      bProm.style.display = "block"
+      aScanUsers.style.display = "none"
+      aScanCampaigns.style.display = "none"
+      aScanTxs.style.display = "none"
+      cCampaign.style.display = "none"
     }
   }
   else{
