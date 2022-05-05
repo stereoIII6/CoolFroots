@@ -1,4 +1,3 @@
-
 //////////////////////////////////////////
 //                                      //
 //          MAIN CONTRACT               //
@@ -41,9 +40,9 @@ uauth
     // user does not exist
   });
 
-  const affilly8 = require("../build/contracts/Affilly8.json");
-  const NFT_Project = require("../build/contracts/NFT_Project.json");
-  const provider = new ethers.providers.Web3Provider(window.ethereum);
+const affilly8 = require("../build/contracts/Affilly8.json");
+const NFT_Project = require("../build/contracts/NFT_Project.json");
+const provider = new ethers.providers.Web3Provider(window.ethereum);
 const signer = provider.getSigner();
 // links & buttons
 
@@ -85,8 +84,29 @@ const aScanCampaigns = document.getElementById("aScanCampaigns");
 const aScanTxs = document.getElementById("aScanTxs");
 const cCampaign = document.getElementById("cCampaign");
 const createC = document.getElementById("create");
+const tBtns = document.getElementsByClassName("tok_btn");
+
+const description = document.getElementById("desc");
+const owner = document.getElementById("owner");
+const tokAdr = document.getElementById("tokenAddress");
+const tokId = document.getElementById("tokenId");
+const price = document.getElementById("price");
+const fee = document.getElementById("fee");
+const currency = document.getElementById("currency");
+const duration = document.getElementById("duration");
 
 // navigation functions
+
+const goCreate = (e) => {
+  e.preventDefault();
+  console.log(e.target.id);
+  tokenList.style.display = "none";
+  campaignform.style.display = "grid";
+  tokAdr.value = e.target.id.split("/")[0];
+  tokId.value = e.target.id.split("/")[1];
+  owner.value = accounts[0];
+  console.log(tokAdr.value, tokId.value);
+};
 const goCampaigns = (e) => {
   e.preventDefault();
   console.log("campaigns stage opened");
@@ -118,6 +138,10 @@ const goProfile = async (e) => {
   const showUser = await afl8.showU();
   const obj = JSON.parse(showUser[0]);
   console.log(obj);
+  campaignform.style.display = "none";
+
+  tokenList.innerHTML = "";
+  user = await log();
 };
 const makeUser = async (e) => {
   e.preventDefault();
@@ -139,7 +163,7 @@ const makeUser = async (e) => {
       aScanUsers.style.display = "none";
       aScanCampaigns.style.display = "none";
       aScanTxs.style.display = "none";
-      cCampaign.style.display = "none";  
+      cCampaign.style.display = "none";
     }
   }
 };
@@ -149,24 +173,49 @@ const beProd = async (e) => {
   const afl8 = await afl8Data();
   const producer = await afl8.beProducer();
   console.log(producer);
-  if(producer < 1) bProd.style.display = "none";
+  if (producer < 1) bProd.style.display = "none";
 };
 const beProm = async (e) => {
   e.preventDefault();
   const afl8 = await afl8Data();
   const promoter = await afl8.bePromoter();
   console.log(promoter);
-  if(promoter < 1) bProm.style.display = "none";
+  if (promoter < 1) bProm.style.display = "none";
 };
 const createCampaign = (e) => {
   e.preventDefault();
-  profile.style.display = "none"
-  campaignform.style.display = "grid"
-}
+  profile.style.display = "none";
+  campaignform.style.display = "grid";
+};
+
 const makeCampaign = async (e) => {
   e.preventDefault();
-  campaignform.style.display = "none"
-}
+  campaignform.style.display = "none";
+  const obj = {
+    description: description.value,
+    owner: owner.value,
+    tokAdr: tokAdr.value,
+    tokId: tokId.value,
+    price: price.value,
+    fee: fee.value,
+    currency: currency.value,
+    duration: duration.value,
+  };
+  console.log(obj);
+  const afl8 = await afl8Data();
+  const count = await afl8.getCount();
+  const makeCamp = await afl8.makeCampaign(  
+    count,
+    description.value,
+    owner.value,
+    tokAdr.value,
+    tokId.value,
+    price.value,
+    currency.value,
+    fee.value,
+    duration.value
+    ) 
+};
 const onClickConnect = async (e) => {
   e.preventDefault();
   try {
@@ -190,7 +239,7 @@ const onClickConnect = async (e) => {
     if (Number(network) === 1312) networkTag = "ACAB";
     if (Number(network) === 80001) networkTag = "Mumbai";
     net_btn.innerHTML = networkTag;
-    console.log(networkTag)
+    console.log(networkTag);
     user = await log();
   } catch (error) {
     console.error("connect error", error);
@@ -207,44 +256,75 @@ const afl8Data = async () => {
   );
 };
 const getTokens = async () => {
-  const contractList = ["0xeedcb4183474d116234e61043596eb5f726cf358","0xbff584b3aab1d8bedf7e22e26c27da5f629a0f8d","0xa0ddf52b92c9db7cacc03f734f83e737e17b1906"]
+  const contractList = [
+    "0xeedcb4183474d116234e61043596eb5f726cf358",
+    "0xbff584b3aab1d8bedf7e22e26c27da5f629a0f8d",
+    "0xa0ddf52b92c9db7cacc03f734f83e737e17b1906",
+  ];
   const afl8 = await afl8Data();
-  let role = await afl8.role(accounts[0])
+  let role = await afl8.role(accounts[0]);
   let j = 0;
-  while(j < contractList.length){
-  let contract = await new ethers.Contract(contractList[j],NFT_Project.abi,signer);
-  let bal = await contract.balanceOf(accounts[0])
-  console.log('Role : ' + Number(role._hex),'Balance : '+Number(bal._hex))
-  let i = 0;
-  let tokens = []
-  while(i < bal){
-    let tok = await contract.myNFTs(accounts[0],i)
-    let t = Number(tok._hex)
-    let iUrl =  await contract.tokenURI(t)
-    // console.log("url ...",iUrl)
-    let response = await fetch(iUrl)
-    // console.log(response)
-    if (response.ok) { 
-      let json = await response.json();
-      // console.log(json);
-      tokens[i] = json
-    } 
-    console.log(tokens[i])
-    i++;
+  let t = 0;
+  while (j < contractList.length) {
+    let contract = await new ethers.Contract(
+      contractList[j],
+      NFT_Project.abi,
+      signer
+    );
+    let bal = await contract.balanceOf(accounts[0]);
+    console.log("Role : " + Number(role._hex), "Balance : " + Number(bal._hex));
+    let i = 0;
+    let tokens = [];
+    while (i < bal) {
+      let tok = await contract.myNFTs(accounts[0], i);
+      let t = Number(tok._hex);
+      let iUrl = await contract.tokenURI(t);
+      // console.log("url ...",iUrl)
+      let response = await fetch(iUrl);
+      // console.log(response)
+      if (response.ok) {
+        let json = await response.json();
+        // console.log(json);
+        tokens[i] = json;
+      }
+      console.log(tokens[i]);
+      i++;
+    }
+    let tokenLister = "";
+    let list = [];
+    tokens.map((token, indx) => {
+      tokenLister =
+        '<div class="tokenShow" id="show-' +
+        contractList[j] +
+        "/" +
+        indx +
+        '" name="' +
+        token.name +
+        '"><img id="imgShow" src="' +
+        token.image +
+        '" /><br><b>' +
+        token.name +
+        "</b><br><i>" +
+        token.description +
+        '</i><div id="' +
+        contractList[j] +
+        "/" +
+        indx +
+        '" class="tok_btn">create campaign</div></div>';
+      tokenList.innerHTML += tokenLister;
+      console.log(t);
+    });
+    j++;
   }
-  let tokenLister = ""
-  
-  tokens.map(token =>{
-      tokenLister += '<div class="tokenShow" id="'+contractList[j]+'/'+l+'" name="'+ token.name+'"><img id="imgShow" src="'+ token.image+'" /><br><b>'+ token.name+'</b><br><i>'+token.description+'</i><div id="create" class="btn">create campaign</div></div>'
-    })
-  tokenList.innerHTML += tokenLister
-  j++;
-}
-} 
+  while (t < tBtns.length) {
+    tBtns[t].addEventListener("click", goCreate);
+    t++;
+  }
+};
 const log = async () => {
   const afl8 = await afl8Data();
   // ask contract about user
-  console.log("logging in ...")
+  console.log("logging in ...");
   const isUser = await afl8.isUser(accounts[0]);
   if (isUser) {
     // is a user
@@ -258,7 +338,7 @@ const log = async () => {
       // user is admin
       profile_btn.innerHTML = json.username;
       profile_btn.addEventListener("click", goProfile);
-      console.log("admin")
+      console.log("admin");
       // show admin menu
       tokenList.style.display = "grid";
       bProd.style.display = "none";
@@ -270,7 +350,7 @@ const log = async () => {
       getTokens();
     }
     if (Number(role._hex) === 4) {
-      console.log("professional")
+      console.log("professional");
       // user is both
       profile_btn.innerHTML = json.name;
       profile_btn.addEventListener("click", goProfile);
@@ -281,13 +361,14 @@ const log = async () => {
       aScanCampaigns.style.display = "none";
       aScanTxs.style.display = "none";
       cCampaign.style.display = "block";
+      getTokens();
     }
     if (Number(role._hex) === 2) {
-      console.log("producer")
+      console.log("producer");
       // user is producer
       profile_btn.innerHTML = json.name;
       profile_btn.addEventListener("click", goProfile);
-      profile.style.display = "grid";
+      tokenList.style.display = "grid";
       // show promoter button
       bProd.style.display = "none";
       bProm.style.display = "block";
@@ -295,9 +376,10 @@ const log = async () => {
       aScanCampaigns.style.display = "none";
       aScanTxs.style.display = "none";
       cCampaign.style.display = "block";
+      getTokens();
     }
     if (Number(role._hex) === 3) {
-      console.log("promoter")
+      console.log("promoter");
       // user is promoter
       profile_btn.innerHTML = json.name;
       profile_btn.addEventListener("click", goProfile);
@@ -311,7 +393,7 @@ const log = async () => {
       cCampaign.style.display = "none";
     }
     if (Number(role._hex) === 1) {
-      console.log("guest")
+      console.log("guest");
       // user is signed but has no role
       profile_btn.innerHTML = json.name;
       profile_btn.addEventListener("click", goProfile);
@@ -335,8 +417,6 @@ const log = async () => {
   }
 };
 
-
-
 // unstoppable login tool
 window.login = async () => {
   try {
@@ -354,8 +434,8 @@ links_btn.addEventListener("click", goLinks);
 trxs_btn.addEventListener("click", goTxs);
 bProd.addEventListener("click", beProd);
 bProm.addEventListener("click", beProm);
-cCampaign.addEventListener("click", createCampaign)
-createC.addEventListener("click", makeCampaign)
+cCampaign.addEventListener("click", createCampaign);
+createC.addEventListener("click", makeCampaign);
 
 /* IMPORTANT FUNCTION WEB3INIT DO NOT EDIT  //
 //////////////////////////////////////////

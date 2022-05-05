@@ -47,7 +47,7 @@ body{
     #imgShow{width: 100%;}
   #profile_btn{grid-column:4/6;}
   #ud{grid-column: 3;}
-  .btn, input{background:white;text-align:center;border:1px solid lightgrey; border-radius: 9px;padding:0.5em;font-size:0.7em;}
+  .tok_btn, .btn, input, select, option{background:white;text-align:center;border:1px solid lightgrey; border-radius: 9px;padding:0.5em;font-size:0.7em;}
   .btn:hover{background: lightgrey;}
   #new, #guest, #promoter, #producer, #admin{ 
     display: none;

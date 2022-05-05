@@ -83,6 +83,7 @@ contract Init{
         require(author == msg.sender, "you're not owner");
         _;
     }
+    
     function changeRole(address _to, uint256 _role) external isAdmin() returns(bool){
         role[_to] = _role;
         return true;
@@ -162,6 +163,9 @@ contract Affilly8 is Init{
     }
     // both role 4 // admin role 99 
     // become a producer 
+    function getCount() external view returns(uint256){
+        return c;
+    }
     function beProducer() external isU() returns(bool){
         require(role[msg.sender] != 2, "you are producer");
         if(role[msg.sender] == 1) { role[msg.sender] = 2;}                                                      // if user is guest

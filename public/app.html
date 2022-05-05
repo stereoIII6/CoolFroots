@@ -80,35 +80,20 @@
                 
             </div>
             <div id="tokenList"></div>
-            <div id="campaignform">
-              <select id="mode">
-                <option id="1" value="1">Pay Per View</option>
-                <option id="2" value="2">Pay Per Click</option>
-                <option id="3" value="3">Pay Per Referal</option>
-                <option id="4" value="4">Pay Per Sale</option>
-                <option id="5" value="5">Pay Per Lifetime</option>
+            <div id="campaignform">  
+              <input type="text" id="desc" placeholder="token description" />    
+              <input type="hidden" id="owner" placeholder="" />
+              <input type="hidden" id="tokenAddress" placeholder="txtarget" />
+              <input type="hidden" id="tokenId" placeholder="tokenId" /> 
+              <input type="text" id="price" placeholder="token price" /> 
+              <select id="currency">
+                <option  id="eth" value="0x0000000000000000000000000000000000000000">ETH</option>
+                <option  id="eth" value="0x001B3B4d0F3714Ca98ba10F6042DaEbF0B1B7b6F">MLQ</option>
+                <option  id="eth" value="0x001B3B4d0F3714Ca98ba10F6042DaEbF0B1B7b6F">DAI</option>
+                <option  id="eth" value="0x062f24cb618e6ba873EC1C85FD08B8D2Ee9bF23e">WETH</option>
               </select>
-              <select id="ctype">
-                <option id="1" value="1">ERC20</option>
-                <option id="2" value="2">ERC721</option>
-                <option id="3" value="3">ERC1155</option>
-              </select>
-              <input type="text" id="desc" placeholder="description" />   
-              <select id="txAction">
-                <option id="1" value="1">eth</option>
-                <option id="2" value="1">mlq</option>
-                <option id="2" value="1">dai</option>
-                <option id="2" value="2">weth</option>
-                <option id="2" value="1">custom</option>
-              </select>  
-              <input type="number" id="price" placeholder="price" /> 
-              <input type="number" id="fee" placeholder="fee" />  
-              <input type="text" id="currency" placeholder="currency" />
-              <input type="text" id="txTarget" placeholder="txtarget" />
-              <input type="number" id="int" placeholder="interval" /> 
-              <input type="number" id="start" placeholder="start" />
-              <input type="number" id="end" placeholder="end" />
-              <input type="number" id="safeIn" placeholder="mlq 2 safe" />
+              <input type="text" id="fee" placeholder="fee in chosen currency" />  
+              <input type="text" id="duration" placeholder="duration in hours" />
               <button id="create" class="btn">create now</button>
            </div>
            <div id="approveform">
