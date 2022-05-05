@@ -207,13 +207,14 @@ const afl8Data = async () => {
   );
 };
 const getTokens = async () => {
-  const contractList = ["0xeedcb4183474d116234e61043596eb5f726cf358","0xbff584b3aab1d8bedf7e22e26c27da5f629a0f8d"]
+  const contractList = ["0xeedcb4183474d116234e61043596eb5f726cf358","0xbff584b3aab1d8bedf7e22e26c27da5f629a0f8d","0xa0ddf52b92c9db7cacc03f734f83e737e17b1906"]
   const afl8 = await afl8Data();
   let role = await afl8.role(accounts[0])
-  
-  let contract = await new ethers.Contract(contractList[0],NFT_Project.abi,signer);
+  let j = 0;
+  while(j < contractList.length){
+  let contract = await new ethers.Contract(contractList[j],NFT_Project.abi,signer);
   let bal = await contract.balanceOf(accounts[0])
-  console.log(Number(role._hex),Number(bal._hex))
+  console.log('Role : ' + Number(role._hex),'Balance : '+Number(bal._hex))
   let i = 0;
   let tokens = []
   while(i < bal){
@@ -231,11 +232,15 @@ const getTokens = async () => {
     console.log(tokens[i])
     i++;
   }
-  let tokenLister = '<h3>my NFT tokens</h3>'
+  let tokenLister = ""
+  let l
   tokens.map(token =>{
-      tokenLister += '<div id="tokenShow" name="'+ token.name+'"><img id="imgShow" src="'+ token.image+'" /><br><b>'+ token.name+'</b><br><i>'+token.description+'</i><div id="create" class="btn">create campaign</div></div>'
-  })
-  tokenList.innerHTML = tokenLister
+      tokenLister += '<div class="tokenShow" id="'+contractList[j]+'/'+l+'" name="'+ token.name+'"><img id="imgShow" src="'+ token.image+'" /><br><b>'+ token.name+'</b><br><i>'+token.description+'</i><div id="create" class="btn">create campaign</div></div>'
+      l++;
+    })
+  tokenList.innerHTML += tokenLister
+  j++;
+}
 } 
 const log = async () => {
   const afl8 = await afl8Data();
