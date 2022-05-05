@@ -217,9 +217,9 @@ const getTokens = async () => {
     let iUrl =  await contract.tokenURI(t)
     console.log("url ...",iUrl)
     let response = fetch(iUrl)
-    console.log(response)
+    // console.log(response)
     if (response.ok) { 
-      let json = await response.json();
+      let json = await result.json();
       console.log(json);
       tokens[i] = JSON.parse(String(json))
     } 
