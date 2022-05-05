@@ -233,10 +233,9 @@ const getTokens = async () => {
     i++;
   }
   let tokenLister = ""
-  let l
+  
   tokens.map(token =>{
       tokenLister += '<div class="tokenShow" id="'+contractList[j]+'/'+l+'" name="'+ token.name+'"><img id="imgShow" src="'+ token.image+'" /><br><b>'+ token.name+'</b><br><i>'+token.description+'</i><div id="create" class="btn">create campaign</div></div>'
-      l++;
     })
   tokenList.innerHTML += tokenLister
   j++;
