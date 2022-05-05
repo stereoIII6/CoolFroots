@@ -17,12 +17,15 @@ import { create } from "underscore";
 let accounts;
 let network;
 let user;
+
 const client = require("ipfs-http-client");
+
 const ipfs = client.create({
   host: "ipfs.infura.io",
   port: "5001",
   protocol: "https",
 });
+
 const uauth = new UAuth({
   clientID: "101df3a0-41df-4c22-8edf-0cf4db92a61c",
   redirectUri: "http://127.0.0.1:5000/callback",
@@ -69,6 +72,7 @@ const net_stage = document.getElementById("tx_stage");
 // formfields
 const logform = document.getElementById("logform");
 const profile = document.getElementById("profile");
+const tokenList = document.getElementById("tokenList");
 const campaignform = document.getElementById("campaignform");
 const signup = document.getElementById("signup");
 const inputusername = document.getElementById("input-username");
@@ -203,9 +207,10 @@ const afl8Data = async () => {
   );
 };
 const getTokens = async () => {
-  const contractList = ["0xeedcb4183474d116234e61043596eb5f726cf358"]
+  const contractList = ["0xeedcb4183474d116234e61043596eb5f726cf358","0xbff584b3aab1d8bedf7e22e26c27da5f629a0f8d"]
   const afl8 = await afl8Data();
   let role = await afl8.role(accounts[0])
+  
   let contract = await new ethers.Contract(contractList[0],NFT_Project.abi,signer);
   let bal = await contract.balanceOf(accounts[0])
   console.log(Number(role._hex),Number(bal._hex))
@@ -215,18 +220,22 @@ const getTokens = async () => {
     let tok = await contract.myNFTs(accounts[0],i)
     let t = Number(tok._hex)
     let iUrl =  await contract.tokenURI(t)
-    console.log("url ...",iUrl)
-    let response = fetch(iUrl)
+    // console.log("url ...",iUrl)
+    let response = await fetch(iUrl)
     // console.log(response)
     if (response.ok) { 
-      let json = await result.json();
-      console.log(json);
-      tokens[i] = JSON.parse(String(json))
+      let json = await response.json();
+      // console.log(json);
+      tokens[i] = json
     } 
     console.log(tokens[i])
     i++;
   }
-  
+  let tokenLister = '<h3>my NFT tokens</h3>'
+  tokens.map(token =>{
+      tokenLister += '<div id="tokenShow" name="'+ token.name+'"><img id="imgShow" src="'+ token.image+'" /><br><b>'+ token.name+'</b><br><i>'+token.description+'</i><div id="create" class="btn">create campaign</div></div>'
+  })
+  tokenList.innerHTML = tokenLister
 } 
 const log = async () => {
   const afl8 = await afl8Data();
@@ -247,7 +256,7 @@ const log = async () => {
       profile_btn.addEventListener("click", goProfile);
       console.log("admin")
       // show admin menu
-      profile.style.display = "grid";
+      tokenList.style.display = "grid";
       bProd.style.display = "none";
       bProm.style.display = "none";
       aScanUsers.style.display = "block";
@@ -261,7 +270,7 @@ const log = async () => {
       // user is both
       profile_btn.innerHTML = json.name;
       profile_btn.addEventListener("click", goProfile);
-      profile.style.display = "grid";
+      tokenList.style.display = "grid";
       bProd.style.display = "none";
       bProm.style.display = "none";
       aScanUsers.style.display = "none";

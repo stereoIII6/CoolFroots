@@ -36,6 +36,15 @@ body{
     grid-column: 5/-1;
     grid-template-rows:1fr 1fr 1fr 1fr 1fr;
     grid-gap: 1em;}
+     #tokenList{
+        display:none;
+        grid-column: 2/-1;
+        grid-row: 1/-1;
+        grid-template-columns:1fr 1fr 1fr 1fr 1fr;
+        grid-gap: 1em;}
+    
+    #tokenShow{width:200px;}
+    #imgShow{width: 100%;}
   #profile_btn{grid-column:4/6;}
   #ud{grid-column: 3;}
   .btn, input{background:white;text-align:center;border:1px solid lightgrey; border-radius: 9px;padding:0.5em;font-size:0.7em;}
@@ -52,13 +61,13 @@ body{
     grid-row:2;
     background: lightgrey;
     display:grid;
-    grid-template-rows:150px 1fr;
-    grid-template-columns: 1fr;
+    grid-template-rows:350px 150px 150px;
+    grid-template-columns: 1fr ;
     grid-gap: 1em;
   }
   #home_stage, #campaign_stage, #link_stage, #tx_stage{
     display: none;
-    grid-template-rows:1fr;
+    grid-template-rows:400px 400px;
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
     grid-gap: 1em;    
   }
