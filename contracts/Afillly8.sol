@@ -138,10 +138,16 @@ contract Affilly8 is Init{
         uint256 id;                                                                                             // id
         uint256 campaigId;                                                                                      // campaing reference id
         address promoter;                                                                                       // fee reciever / promoter
-    }                                                                           
+    }  
+    struct Transactions{
+        uint256 id;
+        uint256 rlid;
+        uint256 cid;
+        uint256 txdate;
+    }                                                                         
     Campaign[] public campaigns;                                                                                // Campaign Mapping
     RefLinks[] public links;                                                                                    // List Mapping
-    
+    Transactions[] public txs;
     mapping(address => uint256) internal myCampaignCount;                                                       // counts users campaigns
     mapping(address => mapping(uint256 => Campaign)) public showCampaign;                                       // maps users campaigns
     mapping(address => uint256) internal mylinkCount;                                                           // counts users links
@@ -163,8 +169,14 @@ contract Affilly8 is Init{
     }
     // both role 4 // admin role 99 
     // become a producer 
-    function getCount() external view returns(uint256){
+    function getCampaignCount() external view returns(uint256){
         return c;
+    }
+    function getLinkCount() external view returns(uint256){
+        return l;
+    }
+    function getTxCount() external view returns(uint256){
+        return t;
     }
     function beProducer() external isU() returns(bool){
         require(role[msg.sender] != 2, "you are producer");
@@ -234,8 +246,7 @@ contract Affilly8 is Init{
         showCampaign[msg.sender][c] = campaigns[c];                                                             // preserve user campaign in mapping
         emit Log(logs,msg.sender,address(this),c,bytes(". campaign created"),block.timestamp);                  // log
         logs++;                                                                                                 // iterate logs
-        makeOwnLink(c);                                                                                         // create ref link for producer
-        l++;                                                                                                    // iterate item mapping
+        makeOwnLink(c);                                                                                         // create ref link for producer                                                                                                  // iterate item mapping
         c++;                                                                                                    // iterate campaign mapping
         return true;    
     }
@@ -270,7 +281,9 @@ contract Affilly8 is Init{
             payable(prom).transfer(camp.fee);   // send the nft
             payable(address(this)).transfer(cfee); // pay the contract
         }
-        emit Log(logs,msg.sender,address(this),_rlid,bytes("link tx failed"),block.timestamp);                  // log
+        txs.push(Transactions(t, _rlid, cid, block.timestamp));
+        emit Log(logs,msg.sender,address(this),_rlid,bytes("link tx failed"),block.timestamp); 
+        t++;                 // log
         logs++;                                                                                                 // iterate log
         return true;
     }

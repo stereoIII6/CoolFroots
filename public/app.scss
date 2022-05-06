@@ -31,7 +31,7 @@ body{
   #log{
     grid-column: 4/6;
   }
-  #logform, #profile, #campaignform, #approveform{
+  #logform, #profile, #campaignform, #approveform, #linkform{
     display:none;
     grid-column: 5/-1;
     grid-template-rows:1fr 1fr 1fr 1fr 1fr;
@@ -41,13 +41,26 @@ body{
         grid-column: 2/-1;
         grid-row: 1/-1;
         grid-template-columns:1fr 1fr 1fr 1fr 1fr;
-        grid-gap: 1em;}
+        grid-template-rows:1fr 1fr 1fr 1fr 1fr;
+        grid-gap: 1em;
+        overflow-y: scroll;
+        overflow-x: hidden;
+      }
+        #campaignshow{
+          display:none;
+          grid-column: 2/5;
+          grid-row: 1/-1;
+          grid-template-columns:1fr 1fr 1fr 1fr 1fr;
+          grid-gap: 1em;
+          width:100%; height: auto; padding:1em;border-radius: 9px;background: lightgrey; border: 1px solid white;
+        }
+          #campaignimg{grid-column:1/-1;grid-row:1/-1;width:100%;border-radius:9px;}
     
-    .tokenShow{width:200px;}
-    #imgShow{width: 100%;}
+    .tokenShow{width:100%; height: auto; padding:1em;border-radius: 9px;background: lightgrey; border: 1px solid white;}
+    #imgShow{width: 100%;border-radius:9px;}
   #profile_btn{grid-column:4/6;}
   #ud{grid-column: 3;}
-  .tok_btn, .btn, input, select, option{background:white;text-align:center;border:1px solid lightgrey; border-radius: 9px;padding:0.5em;font-size:0.7em;}
+  .acbtn, .cbtn, .lbtn, .tbtn, .tok_btn, .btn, input, select, option{background:white;text-align:center;border:1px solid lightgrey; border-radius: 9px;padding:0.5em;font-size:0.7em;}
   .btn:hover{background: lightgrey;}
   #new, #guest, #promoter, #producer, #admin{ 
     display: none;
@@ -61,16 +74,27 @@ body{
     grid-row:2;
     background: lightgrey;
     display:grid;
-    grid-template-rows:350px 150px 150px;
+    grid-template-rows:350px 250px 250px;
     grid-template-columns: 1fr ;
     grid-gap: 1em;
   }
   #home_stage, #campaign_stage, #link_stage, #tx_stage{
+
+    grid-column: 1/-1;
     display: none;
-    grid-template-rows:400px 400px;
+    grid-template-rows:400px 400px 400px;
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
     grid-gap: 1em;    
   }
+  #campaign_block,#link_block,#tx_block{
+    grid-column: 1/-1;
+    display: grid;
+    grid-gap: 1em;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr;
+    padding: 2em;
+  }
+  .campaign_item{padding: 1em; border: 1px solid white;border-radius: 9px;}
   #home_stage{display: grid;}
   h2{
       margin: 0.5em;
@@ -85,7 +109,7 @@ body{
       text-align:center;
     }
     i{font-family: courier;}
-  .list{grid-column:1/5;border-radius: 9px;border: 1px solid white;text-align: center;max-height: 40em;overflow: scroll;}
+  .list{grid-column:1/5;grid-row:1/-1;border-radius: 9px;border: 1px solid white;text-align: center;overflow-y: scroll;max-height: 600px;}
   .detail{grid-column:5/7;border-radius: 9px;border: 1px solid white;text-align: center;max-height: 40em;overflow: scroll;}
   ul{margin:0;padding:0;}
   .list_item{background:ivory;list-style: none;padding:0.5em;margin:0;text-align: left;}

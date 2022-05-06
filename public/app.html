@@ -63,7 +63,7 @@
         </div>
         <div id="body">
           <div id="home_stage">
-            <h2>create campaigns <br/>promote campaigns <br/><i>affilly8</i></h2>
+            <h2 id="home_badge">create campaigns <br/>promote campaigns <br/><i>affilly8</i></h2>
             <div id="logform">
               <input type="text" id="input-username" placeholder="username" />
               <input type="email" id="input-email" placeholder="you@host.at" />
@@ -80,6 +80,10 @@
                 
             </div>
             <div id="tokenList"></div>
+            <div id="linkform">
+              <div class="lbtn" id="linkmake">copy link</div>
+            </div>
+            <div id="campaignshow"></div>
             <div id="campaignform">  
               <input type="text" id="desc" placeholder="token description" />    
               <input type="hidden" id="owner" placeholder="" />
@@ -102,26 +106,20 @@
           </div>
           <div id="campaign_stage">
           <div id="campaign_list" class="list">
-            <h2>active campaigns</h2>
-            <ul>
-              <li class="list_item">shoe spring sale 10% for clients |  0.003ETH / Per Sale</li>
-              <li class="list_item">shoe spring sale 10% for clients |  0.003ETH / Per Sale</li>
-              <li class="list_item">shoe spring sale 10% for clients |  0.003ETH / Per Sale</li>
-              <li class="list_item">shoe spring sale 10% for clients |  0.003ETH / Per Sale</li>
-              <li class="list_item">shoe spring sale 10% for clients |  0.003ETH / Per Sale</li>
-              <li class="list_item">shoe spring sale 10% for clients |  0.003ETH / Per Sale</li>
-              <li class="list_item">shoe spring sale 10% for clients |  0.003ETH / Per Sale</li>
-              <li class="list_item">shoe spring sale 10% for clients |  0.003ETH / Per Sale</li>
-            </ul>
+            <h2>you're scanning<br/>active campaigns</h2>
+            <div id="campaign_block">
+              </div>
           </div>
             <div id="campaign_detail"  class="detail"><h2>information</h2></div>
           </div>
           <div id="link_stage">
-          <div id="link_list" class="list"><h2>active links</h2></div>
+          <div id="link_list" class="list"><h2>you're sacnning<br/>active links</h2><div id="link_block">
+          </div></div>
           <div id="link_detail" class="detail"><h2>information</h2></div>
           </div>
           <div id="tx_stage">
-          <div id="tx_list" class="list"><h2>transactions</h2></div>
+          <div id="tx_list" class="list"><h2>you're scanning<br/>transactions</h2><div id="tx_block">
+          </div></div>
           <div id="tx_detail" class="detail"><h2>information</h2></div>
           </div>
         </div>

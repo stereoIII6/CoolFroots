@@ -16,6 +16,9 @@ import { create } from "underscore";
 let accounts;
 let network;
 let user;
+let campaigns = [];
+let links = [];
+let txs = [];
 
 const client = require("ipfs-http-client");
 
@@ -73,6 +76,10 @@ const logform = document.getElementById("logform");
 const profile = document.getElementById("profile");
 const tokenList = document.getElementById("tokenList");
 const campaignform = document.getElementById("campaignform");
+const campaignshow = document.getElementById("campaignshow");
+const campaign_block = document.getElementById("campaign_block");
+const link_block = document.getElementById("link_block");
+const tx_block = document.getElementById("tx_block");
 const signup = document.getElementById("signup");
 const inputusername = document.getElementById("input-username");
 const inputemail = document.getElementById("input-email");
@@ -85,6 +92,9 @@ const aScanTxs = document.getElementById("aScanTxs");
 const cCampaign = document.getElementById("cCampaign");
 const createC = document.getElementById("create");
 const tBtns = document.getElementsByClassName("tok_btn");
+const cBtns = document.getElementsByClassName("cbtn");
+const lBtns = document.getElementsByClassName("lbtn");
+// const txBtns = document.getElementsByClassName("txbtn");
 
 const description = document.getElementById("desc");
 const owner = document.getElementById("owner");
@@ -94,6 +104,7 @@ const price = document.getElementById("price");
 const fee = document.getElementById("fee");
 const currency = document.getElementById("currency");
 const duration = document.getElementById("duration");
+const home_badge = document.getElementById("home_badge");
 
 // navigation functions
 
@@ -102,17 +113,35 @@ const goCreate = (e) => {
   console.log(e.target.id);
   tokenList.style.display = "none";
   campaignform.style.display = "grid";
-  tokAdr.value = e.target.id.split("/")[0];
-  tokId.value = e.target.id.split("/")[1];
+  campaignshow.style.display = "grid";
+  tokAdr.value = e.target.id.split("/%/")[0];
+  tokId.value = e.target.id.split("/%/")[1];
   owner.value = accounts[0];
+  let img = e.target.id.split("/%/")[3];
+  description.value = e.target.id.split("/%/")[2];
+  home_badge.innerHTML = "now it's time to<br/>create campaigns<br/><i>affilly8</i>"
+  campaignshow.innerHTML = `<img src="${img}" id="campaignimg"/>`
   console.log(tokAdr.value, tokId.value);
 };
+const goCreateLink = async (e) => {
+  e.preventDefault();
+  console.log(e.target.id);
+  const afl8 = await afl8Data();
+  const makelink = await afl8.makeLink(e.target.id);
+  console.log(makelink);
+}
 const goCampaigns = (e) => {
   e.preventDefault();
   console.log("campaigns stage opened");
   campaign_stage.style.display = "grid";
   link_stage.style.display = "none";
   tx_stage.style.display = "none";
+  campaignform.style.display = "none";
+  campaignshow.style.display = "none";
+  tokenList.style.display = "none";
+  home_stage.style.display = "none";
+  createCampaignList();
+  console.log(campaigns);
 };
 
 const goLinks = (e) => {
@@ -121,6 +150,11 @@ const goLinks = (e) => {
   campaign_stage.style.display = "none";
   link_stage.style.display = "grid";
   tx_stage.style.display = "none";
+  campaignform.style.display = "none";
+  campaignshow.style.display = "none";
+  tokenList.style.display = "none";
+  home_stage.style.display = "none";
+  createLinkList();
 };
 
 const goTxs = (e) => {
@@ -129,6 +163,11 @@ const goTxs = (e) => {
   campaign_stage.style.display = "none";
   link_stage.style.display = "none";
   tx_stage.style.display = "grid";
+  campaignform.style.display = "none";
+  campaignshow.style.display = "none";
+  tokenList.style.display = "none";
+  home_stage.style.display = "none";
+  createTxList();
 };
 
 const goProfile = async (e) => {
@@ -138,10 +177,15 @@ const goProfile = async (e) => {
   const showUser = await afl8.showU();
   const obj = JSON.parse(showUser[0]);
   console.log(obj);
+  
   campaignform.style.display = "none";
-
+  campaignshow.style.display = "none";
+  home_stage.style.display = "grid";
+  tokenList.style.display = "grid";
   tokenList.innerHTML = "";
+  home_badge.innerHTML = "create campaigns<br/>promote campaigns<br/><i>affilly8</i>"
   user = await log();
+  // getTokens();
 };
 const makeUser = async (e) => {
   e.preventDefault();
@@ -164,6 +208,7 @@ const makeUser = async (e) => {
       aScanCampaigns.style.display = "none";
       aScanTxs.style.display = "none";
       cCampaign.style.display = "none";
+      user = obj;
     }
   }
 };
@@ -201,9 +246,10 @@ const makeCampaign = async (e) => {
     currency: currency.value,
     duration: duration.value,
   };
+
   console.log(obj);
   const afl8 = await afl8Data();
-  const count = await afl8.getCount();
+  const count = await afl8.getCampaignCount();
   const makeCamp = await afl8.makeCampaign(  
     count,
     description.value,
@@ -214,8 +260,91 @@ const makeCampaign = async (e) => {
     currency.value,
     fee.value,
     duration.value
-    ) 
+    );
+    console.log(obj);
+  createCampaignList(); 
 };
+
+const createCampaignList = async () => {
+  const afl8 = await afl8Data();
+  const count = await afl8.getCampaignCount();
+  console.log(count);
+  let i = 0;
+  while(i < count){
+    const campaign = await afl8.campaigns(i);
+    console.log(campaign);
+    campaigns[i] = campaign;
+    i++;
+  }
+  showCampaignList();
+}
+const showCampaignList = () => {
+  // console.log(campaigns);
+  campaign_block.innerHTML = "";
+  campaigns.map((campaign, indx) => {
+    // console.log(campaign)
+    campaign_block.innerHTML += "<div class='campaign_item' id='"+ campaign.id +"'><div id='name'>"+ campaign.owner.slice(0,4) + "..." + campaign.owner.slice(38,42) +"</div><div id='description'>"+ campaign.tokenAddress.slice(0,4) + "..." + campaign.tokenAddress.slice(38,42) +"/"+campaign.tokenId +"</div><div id='price'>"+ (Number(campaign.price) / 10**18).toFixed(2) +"</div><div id='fee'>"+ (Number(campaign.fee) / 10**18).toFixed(2) +"</div> <div id="+campaign.id+" class='cbtn'>create link</div></div>";
+  })
+  let t = 0;
+  while (t < cBtns.length) {
+    cBtns[t].addEventListener("click", goCreateLink);
+    t++;
+  }
+}
+const createLink = async (e) => {
+  e.preventDefault();
+  console.log(campaign[e.target.id]);
+  // isolate campaign data
+  const afl8 = await afl8Data();
+  const count = await afl8.makeLink(e.target.id);
+}
+const createLinkList = async () => {
+  const afl8 = await afl8Data();
+  const count = await afl8.getLinkCount();
+  let i = 0;
+  while(i < count){
+    const link = await afl8.links(i);
+    links[i] = link;
+    i++;
+  }
+  showLinkList();
+}
+const showLinkList = () => {
+  link_block.innerHTML = "";
+  links.map(link => {
+    console.log(link);
+    link_block.innerHTML += "<div class='link_item' id='"+Number(link.id._hex)+"'><div id='name'>"+ link.promoter.slice(0,4) + "..." + link.promoter.slice(38,42) +"</div><div id='campaign'>"+ Number(link.campaigId._hex) +"</div><div id="+Number(link.campaignId._hex)+" class='acbtn'>approve campaign</div><div id="+Number(link.id._hex)+" class='lbtn'>finalize tx</div></div>"; 
+  })
+  let t = 0;
+  while (t < cBtns.length) {
+    lBtns[t].addEventListener("click", goFinalize);
+    t++;
+  }
+}
+const goFinalize = async (e) => {
+  e.preventDefault();
+  const afl8 = await afl8Data();
+  const finalize = await afl8.finalize(e.target.id);
+  createTxList();
+}
+const createTxList = async () => {
+  const afl8 = await afl8Data();
+  const count = await afl8.getTxCount();
+  let i = 0;
+  while(i < count){
+    const tx = await afl8.txs(i);
+    txs[i] = tx;
+    i++;
+  }
+  showTxList();
+}
+const showTxList = () => {
+  tx_block.innerHTML = "";
+  txs.map(tx => {
+    console.log(tx);
+    tx_block.innerHTML += "<div class='link_item' id='"+Number(tx.id._hex)+"'><div id='referal'>"+ Number(tx.rlid._hex) +"</div><div id='campaign'>"+ Number(tx.cid._hex) +"</div></div>"; 
+  })
+}
 const onClickConnect = async (e) => {
   e.preventDefault();
   try {
@@ -308,10 +437,11 @@ const getTokens = async () => {
         token.description +
         '</i><div id="' +
         contractList[j] +
-        "/" +
-        indx +
+        "/%/" +
+        indx +"/%/"+ token.name +"/%/"+ token.image +
         '" class="tok_btn">create campaign</div></div>';
       tokenList.innerHTML += tokenLister;
+      tokenList.style.display = "grid";
       console.log(t);
     });
     j++;
@@ -322,6 +452,9 @@ const getTokens = async () => {
   }
 };
 const log = async () => {
+  campaign_stage.style.display = "none";
+  link_stage.style.display = "none";
+  tx_stage.style.display = "none";
   const afl8 = await afl8Data();
   // ask contract about user
   console.log("logging in ...");
@@ -330,13 +463,13 @@ const log = async () => {
     // is a user
     const uc = await afl8.showU();
     const txt = uc[0];
-    const json = JSON.parse(txt);
-    console.log(json);
+    user = JSON.parse(txt); 
+    console.log(user);
     const role = await afl8.role(accounts[0]);
     console.log(Number(role._hex));
     if (Number(role._hex) === 99) {
       // user is admin
-      profile_btn.innerHTML = json.username;
+      profile_btn.innerHTML = user.username;
       profile_btn.addEventListener("click", goProfile);
       console.log("admin");
       // show admin menu
@@ -352,7 +485,7 @@ const log = async () => {
     if (Number(role._hex) === 4) {
       console.log("professional");
       // user is both
-      profile_btn.innerHTML = json.name;
+      profile_btn.innerHTML = user.name;
       profile_btn.addEventListener("click", goProfile);
       tokenList.style.display = "grid";
       bProd.style.display = "none";
@@ -366,7 +499,7 @@ const log = async () => {
     if (Number(role._hex) === 2) {
       console.log("producer");
       // user is producer
-      profile_btn.innerHTML = json.name;
+      profile_btn.innerHTML = user.name;
       profile_btn.addEventListener("click", goProfile);
       tokenList.style.display = "grid";
       // show promoter button
@@ -381,7 +514,7 @@ const log = async () => {
     if (Number(role._hex) === 3) {
       console.log("promoter");
       // user is promoter
-      profile_btn.innerHTML = json.name;
+      profile_btn.innerHTML = user.name;
       profile_btn.addEventListener("click", goProfile);
       profile.style.display = "grid";
       // show producer button
@@ -395,7 +528,7 @@ const log = async () => {
     if (Number(role._hex) === 1) {
       console.log("guest");
       // user is signed but has no role
-      profile_btn.innerHTML = json.name;
+      profile_btn.innerHTML = user.name;
       profile_btn.addEventListener("click", goProfile);
       profile.style.display = "grid";
       bProd.style.display = "block";
