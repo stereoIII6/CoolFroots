@@ -16,7 +16,12 @@
     "migrate:opti": "npx truffle migrate --network optimism",
     "migrate:optikov": "npx truffle migrate --network optikovan",
     "migrate:main": "npx truffle migrate --network main",
-    "migrate:rinkeby": "npx truffle migrate --network rinkeby"
+    "migrate:rinkeby": "npx truffle migrate --network rinkeby",
+    "migrate:bsc": "npx truffle migrate --network bsc",
+    "migrate:chalen": "npx truffle migrate --network chalen",
+    "migrate:avax": "npx truffle migrate --network avax",
+    "migrate:fuji": "npx truffle migrate --network fuji",
+    "migrate:moonriver": "npx truffle migrate --network moonriver"
   },
   "keywords": [],
   "author": "",

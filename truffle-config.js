@@ -66,6 +66,45 @@ module.exports = {
       timeoutBlocks: 200,
       skipDryRun: true,
     },
+    chalen: {
+      provider: () => new HDWalletProvider(mnemonic, process.env.CHALEN_URL),
+      network_id: 97,
+      confirmations: 10,
+      timeoutBlocks: 200,
+      skipDryRun: true
+    },
+    bsc: {
+      provider: () => new HDWalletProvider(mnemonic, process.env.BSC_URL),
+      network_id: 56,
+      confirmations: 10,
+      timeoutBlocks: 200,
+      skipDryRun: true
+    },
+    moonriver: {
+      provider: () => new HDWalletProvider(mnemonic, process.env.MOONRIVER_URL),
+      network_id: 1285,
+      confirmations: 10,
+      timeoutBlocks: 200,
+      skipDryRun: true
+    },
+    fuji: {
+      provider: function() {
+            return new HDWalletProvider({mnemonic: process.env.AVAX_MNEM, providerOrUrl: process.env.FUJI_URL, chainId: "0xa869"})
+      },
+      network_id: "*",
+      gas: 3000000,
+      gasPrice: 470000000000,
+      skipDryRun: true
+    },
+    avax: {
+      provider: function() {
+            return new HDWalletProvider({mnemonic: process.env.AVAX_MNEM, providerOrUrl: process.env.AVAX_URL, chainId: "0xa86a"})
+      },
+      network_id: "*",
+      gas: 3000000,
+      gasPrice: 470000000000,
+      skipDryRun: true
+    }
   },
 
   // Set default mocha options here, use special reporters etc

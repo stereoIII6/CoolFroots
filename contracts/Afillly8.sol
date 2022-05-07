@@ -160,11 +160,11 @@ contract Affilly8 is Init{
         _;
     }
     modifier isProd(){ // role 2
-        require(role[msg.sender] == 1 || role[msg.sender] == 3 || role[msg.sender] == 99, "you are not producer");
+        require(role[msg.sender] == 2 || role[msg.sender] == 4 || role[msg.sender] == 99, "you are not producer");
         _;
     }
     modifier isProm(){ // role 3
-        require(role[msg.sender] == 2 || role[msg.sender] == 3 || role[msg.sender] == 99, "you are not promoter");
+        require(role[msg.sender] == 3 || role[msg.sender] == 4 || role[msg.sender] == 99, "you are not promoter");
         _;
     }
     // both role 4 // admin role 99 

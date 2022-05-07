@@ -23,41 +23,16 @@
               <div id="campaigns_btn" class="btn">campaigns</div>
               <div id="links_btn" class="btn">links</div>
               <div id="trxs_btn" class="btn">transactions</div>
+              <div id="mint" class="btn">mint a bamu</div>
+              <div id="produce_btn" class="btn">i produce</div>
+              <div id="promote_btn" class="btn">i promote</div>
             </div>
             <div id="log">
-              <div id="new">
+
                 <div onclick="login()" id="ud" class="btn">unstoppable</div>
                 <div id="profile_btn" class="btn">connect</div>
-              </div>
-              <div id="guest">
                 <div id="net_btn" class="btn">network</div>
                 <div id="wallet_btn" class="btn">0 MLQ</div>
-                <div id="profile_btn" class="btn">my profile</div>
-                <div id="produce_btn" class="btn">i produce</div>
-                <div id="promote_btn" class="btn">i promote</div>
-              </div>
-              <div id="producer">
-                <div id="net_btn" class="btn">network</div>
-                <div id="wallet_btn" class="btn">0 MLQ</div>
-                <div id="profile_btn" class="btn">my profile</div>
-                <div id="makecampaign_btn" class="btn">make a campaign</div>
-                <div id="mycampaigns_btn" class="btn">my campaigns</div>
-              </div>
-              <div id="promoter">
-                <div id="net_btn" class="btn">network</div>
-                <div id="wallet_btn" class="btn">0 MLQ</div>
-                <div id="profile_btn" class="btn">my profile</div>
-                <div id="link_btn" class="btn">make a link</div>
-                <div id="links_btn" class="btn">my links</div>
-              </div>
-              <div id="admin">
-                <div id="net_btn" class="btn">network</div>
-                <div id="wallet_btn" class="btn">0 MLQ</div>
-                <div id="profile_btn" class="btn">my profile</div>
-                <div id="greylist_btn" class="btn">make a campaign</div>
-                <div id="blacklist_btn" class="btn">my campaigns</div>
-                <div id="admin_btn" class="btn">admin tools</div>
-              </div>
             </div>
           </div>
         </div>
@@ -90,12 +65,8 @@
               <input type="hidden" id="tokenAddress" placeholder="txtarget" />
               <input type="hidden" id="tokenId" placeholder="tokenId" /> 
               <input type="text" id="price" placeholder="token price" /> 
-              <select id="currency">
-                <option  id="eth" value="0x0000000000000000000000000000000000000000">ETH</option>
-                <option  id="eth" value="0x001B3B4d0F3714Ca98ba10F6042DaEbF0B1B7b6F">MLQ</option>
-                <option  id="eth" value="0x001B3B4d0F3714Ca98ba10F6042DaEbF0B1B7b6F">DAI</option>
-                <option  id="eth" value="0x062f24cb618e6ba873EC1C85FD08B8D2Ee9bF23e">WETH</option>
-              </select>
+              <select id="currency"> <!-- MUMBAI DEFAULT -->
+                </select>
               <input type="text" id="fee" placeholder="fee in chosen currency" />  
               <input type="text" id="duration" placeholder="duration in hours" />
               <button id="create" class="btn">create now</button>

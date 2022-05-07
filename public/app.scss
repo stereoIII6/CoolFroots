@@ -18,18 +18,23 @@ body{
     width: 100%; 
     padding: 0.5em;
     display:grid;
-    grid-template-columns:1fr 1fr 1fr 1fr 1fr;
+    grid-template-columns:1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr ;
     grid-gap: 1em;
   }
   #logo{grid-column: 1;margin:0.3em 0 0 1em;transform: rotate(-1deg);}
   #links{
-    grid-column: 2/4;
+    grid-column: 2/7;
     display: grid;
-    grid-template-columns:1fr 1fr 1fr 1fr 1fr;
+    grid-template-columns:1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr ;
     grid-gap: 1em;}
-  #campaigns{}
+
+
   #log{
-    grid-column: 4/6;
+    grid-column: 7/9;
+display: grid;
+grid-template-rows: 1fr;
+grid-template-columns:  1fr 1fr 1fr 1fr 1fr 1fr 2fr;
+grid-gap: 1em;
   }
   #logform, #profile, #campaignform, #approveform, #linkform{
     display:none;
@@ -59,8 +64,9 @@ body{
     .tokenShow{width:100%; height: auto; padding:1em;border-radius: 9px;background: lightgrey; border: 1px solid white;}
     #imgShow{width: 100%;border-radius:9px;}
   #profile_btn{grid-column:4/6;}
-  #ud{grid-column: 3;}
-  .acbtn, .cbtn, .lbtn, .tbtn, .tok_btn, .btn, input, select, option{background:white;text-align:center;border:1px solid lightgrey; border-radius: 9px;padding:0.5em;font-size:0.7em;}
+  #ud{grid-column: 3;display: none;}
+  .acbtn, .cbtn, .lbtn, .tbtn, .tok_btn, .btn, input, select, option{
+    background:white;text-align:center;border:1px solid lightgrey; border-radius: 9px;padding:0.5em;font-size:0.7em;}
   .btn:hover{background: lightgrey;}
   #new, #guest, #promoter, #producer, #admin{ 
     display: none;
@@ -82,7 +88,7 @@ body{
 
     grid-column: 1/-1;
     display: none;
-    grid-template-rows:400px 400px 400px;
+    grid-template-rows:400px 400px;
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
     grid-gap: 1em;    
   }
