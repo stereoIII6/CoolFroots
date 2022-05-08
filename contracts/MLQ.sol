@@ -45,25 +45,30 @@ pragma solidity ^0.8.0;
 
 // Open Zeppelin Imports
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
-// import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
+import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 // import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
-// import "@openzeppelin/contracts/token/ERC1155/IERC1155.sol";
+import "@openzeppelin/contracts/token/ERC1155/IERC1155.sol";
 
 // Chainlink Imports
 import "@chainlink/contracts/src/v0.8/VRFConsumerBase.sol";
 
 contract Init{
     address public author = 0x1Cd6F4D329D38043a6bDB3665c3a7b06F79B5242;
+    address public avax = 0xa60bD1147c32ACDF9060baDBaa0f62f6Bfd19437;
     mapping(address => uint256) public role;
     mapping(address => bytes) public uData;
     uint256 public maxSupply;
     uint256 public availSupply;
     uint256 rate;
+    uint256 percent;
     uint256 digits = 1 * 10 ** 18;
-    IERC20 internal Token;
+    IERC20 internal Token20;
+    IERC721 internal Token721;
+    IERC1155 internal Token1155;
+    IERC20 internal MLQ;
     mapping(address => bool) public isUser;
     event Log(uint256 indexed id, address sender, address home, uint256 num, bytes message, uint256 stamp);
     event Wait(uint256 indexed id, address sender, address home, uint256 num, bytes message, uint256 stamp);
@@ -73,8 +78,11 @@ contract Init{
         _;
     }
     modifier isOwner() {
-        require(author == msg.sender, "you're not owner");
+        require(author == msg.sender || avax == msg.sender, "you're not owner");
         _;
+    }
+    function getRole() external returns(uint256){
+        return role[msg.sender];
     }
     function changeRole(address _to, uint256 _role) external isAdmin() returns(bool){
         role[_to] = _role;
@@ -89,19 +97,13 @@ contract Init{
     function showU() external view returns(string memory, uint256){
         return(string(uData[msg.sender]),role[msg.sender]);
     }
-    function approveTokens(address _contract) external returns(bool){
-        Token = IERC20(_contract);
-        Token.approve(address(this),Token.balanceOf(msg.sender));
-        return true;
-    }
-    function approveTokenAmount(address _contract, uint256 _amnt) external returns(bool){
-        Token = IERC20(_contract);
-        Token.approve(address(this),_amnt);
-        return true;
-    }
     function withdrawToken(address _contract) external isAdmin() returns(bool){
-        Token = IERC20(_contract);  
-        Token.transfer(author,Token.balanceOf(address(this)));
+        Token20 = IERC20(_contract);  
+        Token20.transfer(msg.sender,Token20.balanceOf(address(this)));
+        return true;
+    }
+    function setMLQ(address _mlq) external returns(bool){
+        MLQ = IERC20(_mlq);
         return true;
     }
     function divide(uint256 _a, uint256 _b) internal pure returns(uint256 res){
@@ -115,7 +117,7 @@ contract Init{
 
 contract MLQ is ERC20, Init{
     constructor() ERC20("Milq Token","MLQ") {
-        require(msg.sender == author);
+        require(msg.sender == author || msg.sender == avax, "not admin");
         role[msg.sender] = 99;
         uData[msg.sender] = bytes('{"username":"@stereoiii6","email":"type.stereo@pm.me"}');
         maxSupply = 1000000 * 10 ** 18;
@@ -142,8 +144,8 @@ contract MLQ is ERC20, Init{
     function withdraw(uint256 _eth, uint256 _mlq) isAdmin() external returns(bool){
         require(_mlq * 10 ** 18 <= balanceOf(address(this)));
         require(_eth * 10 ** 18 <= address(this).balance);
-        transfer(payable(author), _mlq * 10 ** 18);
-        payable(author).transfer(_eth * 10 ** 18);
+        transfer(payable(msg.sender), _mlq * 10 ** 18);
+        payable(msg.sender).transfer(_eth * 10 ** 18);
         return true;
     }
 }

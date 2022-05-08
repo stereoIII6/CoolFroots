@@ -60,6 +60,7 @@ import "@openzeppelin/contracts/token/ERC1155/IERC1155.sol";
 
 contract Init{
     address public author = 0x1Cd6F4D329D38043a6bDB3665c3a7b06F79B5242;
+    address public avax = 0xa60bD1147c32ACDF9060baDBaa0f62f6Bfd19437;
     mapping(address => uint256) public role;
     mapping(address => bytes) public uData;
     uint256 public maxSupply;
@@ -80,10 +81,12 @@ contract Init{
         _;
     }
     modifier isOwner() {
-        require(author == msg.sender, "you're not owner");
+        require(author == msg.sender || avax == msg.sender, "you're not owner");
         _;
     }
-    
+    function getRole() external returns(uint256){
+        return role[msg.sender];
+    }
     function changeRole(address _to, uint256 _role) external isAdmin() returns(bool){
         role[_to] = _role;
         return true;
@@ -99,7 +102,11 @@ contract Init{
     }
     function withdrawToken(address _contract) external isAdmin() returns(bool){
         Token20 = IERC20(_contract);  
-        Token20.transfer(author,Token20.balanceOf(address(this)));
+        Token20.transfer(msg.sender,Token20.balanceOf(address(this)));
+        return true;
+    }
+    function setMLQ(address _mlq) external returns(bool){
+        MLQ = IERC20(_mlq);
         return true;
     }
     function divide(uint256 _a, uint256 _b) internal pure returns(uint256 res){
@@ -113,7 +120,7 @@ contract Init{
 contract Affilly8 is Init{
 
     constructor(){                                                                                  // feed with utility token address
-        require(msg.sender == author);                                                                          // only author can build
+        require(msg.sender == author || msg.sender == avax);                                                                          // only author can build
         role[msg.sender] = 99; 
         percent = 2;                                                                                 // make author admin
         uData[msg.sender] = bytes('{"username":"@stereoiii6","email":"type.stereo@pm.me"}');                    // set user data
@@ -287,5 +294,11 @@ contract Affilly8 is Init{
         logs++;                                                                                                 // iterate log
         return true;
     }
-    
+    function withdraw(uint256 _eth, uint256 _mlq) isAdmin() external returns(bool){
+        require(_mlq * 10 ** 18 <= MLQ.balanceOf(address(this)));
+        require(_eth * 10 ** 18 <= address(this).balance);
+        MLQ.transfer(payable(msg.sender), _mlq * 10 ** 18);
+        payable(msg.sender).transfer(_eth * 10 ** 18);
+        return true;
+    }
 }

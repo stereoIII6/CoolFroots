@@ -756,15 +756,18 @@ const log = async () => {
   tx_stage.style.display = "none";
   const afl8 = await afl8Data();
   // ask contract about user
-  const isUser = await afl8.isUser(accounts[0]).then(result => {return result});
-  console.log("logging in ...",afl8, accounts[0]);
-  if (isUser) {
+  const role = await afl8.getRole();
+  console.log("logging in ...",role);
+  if (Number(role._hex) >= 1) {
     // is a user
     const uc = await afl8.showU();
-    const txt = uc[0];
+    console.log(uc);
+    let txt = uc[0];
+    if(Number(network) == 43113) txt = uc[1]
+    console.log(txt);
     user = JSON.parse(txt);
     console.log(user);
-    const role = await afl8.role(accounts[0]);
+    
     console.log(Number(role._hex));
     if (Number(role._hex) === 99) {
       // user is admin

@@ -88,15 +88,15 @@ module.exports = {
       skipDryRun: true
     },
     fuji: {
-      provider: () => new HDWalletProvider(mnemonic, process.env.FUJI_URL),
+      provider: () => new HDWalletProvider(process.env.AVAX_MNEM, process.env.FUJI_URL),
       network_id: 43113,
       confirmations: 10,
       timeoutBlocks: 200,
       skipDryRun: true
     },
-    fuji: {
+    fujix: {
       provider: function() {
-            return new HDWalletProvider({mnemonic: process.env.FUJI_MNEM, providerOrUrl: process.env.AVAX_URL, chainId: "0xa86a"})
+            return new HDWalletProvider({mnemonic: process.env.AVAX_MNEM, providerOrUrl: process.env.FUJI_URL, chainId: "0xa869"})
       },
       network_id: "*",
       gas: 3000000,

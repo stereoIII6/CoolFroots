@@ -45,7 +45,7 @@
 
 pragma solidity ^0.8.3;
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
-import "./Nft_Project.sol";
+import "./NFT_Project.sol";
 
 contract NFT_Factory {
 
