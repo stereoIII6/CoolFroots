@@ -390,9 +390,9 @@ const createCampaign = (e) => {
     if (Number(network) === 97){
       const currencyX = {
         eth: 0x0000000000000000000000000000000000000000,
-        mlq: 0x0000000000000000000000000000000000000000,
-        dai: 0x0000000000000000000000000000000000000000,
-        weth: 0x0000000000000000000000000000000000000000
+        mlq: 0x8A7E9B9339bAe94FEdc51a1b3D0DaDA378f7806E,
+        dai: 0x8A7E9B9339bAe94FEdc51a1b3D0DaDA378f7806E,
+        weth: 0x8A7E9B9339bAe94FEdc51a1b3D0DaDA378f7806E
       }
     }  
     if (Number(network) === 56){
@@ -756,8 +756,8 @@ const log = async () => {
   tx_stage.style.display = "none";
   const afl8 = await afl8Data();
   // ask contract about user
-  console.log("logging in ...");
-  const isUser = await afl8.isUser(accounts[0]);
+  const isUser = await afl8.isUser(accounts[0]).then(result => {return result});
+  console.log("logging in ...",afl8, accounts[0]);
   if (isUser) {
     // is a user
     const uc = await afl8.showU();
