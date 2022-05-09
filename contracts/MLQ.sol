@@ -81,6 +81,9 @@ contract Init{
         require(author == msg.sender || avax == msg.sender, "you're not owner");
         _;
     }
+    function isUserBool() external returns(bool){
+        return isUser[msg.sender];
+    }
     function getRole() external returns(uint256){
         return role[msg.sender];
     }

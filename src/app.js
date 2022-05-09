@@ -13,6 +13,7 @@ import "../public/app.scss";
 import { sha256 } from "crypto-hash";
 import UAuth from "@uauth/js";
 import { create } from "underscore";
+import { stripZeros } from "ethers/lib/utils";
 let accounts;
 let network;
 let user;
@@ -100,6 +101,7 @@ const cCampaign = document.getElementById("cCampaign");
 const createC = document.getElementById("create");
 const tBtns = document.getElementsByClassName("tok_btn");
 const cBtns = document.getElementsByClassName("cbtn");
+const acBtns = document.getElementsByClassName("acbtn");
 const lBtns = document.getElementsByClassName("lbtn");
 const mint = document.getElementById("mint");
 
@@ -111,7 +113,7 @@ const tokAdr = document.getElementById("tokenAddress");
 const tokId = document.getElementById("tokenId");
 const price = document.getElementById("price");
 const fee = document.getElementById("fee");
-const currency = document.getElementById("currency");
+const currencyx= document.getElementById("currency_box");
 const duration = document.getElementById("duration");
 const home_badge = document.getElementById("home_badge");
 
@@ -167,7 +169,143 @@ const goCreate = (e) => {
     "now it's time to<br/>create campaigns<br/><i>affilly8</i>";
   campaignshow.innerHTML = `<img src="${img}" id="campaignimg"/>`;
   console.log(tokAdr.value, tokId.value, img, description.value);
+  grabCreateInfo();
+  
 };
+const grabCreateInfo = () => {
+  let currencyX;
+  if (Number(network) === 1){
+    currencyX= {
+      eth: "0x0000000000000000000000000000000000000000",
+      mlq: "0x0000000000000000000000000000000000000000",
+      dai: "0x6B175474E89094C44Da98b954EedeAC495271d0F",
+      weth: "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"
+    }
+  }   
+  if (Number(network) === 137){
+    currencyX= {
+      eth: "0x0000000000000000000000000000000000000000",
+      mlq: "0x0000000000000000000000000000000000000000",
+      dai: "0x8f3Cf7ad23Cd3CaDbD9735AFf958023239c6A063",
+      weth: "0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619"
+    }
+  }   
+  if (Number(network) === 100){
+    currencyX= {
+      eth: "0x0000000000000000000000000000000000000000",
+      mlq: "0x0000000000000000000000000000000000000000",
+      dai: "0x26F2319Fbb44772e0ED58fB7c99cf8da59e2b5BE",
+      weth: "0x6A023CCd1ff6F2045C3309768eAd9E68F978f6e1"
+    }
+  }    
+  if (Number(network) === 10){
+    currencyX= {
+      eth: 0x0000000000000000000000000000000000000000,
+      mlq: 0x0,
+      dai: 0x0,
+      weth: 0x0
+    }
+  }   
+  if (Number(network) === 42161){
+    currencyX= {
+      eth: 0x0000000000000000000000000000000000000000,
+      mlq: 0x0,
+      dai: 0x0,
+      weth: 0x0
+    }
+  }   
+  if (Number(network) === 43224){
+    currencyX= {
+      eth: 0x0000000000000000000000000000000000000000,
+      mlq: 0x0,
+      dai: 0x0,
+      weth: 0x0
+    }
+  }   
+  if (Number(network) === 42220){
+    currencyX= {
+      eth: 0x0000000000000000000000000000000000000000,
+      mlq: 0x0,
+      dai: 0x0,
+      weth: 0x0
+    }
+  }    
+  if (Number(network) === 1312){
+    currencyX= {
+      eth: 0x0000000000000000000000000000000000000000,
+      mlq: 0x0,
+      dai: 0x0,
+      weth: 0x0
+    }
+  }    
+  if (Number(network) === 4){
+    currencyX= {
+      eth: "0x0000000000000000000000000000000000000000",
+      mlq: "0x41598ba8E72C056131eee70787A125Aa36E5d3aA",
+      dai: "0x0165b733e860b1674541BB7409f8a4743A564157",
+      weth: "0xDf032Bc4B9dC2782Bb09352007D4C57B75160B15"
+    }
+  } 
+  if (Number(network) === 97){
+    currencyX= {
+      eth: "0x0000000000000000000000000000000000000000",
+      mlq: "0x8A7E9B9339bAe94FEdc51a1b3D0DaDA378f7806E",
+      dai: "0x8A7E9B9339bAe94FEdc51a1b3D0DaDA378f7806E",
+      weth: "0x8A7E9B9339bAe94FEdc51a1b3D0DaDA378f7806E"
+    }
+  }  
+  if (Number(network) === 56){
+    currencyX= {
+      eth: 0x0000000000000000000000000000000000000000,
+      mlq: 0x0000000000000000000000000000000000000000,
+      dai: 0x0000000000000000000000000000000000000000,
+      weth: 0x0000000000000000000000000000000000000000
+    }
+  }  
+  if (Number(network) === 80001){
+    currencyX = {
+      eth: "0x0000000000000000000000000000000000000000",
+      mlq: "0x001B3B4d0F3714Ca98ba10F6042DaEbF0B1B7b6F",
+      dai: "0x001B3B4d0F3714Ca98ba10F6042DaEbF0B1B7b6F",
+      weth: "0x062f24cb618e6ba873EC1C85FD08B8D2Ee9bF23e"
+    }
+  }   
+  if (Number(network) === 300){
+    currencyX= {
+      eth: 0x0000000000000000000000000000000000000000,
+      mlq: 0x0,
+      dai: 0x0,
+      weth: 0x0
+    }
+  }     
+  if (Number(network) === 200){
+    currencyX= {
+      eth: 0x0000000000000000000000000000000000000000,
+      mlq: 0x0,
+      dai: 0x0,
+      weth: 0x0
+    }
+  }    
+  if (Number(network) === 43113){
+    currencyX= {
+      eth: "0x0000000000000000000000000000000000000000",
+      mlq: "0x472b3EA79d50FcC16f0fC4E10B081122437780D9",
+      dai: "0xbA7dEebBFC5fA1100Fb055a87773e1E99Cd3507a",
+      weth: "0x49D5c2BdFfac6CE2BFdB6640F4F80f226bc10bAB"
+    }
+  }    
+  if (Number(network) === 44787){
+    currencyX= {
+      eth: "0x0000000000000000000000000000000000000000",
+      mlq: 0x0,
+      dai: 0x0,
+      weth: 0x0
+    }
+  }
+  console.log(currencyx);
+  currencyx.innerHTML += `<select id="currency" ><option  id="eth" value="${currencyX.eth}">ETH</option><option  id="mlq" value="${currencyX.mlq}">MLQ</option><option  id="dai" value="${currencyX.dai}">DAI</option><option  id="weth" value="${currencyX.weth}">WETH</option></select>`;   
+
+}
 const goCreateCustom = async (e) => {
   e.preventDefault();
   tokenList.style.display = "none";
@@ -205,6 +343,7 @@ const goCreateCustom = async (e) => {
   description.value = "external token";
   home_badge.innerHTML = "now it's time to<br/>create campaigns<br/><i>affilly8</i>";
   campaignshow.innerHTML = `<img src="${img}" id="campaignimg"/>`;
+  grabCreateInfo();
 };
 const goCreateLink = async (e) => {
   e.preventDefault();
@@ -315,136 +454,7 @@ const createCampaign = (e) => {
   e.preventDefault();
   profile.style.display = "none";
   campaignform.style.display = "grid";
-    if (Number(network) === 1){
-      const currencyX = {
-        eth: 0x0000000000000000000000000000000000000000,
-        mlq: 0x0000000000000000000000000000000000000000,
-        dai: 0x6B175474E89094C44Da98b954EedeAC495271d0F,
-        weth: 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2
-      }
-    }   
-    if (Number(network) === 137){
-      const currencyX = {
-        eth: 0x0000000000000000000000000000000000000000,
-        mlq: 0x0000000000000000000000000000000000000000,
-        dai: 0x8f3Cf7ad23Cd3CaDbD9735AFf958023239c6A063,
-        weth: 0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619
-      }
-    }   
-    if (Number(network) === 100){
-      const currencyX = {
-        eth: 0x0000000000000000000000000000000000000000,
-        mlq: 0x0000000000000000000000000000000000000000,
-        dai: 0x26F2319Fbb44772e0ED58fB7c99cf8da59e2b5BE,
-        weth: 0x6A023CCd1ff6F2045C3309768eAd9E68F978f6e1
-      }
-    }    
-    if (Number(network) === 10){
-      const currencyX = {
-        eth: 0x0000000000000000000000000000000000000000,
-        mlq: 0x0,
-        dai: 0x0,
-        weth: 0x0
-      }
-    }   
-    if (Number(network) === 42161){
-      const currencyX = {
-        eth: 0x0000000000000000000000000000000000000000,
-        mlq: 0x0,
-        dai: 0x0,
-        weth: 0x0
-      }
-    }   
-    if (Number(network) === 43224){
-      const currencyX = {
-        eth: 0x0000000000000000000000000000000000000000,
-        mlq: 0x0,
-        dai: 0x0,
-        weth: 0x0
-      }
-    }   
-    if (Number(network) === 42220){
-      const currencyX = {
-        eth: 0x0000000000000000000000000000000000000000,
-        mlq: 0x0,
-        dai: 0x0,
-        weth: 0x0
-      }
-    }    
-    if (Number(network) === 1312){
-      const currencyX = {
-        eth: 0x0000000000000000000000000000000000000000,
-        mlq: 0x0,
-        dai: 0x0,
-        weth: 0x0
-      }
-    }    
-    if (Number(network) === 4){
-      const currencyX = {
-        eth: 0x0000000000000000000000000000000000000000,
-        mlq: 0x41598ba8E72C056131eee70787A125Aa36E5d3aA,
-        dai: 0x0165b733e860b1674541BB7409f8a4743A564157,
-        weth: 0xDf032Bc4B9dC2782Bb09352007D4C57B75160B15
-      }
-    } 
-    if (Number(network) === 97){
-      const currencyX = {
-        eth: 0x0000000000000000000000000000000000000000,
-        mlq: 0x8A7E9B9339bAe94FEdc51a1b3D0DaDA378f7806E,
-        dai: 0x8A7E9B9339bAe94FEdc51a1b3D0DaDA378f7806E,
-        weth: 0x8A7E9B9339bAe94FEdc51a1b3D0DaDA378f7806E
-      }
-    }  
-    if (Number(network) === 56){
-      const currencyX = {
-        eth: 0x0000000000000000000000000000000000000000,
-        mlq: 0x0000000000000000000000000000000000000000,
-        dai: 0x0000000000000000000000000000000000000000,
-        weth: 0x0000000000000000000000000000000000000000
-      }
-    }  
-    if (Number(network) === 80001){
-      const currency = {
-        eth: 0x0000000000000000000000000000000000000000,
-        mlq: 0x001B3B4d0F3714Ca98ba10F6042DaEbF0B1B7b6F,
-        dai: 0x001B3B4d0F3714Ca98ba10F6042DaEbF0B1B7b6F,
-        weth: 0x062f24cb618e6ba873EC1C85FD08B8D2Ee9bF23e
-      }
-    }   
-    if (Number(network) === 300){
-      const currencyX = {
-        eth: 0x0000000000000000000000000000000000000000,
-        mlq: 0x0,
-        dai: 0x0,
-        weth: 0x0
-      }
-    }     
-    if (Number(network) === 200){
-      const currencyX = {
-        eth: 0x0000000000000000000000000000000000000000,
-        mlq: 0x0,
-        dai: 0x0,
-        weth: 0x0
-      }
-    }    
-    if (Number(network) === 43113){
-      const currencyX = {
-        eth: 0x0000000000000000000000000000000000000000,
-        mlq: 0x0,
-        dai: 0x0,
-        weth: 0x0
-      }
-    }    
-    if (Number(network) === 44787){
-      const currencyX = {
-        eth: 0x0000000000000000000000000000000000000000,
-        mlq: 0x0,
-        dai: 0x0,
-        weth: 0x0
-      }
-    }
-    currency.innerHTML = `<option  id="eth" value="${currencyX.eth}">ETH</option><option  id="mlq" value="${currencyX.mlq}">MLQ</option><option  id="dai" value="${currencyX.dai}">DAI</option><option  id="weth" value="${currencyX.weth}">WETH</option>`;   
-  
+ 
 };
 
 const makeCampaign = async (e) => {
@@ -484,7 +494,7 @@ const createCampaignList = async () => {
   const count = await afl8.getCampaignCount();
   console.log(count);
   let i = 0;
-  while (i < count) {
+  while (i < Number(count._hex)) {
     const campaign = await afl8.campaigns(i);
     console.log(campaign);
     campaigns[i] = campaign;
@@ -537,7 +547,7 @@ const createLinkList = async () => {
   const afl8 = await afl8Data();
   const count = await afl8.getLinkCount();
   let i = 0;
-  while (i < count) {
+  while (i < Number(count._hex)) {
     const link = await afl8.links(i);
     links[i] = link;
     i++;
@@ -551,23 +561,27 @@ const showLinkList = () => {
     link_block.innerHTML +=
       "<div class='link_item' id='" +
       Number(link.id._hex) +
-      "'><div id='name'>" +
+      "'> <div id='name'>" +
       link.promoter.slice(0, 4) +
       "..." +
       link.promoter.slice(38, 42) +
-      "</div><div id='campaign'>" +
+      "</div> <div id='campaign'>" +
+      Number(link.id._hex) + ":" + Number(link.campaigId._hex) +
+      "</div> <div id='"+Number(link.id._hex)+"' name='" +
       Number(link.campaigId._hex) +
-      "</div><div id=" +
-      Number(link.campaigId._hex) +
-      " class='acbtn'>approve campaign</div><div id=" +
+      "' class='acbtn'>approve campaign</div> <div id='" +
       Number(link.id._hex) +
-      " class='lbtn'>finalize tx</div></div>";
+      "' class='lbtn'>finalize tx</div> </div>";
+      console.log(Number(link.campaigId._hex))
   });
   let t = 0;
-  while (t < cBtns.length) {
+  console.log(lBtns.length, acBtns.length);
+  
+  while (t < lBtns.length) {
     lBtns[t].addEventListener("click", goFinalize);
     t++;
   }
+ 
 };
 const goFinalize = async (e) => {
   e.preventDefault();
@@ -575,11 +589,18 @@ const goFinalize = async (e) => {
   const finalize = await afl8.finalize(e.target.id);
   createTxList();
 };
+const goApprove = async (e) => {
+  e.preventDefault();
+  const afl8 = await afl8Data();
+  console.log(e.target.name);
+  const approve = await afl8.approveCampaign(e.target.name);
+  // createTxList();
+};
 const createTxList = async () => {
   const afl8 = await afl8Data();
   const count = await afl8.getTxCount();
   let i = 0;
-  while (i < count) {
+  while (i < Number(count._hex)) {
     const tx = await afl8.txs(i);
     txs[i] = tx;
     i++;
@@ -757,18 +778,19 @@ const log = async () => {
   const afl8 = await afl8Data();
   // ask contract about user
   const role = await afl8.getRole();
-  console.log("logging in ...",role);
-  if (Number(role._hex) >= 1) {
+  const isUser = await afl8.isUserBool();
+  console.log("logging in ...",role._hex);
+  if (isUser) {
     // is a user
     const uc = await afl8.showU();
     console.log(uc);
     let txt = uc[0];
-    if(Number(network) == 43113) txt = uc[1]
+    let hold = txt.replaceAll("/","");
     console.log(txt);
     user = JSON.parse(txt);
     console.log(user);
     
-    console.log(Number(role._hex));
+    console.log(role._hex);
     if (Number(role._hex) === 99) {
       // user is admin
       profile_btn.innerHTML = user.username;

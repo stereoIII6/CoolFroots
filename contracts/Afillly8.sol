@@ -84,8 +84,11 @@ contract Init{
         require(author == msg.sender || avax == msg.sender, "you're not owner");
         _;
     }
-    function getRole() external returns(uint256){
+    function getRole() external view returns(uint256){
         return role[msg.sender];
+    }
+    function isUserBool() external view returns(bool){
+        return isUser[msg.sender];
     }
     function changeRole(address _to, uint256 _role) external isAdmin() returns(bool){
         role[_to] = _role;
