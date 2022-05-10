@@ -99,10 +99,10 @@ const aScanCampaigns = document.getElementById("aScanCampaigns");
 const aScanTxs = document.getElementById("aScanTxs");
 const cCampaign = document.getElementById("cCampaign");
 const createC = document.getElementById("create");
-const tBtns = document.getElementsByClassName("tok_btn");
-const cBtns = document.getElementsByClassName("cbtn");
-const acBtns = document.getElementsByClassName("acbtn");
-const lBtns = document.getElementsByClassName("lbtn");
+let tBtns = document.getElementsByClassName("tok_btn");
+let cBtns = document.getElementsByClassName("cbtn");
+let acBtns = document.getElementsByClassName("acbtn");
+let lBtns = document.getElementsByClassName("lbtn");
 const mint = document.getElementById("mint");
 
 // const txBtns = document.getElementsByClassName("txbtn");
@@ -555,33 +555,16 @@ const createLinkList = async () => {
   showLinkList();
 };
 const showLinkList = () => {
-  link_block.innerHTML = "";
+  let block = "";
   links.map((link) => {
-    console.log(link);
-    link_block.innerHTML +=
-      "<div class='link_item' id='" +
-      Number(link.id._hex) +
-      "'> <div id='name'>" +
-      link.promoter.slice(0, 4) +
-      "..." +
-      link.promoter.slice(38, 42) +
-      "</div> <div id='campaign'>" +
-      Number(link.id._hex) + ":" + Number(link.campaigId._hex) +
-      "</div> <div id='"+Number(link.id._hex)+"' name='" +
-      Number(link.campaigId._hex) +
-      "' class='acbtn'>approve campaign</div> <div id='" +
-      Number(link.id._hex) +
-      "' class='lbtn'>finalize tx</div> </div>";
-      console.log(Number(link.campaigId._hex))
+      console.log(Number(link.campaigId._hex));
+      block += "<div class='link_item' id='"+ Number(link.id._hex) +"'><div id='name'>" +link.promoter.slice(0, 4) +"..." +link.promoter.slice(38, 42) +"</div><div id='campaign'>" +Number(link.id._hex) + ":" + Number(link.campaigId._hex) +"</div>";
+      block += "<div id='apr"+Number(link.campaigId._hex)+"' class='acbtn'>approve campaign</div>";
+      block += "<div id='fin" + Number(link.id._hex) +"' class='lbtn'>finalize tx</div>";
+      block += "</div>";   
   });
-  let t = 0;
-  console.log(lBtns.length, acBtns.length);
-  
-  while (t < lBtns.length) {
-    lBtns[t].addEventListener("click", goFinalize);
-    t++;
-  }
- 
+  link_block.innerHTML = block;
+
 };
 const goFinalize = async (e) => {
   e.preventDefault();
@@ -592,8 +575,8 @@ const goFinalize = async (e) => {
 const goApprove = async (e) => {
   e.preventDefault();
   const afl8 = await afl8Data();
-  console.log(e.target.name);
-  const approve = await afl8.approveCampaign(e.target.name);
+  console.log(e.target.id);
+  const approve = await afl8.approveCampaign(e.target.id);
   // createTxList();
 };
 const createTxList = async () => {
