@@ -65,7 +65,6 @@ const promD = document.getElementById("promoter");
 const prodD = document.getElementById("producer");
 const adminD = document.getElementById("admin");
 
-
 // subnav bar
 
 // pagination
@@ -75,6 +74,7 @@ const home_stage = document.getElementById("home_stage");
 const campaign_stage = document.getElementById("campaign_stage");
 const link_stage = document.getElementById("link_stage");
 const tx_stage = document.getElementById("tx_stage");
+const link_detail = document.getElementById("link_detail");
 const profile_stage = document.getElementById("tx_stage");
 const wallet_stage = document.getElementById("tx_stage");
 const net_stage = document.getElementById("tx_stage");
@@ -113,38 +113,75 @@ const tokAdr = document.getElementById("tokenAddress");
 const tokId = document.getElementById("tokenId");
 const price = document.getElementById("price");
 const fee = document.getElementById("fee");
-const currencyx= document.getElementById("currency_box");
+const currencyx = document.getElementById("currency_box");
 const duration = document.getElementById("duration");
 const home_badge = document.getElementById("home_badge");
 
 // navigation functions
+let contractList = [];
+const getProjects = () => {
+  // POLYGON
+  // mumbai
+  if (Number(network) == 80001)
+    contractList = [
+      "0xeedcb4183474d116234e61043596eb5f726cf358",
+      "0xbff584b3aab1d8bedf7e22e26c27da5f629a0f8d",
+      "0xa0ddf52b92c9db7cacc03f734f83e737e17b1906",
+    ];
+  // polygon mainnet
+  if (Number(network) == 137) contractList = [""];
 
+  // ETHEREUM
+  // rinkeby
+  if (Number(network) == 4)
+    contractList = ["0xD8d0fCD69499A8634A09A4E8B2af2634CD6418E2"];
+  // eth mainnet
+  if (Number(network) == 1) contractList = [""];
+
+  // BINANCE
+  // bnb testnet
+  if (Number(network) == 97)
+    contractList = ["0x177710A55f46318eB3Aae804F1bD623Ba26aDf22"];
+  // bnb mainnet
+  if (Number(network) == 56) contractList = [""];
+
+  // AVALANCHE
+  // fuji
+  if (Number(network) == 43113)
+    contractList = ["0x6BC6756A133c82b6374eF35F355C8e1D3Fb02Dd4"];
+  // avax mainnet
+  if (Number(network) == 43114) contractList = [""];
+}
 const goMint = async (e) => {
   let contractNFT;
 
   // POLYGON
   // mumbai
-  if(Number(network) == 80001) contractNFT = "0xa0ddf52b92c9db7cacc03f734f83e737e17b1906";
+  if (Number(network) == 80001)
+    contractNFT = "0xa0ddf52b92c9db7cacc03f734f83e737e17b1906";
   // polygon mainnet
-  if(Number(network) == 137) contractNFT = "";
+  if (Number(network) == 137) contractNFT = "";
 
   // ETHEREUM
   // rinkeby
-  if(Number(network) == 4) contractNFT = "0xD8d0fCD69499A8634A09A4E8B2af2634CD6418E2";
+  if (Number(network) == 4)
+    contractNFT = "0xD8d0fCD69499A8634A09A4E8B2af2634CD6418E2";
   // eth mainnet
-  if(Number(network) == 1) contractNFT = "";
+  if (Number(network) == 1) contractNFT = "";
 
-  // BINANCE 
-  // bnb testnet 
-  if(Number(network) == 97) contractNFT = "0x177710A55f46318eB3Aae804F1bD623Ba26aDf22";
+  // BINANCE
+  // bnb testnet
+  if (Number(network) == 97)
+    contractNFT = "0x177710A55f46318eB3Aae804F1bD623Ba26aDf22";
   // bnb mainnet
-  if(Number(network) == 56) contractNFT = "";
+  if (Number(network) == 56) contractNFT = "";
 
   // AVALANCHE
   // fuji
-  if(Number(network) == 43113) contractNFT = "0x6BC6756A133c82b6374eF35F355C8e1D3Fb02Dd4";
+  if (Number(network) == 43113)
+    contractNFT = "0x6BC6756A133c82b6374eF35F355C8e1D3Fb02Dd4";
   // avax mainnet
-  if(Number(network) == 43114) contractNFT = "";
+  if (Number(network) == 43114) contractNFT = "";
 
   let contract = await new ethers.Contract(
     contractNFT,
@@ -170,142 +207,140 @@ const goCreate = (e) => {
   campaignshow.innerHTML = `<img src="${img}" id="campaignimg"/>`;
   console.log(tokAdr.value, tokId.value, img, description.value);
   grabCreateInfo();
-  
 };
 const grabCreateInfo = () => {
   let currencyX;
-  if (Number(network) === 1){
-    currencyX= {
+  if (Number(network) === 1) {
+    currencyX = {
       eth: "0x0000000000000000000000000000000000000000",
       mlq: "0x0000000000000000000000000000000000000000",
       dai: "0x6B175474E89094C44Da98b954EedeAC495271d0F",
-      weth: "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"
-    }
-  }   
-  if (Number(network) === 137){
-    currencyX= {
+      weth: "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+    };
+  }
+  if (Number(network) === 137) {
+    currencyX = {
       eth: "0x0000000000000000000000000000000000000000",
       mlq: "0x0000000000000000000000000000000000000000",
       dai: "0x8f3Cf7ad23Cd3CaDbD9735AFf958023239c6A063",
-      weth: "0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619"
-    }
-  }   
-  if (Number(network) === 100){
-    currencyX= {
+      weth: "0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619",
+    };
+  }
+  if (Number(network) === 100) {
+    currencyX = {
       eth: "0x0000000000000000000000000000000000000000",
       mlq: "0x0000000000000000000000000000000000000000",
       dai: "0x26F2319Fbb44772e0ED58fB7c99cf8da59e2b5BE",
-      weth: "0x6A023CCd1ff6F2045C3309768eAd9E68F978f6e1"
-    }
-  }    
-  if (Number(network) === 10){
-    currencyX= {
-      eth: 0x0000000000000000000000000000000000000000,
-      mlq: 0x0,
-      dai: 0x0,
-      weth: 0x0
-    }
-  }   
-  if (Number(network) === 42161){
-    currencyX= {
-      eth: 0x0000000000000000000000000000000000000000,
-      mlq: 0x0,
-      dai: 0x0,
-      weth: 0x0
-    }
-  }   
-  if (Number(network) === 43224){
-    currencyX= {
-      eth: 0x0000000000000000000000000000000000000000,
-      mlq: 0x0,
-      dai: 0x0,
-      weth: 0x0
-    }
-  }   
-  if (Number(network) === 42220){
-    currencyX= {
-      eth: 0x0000000000000000000000000000000000000000,
-      mlq: 0x0,
-      dai: 0x0,
-      weth: 0x0
-    }
-  }    
-  if (Number(network) === 1312){
-    currencyX= {
-      eth: 0x0000000000000000000000000000000000000000,
-      mlq: 0x0,
-      dai: 0x0,
-      weth: 0x0
-    }
-  }    
-  if (Number(network) === 4){
-    currencyX= {
+      weth: "0x6A023CCd1ff6F2045C3309768eAd9E68F978f6e1",
+    };
+  }
+  if (Number(network) === 10) {
+    currencyX = {
+      eth: "0x0000000000000000000000000000000000000000",
+      mlq: "0x0",
+      dai: "0x0",
+      weth: "0x0",
+    };
+  }
+  if (Number(network) === 42161) {
+    currencyX = {
+      eth: "0x0000000000000000000000000000000000000000",
+      mlq: "0x0",
+      dai: "0x0",
+      weth: "0x0",
+    };
+  }
+  if (Number(network) === 43224) {
+    currencyX = {
+      eth: "0x0000000000000000000000000000000000000000",
+      mlq: "0x0",
+      dai: "0x0",
+      weth: "0x0",
+    };
+  }
+  if (Number(network) === 42220) {
+    currencyX = {
+      eth: "0x0000000000000000000000000000000000000000",
+      mlq: "0x0",
+      dai: "0x0",
+      weth: "0x0",
+    };
+  }
+  if (Number(network) === 1312) {
+    currencyX = {
+      eth: "0x0000000000000000000000000000000000000000",
+      mlq: "0x0",
+      dai: "0x0",
+      weth: "0x0",
+    };
+  }
+  if (Number(network) === 4) {
+    currencyX = {
       eth: "0x0000000000000000000000000000000000000000",
       mlq: "0x41598ba8E72C056131eee70787A125Aa36E5d3aA",
       dai: "0x0165b733e860b1674541BB7409f8a4743A564157",
-      weth: "0xDf032Bc4B9dC2782Bb09352007D4C57B75160B15"
-    }
-  } 
-  if (Number(network) === 97){
-    currencyX= {
+      weth: "0xDf032Bc4B9dC2782Bb09352007D4C57B75160B15",
+    };
+  }
+  if (Number(network) === 97) {
+    currencyX = {
       eth: "0x0000000000000000000000000000000000000000",
       mlq: "0x8A7E9B9339bAe94FEdc51a1b3D0DaDA378f7806E",
       dai: "0x8A7E9B9339bAe94FEdc51a1b3D0DaDA378f7806E",
-      weth: "0x8A7E9B9339bAe94FEdc51a1b3D0DaDA378f7806E"
-    }
-  }  
-  if (Number(network) === 56){
-    currencyX= {
-      eth: 0x0000000000000000000000000000000000000000,
-      mlq: 0x0000000000000000000000000000000000000000,
-      dai: 0x0000000000000000000000000000000000000000,
-      weth: 0x0000000000000000000000000000000000000000
-    }
-  }  
-  if (Number(network) === 80001){
+      weth: "0x8A7E9B9339bAe94FEdc51a1b3D0DaDA378f7806E",
+    };
+  }
+  if (Number(network) === 56) {
+    currencyX = {
+      eth: "0x0000000000000000000000000000000000000000",
+      mlq: "0x0000000000000000000000000000000000000000",
+      dai: "0x0000000000000000000000000000000000000000",
+      weth: "0x0000000000000000000000000000000000000000",
+    };
+  }
+  if (Number(network) === 80001) {
     currencyX = {
       eth: "0x0000000000000000000000000000000000000000",
       mlq: "0x001B3B4d0F3714Ca98ba10F6042DaEbF0B1B7b6F",
       dai: "0x001B3B4d0F3714Ca98ba10F6042DaEbF0B1B7b6F",
-      weth: "0x062f24cb618e6ba873EC1C85FD08B8D2Ee9bF23e"
-    }
-  }   
-  if (Number(network) === 300){
-    currencyX= {
-      eth: 0x0000000000000000000000000000000000000000,
-      mlq: 0x0,
-      dai: 0x0,
-      weth: 0x0
-    }
-  }     
-  if (Number(network) === 200){
-    currencyX= {
-      eth: 0x0000000000000000000000000000000000000000,
-      mlq: 0x0,
-      dai: 0x0,
-      weth: 0x0
-    }
-  }    
-  if (Number(network) === 43113){
-    currencyX= {
+      weth: "0x062f24cb618e6ba873EC1C85FD08B8D2Ee9bF23e",
+    };
+  }
+  if (Number(network) === 300) {
+    currencyX = {
+      eth: "0x0000000000000000000000000000000000000000",
+      mlq: "0x0",
+      dai: "0x0",
+      weth: "0x0",
+    };
+  }
+  if (Number(network) === 200) {
+    currencyX = {
+      eth: "0x0000000000000000000000000000000000000000",
+      mlq: "0x0",
+      dai: "0x0",
+      weth: "0x0",
+    };
+  }
+  if (Number(network) === 43113) {
+    currencyX = {
       eth: "0x0000000000000000000000000000000000000000",
       mlq: "0x472b3EA79d50FcC16f0fC4E10B081122437780D9",
       dai: "0xbA7dEebBFC5fA1100Fb055a87773e1E99Cd3507a",
-      weth: "0x49D5c2BdFfac6CE2BFdB6640F4F80f226bc10bAB"
-    }
-  }    
-  if (Number(network) === 44787){
-    currencyX= {
+      weth: "0x49D5c2BdFfac6CE2BFdB6640F4F80f226bc10bAB",
+    };
+  }
+  if (Number(network) === 44787) {
+    currencyX = {
       eth: "0x0000000000000000000000000000000000000000",
-      mlq: 0x0,
-      dai: 0x0,
-      weth: 0x0
-    }
+      mlq: "0x0",
+      dai: "0x0",
+      weth: "0x0",
+    };
   }
   console.log(currencyx);
-  currencyx.innerHTML += `<select id="currency" ><option  id="eth" value="${currencyX.eth}">ETH</option><option  id="mlq" value="${currencyX.mlq}">MLQ</option><option  id="dai" value="${currencyX.dai}">DAI</option><option  id="weth" value="${currencyX.weth}">WETH</option></select>`;   
-
-}
+  currencyx.innerHTML += `<select id="currency" ><option  id="eth" value="${currencyX.eth}">ETH</option><option  id="mlq" value="${currencyX.mlq}">MLQ</option><option  id="dai" value="${currencyX.dai}">DAI</option><option  id="weth" value="${currencyX.weth}">WETH</option></select>`;
+};
 const goCreateCustom = async (e) => {
   e.preventDefault();
   tokenList.style.display = "none";
@@ -313,35 +348,28 @@ const goCreateCustom = async (e) => {
   campaignshow.style.display = "grid";
   let tAdr;
   let tId;
-  if(opensea.value.length >= 0){
+  if (opensea.value.length >= 0) {
     let hold = [];
     hold = opensea.value.split("/");
-    if(opensea.value.includes("/mumbai/")){
-        
-        tAdr = hold[5];
-        tId = hold[6];
-    }
-    else{
-      
+    if (opensea.value.includes("/mumbai/")) {
+      tAdr = hold[5];
+      tId = hold[6];
+    } else {
       tAdr = hold[4];
       tId = hold[5];
     }
-  }
-  else{
+  } else {
     tAdr = customAdr.value;
     tId = customId.value;
   }
-  console.log(tAdr,tId);
-  let contract = await new ethers.Contract(
-      tAdr,
-      NFT_Project.abi,
-      signer
-    );
+  console.log(tAdr, tId);
+  let contract = await new ethers.Contract(tAdr, NFT_Project.abi, signer);
   console.log(tId);
   const img = await contract.tokenURI(tId);
-  console.log(img.result)
+  console.log(img.result);
   description.value = "external token";
-  home_badge.innerHTML = "now it's time to<br/>create campaigns<br/><i>affilly8</i>";
+  home_badge.innerHTML =
+    "now it's time to<br/>create campaigns<br/><i>affilly8</i>";
   campaignshow.innerHTML = `<img src="${img}" id="campaignimg"/>`;
   grabCreateInfo();
 };
@@ -454,7 +482,6 @@ const createCampaign = (e) => {
   e.preventDefault();
   profile.style.display = "none";
   campaignform.style.display = "grid";
- 
 };
 
 const makeCampaign = async (e) => {
@@ -503,7 +530,7 @@ const createCampaignList = async () => {
   showCampaignList();
 };
 
-const showCampaignList = () => {
+const showCampaignList = async () => {
   // console.log(campaigns);
   campaign_block.innerHTML = "";
   campaigns.map((campaign, indx) => {
@@ -521,6 +548,10 @@ const showCampaignList = () => {
       campaign.tokenAddress.slice(38, 42) +
       "/" +
       campaign.tokenId +
+      "</div><div id='currency'>" +
+      campaign.payCurrency.slice(0, 4) +
+      "..." +
+      campaign.payCurrency.slice(38, 42) +
       "</div><div id='price'>" +
       (Number(campaign.price) / 10 ** 18).toFixed(2) +
       "</div><div id='fee'>" +
@@ -554,29 +585,71 @@ const createLinkList = async () => {
   }
   showLinkList();
 };
-const showLinkList = () => {
+const showLinkList = async () => {
   let block = "";
+  let aprlink;
   links.map((link) => {
-      console.log(Number(link.campaigId._hex));
-      block += "<div class='link_item' id='"+ Number(link.id._hex) +"'><div id='name'>" +link.promoter.slice(0, 4) +"..." +link.promoter.slice(38, 42) +"</div><div id='campaign'>" +Number(link.id._hex) + ":" + Number(link.campaigId._hex) +"</div>";
-      block += "<div id='apr"+Number(link.campaigId._hex)+"' class='acbtn'>approve campaign</div>";
-      block += "<div id='fin" + Number(link.id._hex) +"' class='lbtn'>finalize tx</div>";
-      block += "</div>";   
+    console.log(Number(link.campaigId._hex));
+    block +=
+      "<div class='link_item' id='" +
+      Number(link.id._hex) +
+      "'><div id='name'>" +
+      link.promoter.slice(0, 4) +
+      "..." +
+      link.promoter.slice(38, 42) +
+      "</div><div id='campaign'>" +
+      Number(link.id._hex) +
+      ":" +
+      Number(link.campaigId._hex) +
+      "</div>";
+    block +=
+      "<div id='apr:" +
+      Number(link.campaigId._hex) +
+      ":" +
+      Number(link.id._hex) +
+      "' class='acbtn'>approve campaign</div>";
+    // block += "<div id='fin" + Number(link.id._hex) +"' class='lbtn'>finalize tx</div>";
+    block += "</div>";
+    
   });
-  link_block.innerHTML = block;
-
-};
+    link_block.innerHTML = block;
+    let i = 0;
+    while(i < acBtns.length){
+    acBtns[i].addEventListener("click", goApprove);
+    i++;}
+    };
+const showApprove = async (e) => {
+  e.preventDefault();
+  const cid = e.target.id.split(":")[1];
+  const rlid = e.target.id.split(":")[2];
+  const afl8 = await afl8Data();
+  console.log(cid,rlid);
+  const campaign = await afl8.campaigns(cid);
+  const reflink = await afl8.links(Number(rlid));
+  // link_detail.innerHTML = `<h2>${campaign.name} informationen</h2>`
+}
 const goFinalize = async (e) => {
   e.preventDefault();
   const afl8 = await afl8Data();
-  const finalize = await afl8.finalize(e.target.id);
-  createTxList();
+  console.log(e.target.id);
+  let rlid = e.target.id.split(':')[2];
+  console.log(rlid);
+  const finalize = await afl8.finalize(rlid);
+  // createTxList();
 };
 const goApprove = async (e) => {
   e.preventDefault();
+  const cid = e.target.id.split(":")[1];
+  const rlid = e.target.id.split(':')[2];
   const afl8 = await afl8Data();
-  console.log(e.target.id);
-  const approve = await afl8.approveCampaign(e.target.id);
+  const campaign = await afl8.campaigns(cid);
+  const link = await afl8.links(rlid);
+  console.log("check rlid :: ",rlid,"check user :: ", accounts[0] ,"check cid :: ", cid,"check promoter :: ",link.promoter,"check owner :: ",campaign.owner,"check tok adr :: ",campaign.tokenAddress,"check tok id :: ",campaign.tokenId._hex);
+  const approve = await afl8.approveCampaign(rlid);
+  const aprlink = document.getElementById(e.target.id);
+  aprlink.innerHTML = "finalize tx";
+  aprlink.removeEventListener("click", goApprove);
+  aprlink.addEventListener("click", goFinalize);
   // createTxList();
 };
 const createTxList = async () => {
@@ -653,49 +726,24 @@ const afl8Data = async () => {
   );
 };
 const getTokens = async () => {
-  let contractList = [];
-
-  // POLYGON
-  // mumbai
-  if(Number(network) == 80001) contractList = ["0xeedcb4183474d116234e61043596eb5f726cf358","0xbff584b3aab1d8bedf7e22e26c27da5f629a0f8d","0xa0ddf52b92c9db7cacc03f734f83e737e17b1906"];
-  // polygon mainnet
-  if(Number(network) == 137) contractList = [""];
-
-  // ETHEREUM
-  // rinkeby
-  if(Number(network) == 4) contractList = ["0xD8d0fCD69499A8634A09A4E8B2af2634CD6418E2",];
-  // eth mainnet
-  if(Number(network) == 1) contractList = [""];
-
-  // BINANCE 
-  // bnb testnet 
-  if(Number(network) == 97) contractList = ["0x177710A55f46318eB3Aae804F1bD623Ba26aDf22"];
-  // bnb mainnet
-  if(Number(network) == 56) contractList = [""];
-
-  // AVALANCHE
-  // fuji
-  if(Number(network) == 43113) contractList = ["0x6BC6756A133c82b6374eF35F355C8e1D3Fb02Dd4",];
-  // avax mainnet
-  if(Number(network) == 43114) contractList = [""];
-
 
   const afl8 = await afl8Data();
   let role = await afl8.role(accounts[0]);
+  getProjects();
   let j = 0;
-  let t = 0;
   while (j < contractList.length) {
     let contract = await new ethers.Contract(
       contractList[j],
       NFT_Project.abi,
       signer
-    );
+      );
     let bal = await contract.balanceOf(accounts[0]);
+    
     console.log("Role : " + Number(role._hex), "Balance : " + Number(bal._hex));
     let i = 0;
     let tokens = [];
+    let tok = await contract.myNFTs(accounts[0], i);
     while (i < bal) {
-      let tok = await contract.myNFTs(accounts[0], i);
       let t = Number(tok._hex);
       let iUrl = await contract.tokenURI(t);
       // console.log("url ...",iUrl)
@@ -716,7 +764,7 @@ const getTokens = async () => {
         '<div class="tokenShow" id="show-' +
         contractList[j] +
         "/" +
-        indx +
+        Number(tok._hex) +
         '" name="' +
         token.name +
         '"><img id="imgShow" src="' +
@@ -728,7 +776,7 @@ const getTokens = async () => {
         '</i><div id="' +
         contractList[j] +
         "/%/" +
-        indx +
+        Number(tok._hex) +
         "/%/" +
         token.name +
         "/%/" +
@@ -737,13 +785,13 @@ const getTokens = async () => {
       tokenList.innerHTML += tokenLister;
 
       tokenList.style.display = "grid";
-      console.log(t);
+      console.log(j);
     });
     j++;
   }
   tokenList.innerHTML +=
     "<div class='tokenShow' id='custom'>Add a new token to the list by adding the contract address and token id<input type='text' id='customAdr' placeholder='contract address'/><input type='text' id='customId' placeholder='token id' />or an opensea link<input type='text' id='opensea' placeholder='https://opensea.io/...' /> <div id='custombtn' class='btn'>custom campaign</div></div>";
-
+    let t = 0;
   while (t < tBtns.length) {
     tBtns[t].addEventListener("click", goCreate);
     t++;
@@ -762,17 +810,17 @@ const log = async () => {
   // ask contract about user
   const role = await afl8.getRole();
   const isUser = await afl8.isUserBool();
-  console.log("logging in ...",role._hex);
+  console.log("logging in ...", role._hex);
   if (isUser) {
     // is a user
     const uc = await afl8.showU();
     console.log(uc);
     let txt = uc[0];
-    let hold = txt.replaceAll("/","");
+    let hold = txt.replaceAll("/", "");
     console.log(txt);
     user = JSON.parse(txt);
     console.log(user);
-    
+
     console.log(role._hex);
     if (Number(role._hex) === 99) {
       // user is admin
@@ -788,7 +836,7 @@ const log = async () => {
       aScanTxs.style.display = "block";
       cCampaign.style.display = "block";
       net_btn.style.display = "block";
-      
+
       getTokens();
     }
     if (Number(role._hex) === 4) {
@@ -804,7 +852,7 @@ const log = async () => {
       aScanTxs.style.display = "none";
       cCampaign.style.display = "block";
       net_btn.style.display = "block";
-      
+
       getTokens();
     }
     if (Number(role._hex) === 2) {
@@ -821,7 +869,7 @@ const log = async () => {
       aScanTxs.style.display = "none";
       cCampaign.style.display = "block";
       net_btn.style.display = "block";
-     
+
       getTokens();
     }
     if (Number(role._hex) === 3) {
@@ -838,7 +886,6 @@ const log = async () => {
       aScanTxs.style.display = "none";
       cCampaign.style.display = "none";
       net_btn.style.display = "block";
-      
     }
     if (Number(role._hex) === 1) {
       console.log("guest");
@@ -853,7 +900,6 @@ const log = async () => {
       aScanTxs.style.display = "none";
       cCampaign.style.display = "none";
       net_btn.style.display = "block";
-      
     }
   } else {
     // is not a user
@@ -864,7 +910,7 @@ const log = async () => {
     // open login form
     logform.style.display = "grid";
     net_btn.style.display = "block";
-    
+
     signup.addEventListener("click", makeUser);
   }
 };

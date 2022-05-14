@@ -79,7 +79,9 @@ contract NFT_Project is ERC721URIStorage {
         digits = 10 ** (18 - _n);
         maxBoxSize = _m;
     }
-
+    function isApproved(uint256 _tid) external view returns(bool){
+       return _isApprovedOrOwner(msg.sender, _tid);
+    }
     function mintToken() external payable returns(bool) {
         require(msg.value >= 1*digits,"insuficient balance ...");
         require(myNFTAmount[msg.sender] <= maxBoxSize, "max limit reached ...");

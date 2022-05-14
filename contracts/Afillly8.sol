@@ -188,6 +188,9 @@ contract Affilly8 is Init{
     function getTxCount() external view returns(uint256){
         return t;
     }
+    function getCampaignTokAdr(uint256 _cid) external view returns(address){
+        return campaigns[_cid].tokenAddress;
+    }
     function beProducer() external isU() returns(bool){
         require(role[msg.sender] != 2, "you are producer");
         if(role[msg.sender] == 1) { role[msg.sender] = 2;}                                                      // if user is guest
@@ -260,12 +263,22 @@ contract Affilly8 is Init{
         c++;                                                                                                    // iterate campaign mapping
         return true;    
     }
-    function approveCampaign(uint256 _cid) external returns(bool){
-        Campaign memory camp = campaigns[_cid]; 
+    function approveCampaign(uint256 _rlid) external returns(bool){
+        Campaign memory camp = campaigns[links[_rlid].campaigId]; 
+        if(msg.sender == camp.owner){
         Token721 = IERC721(camp.tokenAddress);
-        Token20 = IERC20(camp.payCurrency);
-        Token721.setApprovalForAll(address(this),true);
-        Token20.approve(address(this),camp.price);
+        Token721.approve(address(this),camp.tokenId);
+        // Token721.setApprovalForAll(address(this),true);
+        emit Log(logs,msg.sender,address(this),camp.tokenId,bytes(". nft approval"),block.timestamp);
+        }
+        else if(msg.sender !=  links[_rlid].promoter){
+            if(camp.payCurrency != 0x0000000000000000000000000000000000000000){
+                Token20 = IERC20(camp.payCurrency);
+                Token20.approve(address(this),camp.price);
+                emit Log(logs,msg.sender,address(this),camp.tokenId,bytes(". token approval"),block.timestamp);
+            }
+        }
+        
         return true;
     }   
     // finalize a tx    
