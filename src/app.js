@@ -14,6 +14,7 @@ import { sha256 } from "crypto-hash";
 import UAuth from "@uauth/js";
 import { create } from "underscore";
 import { stripZeros } from "ethers/lib/utils";
+// globals 
 let accounts;
 let network;
 let user;
@@ -644,7 +645,7 @@ const goApprove = async (e) => {
   const afl8 = await afl8Data();
   const campaign = await afl8.campaigns(cid);
   const link = await afl8.links(rlid);
-  console.log("check rlid :: ",rlid,"check user :: ", accounts[0] ,"check cid :: ", cid,"check promoter :: ",link.promoter,"check owner :: ",campaign.owner,"check tok adr :: ",campaign.tokenAddress,"check tok id :: ",campaign.tokenId._hex);
+  // **±±console.log("check rlid :: ",rlid,"check user :: ", accounts[0] ,"check cid :: ", cid,"check promoter :: ",link.promoter,"check owner :: ",campaign.owner,"check tok adr :: ",campaign.tokenAddress,"check tok id :: ",campaign.tokenId._hex);
   const approve = await afl8.approveCampaign(rlid);
   const aprlink = document.getElementById(e.target.id);
   aprlink.innerHTML = "finalize tx";
