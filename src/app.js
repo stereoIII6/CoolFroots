@@ -616,7 +616,9 @@ const showLinkList = async () => {
     link_block.innerHTML = block;
     let i = 0;
     while(i < acBtns.length){
-    acBtns[i].addEventListener("click", goApprove);
+    const camps = await afl8.campaigns(i);
+    if(accounts[0]  == camps.owner) acBtns[i].addEventListener("click", goApproveCampaign);
+    else acBtns[i].addEventListener("click", goApproveFunds);
     i++;}
     };
 const showApprove = async (e) => {
@@ -638,18 +640,35 @@ const goFinalize = async (e) => {
   const finalize = await afl8.finalize(rlid);
   // createTxList();
 };
-const goApprove = async (e) => {
+const goApproveCampaign = async (e) => {
   e.preventDefault();
   const cid = e.target.id.split(":")[1];
   const rlid = e.target.id.split(':')[2];
+  console.log(cid,rlid);
   const afl8 = await afl8Data();
   const campaign = await afl8.campaigns(cid);
   const link = await afl8.links(rlid);
-  // **±±console.log("check rlid :: ",rlid,"check user :: ", accounts[0] ,"check cid :: ", cid,"check promoter :: ",link.promoter,"check owner :: ",campaign.owner,"check tok adr :: ",campaign.tokenAddress,"check tok id :: ",campaign.tokenId._hex);
+   console.log("check rlid :: ",rlid,"check user :: ", accounts[0] ,"check cid :: ", cid,"check promoter :: ",link.promoter,"check owner :: ",campaign.owner,"check tok adr :: ",campaign.tokenAddress,"check tok id :: ",campaign.tokenId._hex);
   const approve = await afl8.approveCampaign(rlid);
   const aprlink = document.getElementById(e.target.id);
   aprlink.innerHTML = "finalize tx";
-  aprlink.removeEventListener("click", goApprove);
+  aprlink.removeEventListener("click", goApproveCampaign);
+  aprlink.addEventListener("click", goFinalize);
+  // createTxList();
+};
+const goApproveFunds = async (e) => {
+  e.preventDefault();
+  const cid = e.target.id.split(":")[1];
+  const rlid = e.target.id.split(':')[2];
+  console.log(cid,rlid);
+  const afl8 = await afl8Data();
+  const campaign = await afl8.campaigns(cid);
+  const link = await afl8.links(rlid);
+   console.log("check rlid :: ",rlid,"check user :: ", accounts[0] ,"check cid :: ", cid,"check promoter :: ",link.promoter,"check owner :: ",campaign.owner,"check tok adr :: ",campaign.tokenAddress,"check tok id :: ",campaign.tokenId._hex);
+  const approve = await afl8.approveFunds(rlid);
+  const aprlink = document.getElementById(e.target.id);
+  aprlink.innerHTML = "finalize tx";
+  aprlink.removeEventListener("click", goApproveFunds);
   aprlink.addEventListener("click", goFinalize);
   // createTxList();
 };

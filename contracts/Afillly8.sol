@@ -267,20 +267,26 @@ contract Affilly8 is Init{
         Campaign memory camp = campaigns[links[_rlid].campaigId]; 
         if(msg.sender == camp.owner){
         Token721 = IERC721(camp.tokenAddress);
+        require(Token721.balanceOf(msg.sender) >= 0, "not an owner");
+        Token721.setApprovalForAll(address(this),true);
         Token721.approve(address(this),camp.tokenId);
-        // Token721.setApprovalForAll(address(this),true);
         emit Log(logs,msg.sender,address(this),camp.tokenId,bytes(". nft approval"),block.timestamp);
+        return true;
         }
-        else if(msg.sender !=  links[_rlid].promoter){
+        else return false;
+    } 
+    function approveFunds(uint256 _rlid) external returns(bool){
+        Campaign memory camp = campaigns[links[_rlid].campaigId]; 
+        if(msg.sender !=  links[_rlid].promoter){
             if(camp.payCurrency != 0x0000000000000000000000000000000000000000){
                 Token20 = IERC20(camp.payCurrency);
                 Token20.approve(address(this),camp.price);
                 emit Log(logs,msg.sender,address(this),camp.tokenId,bytes(". token approval"),block.timestamp);
+            return true;
             }
         }
-        
-        return true;
-    }   
+        else return false;
+    }  
     // finalize a tx    
     function finalize(uint _rlid) external payable returns(bool){   
         uint256 cid = links[_rlid].campaigId;                                                                   // grab campaign id
@@ -292,17 +298,17 @@ contract Affilly8 is Init{
         if(camp.payCurrency != 0x0000000000000000000000000000000000000000) {
             Token20 = IERC20(camp.payCurrency);
             require(Token20.balanceOf(msg.sender) >= camp.price);
-            Token20.transferFrom(msg.sender, camp.owner, pay); // pay the nft
-            Token721.transferFrom(camp.owner, msg.sender, camp.tokenId); // send the nft
-            Token20.transferFrom(msg.sender, prom, camp.fee); // pay the promoter
-            Token20.transferFrom(msg.sender, address(this), cfee); // pay the contract
+            Token20.transferFrom(msg.sender, camp.owner, pay);              // pay the nft
+            Token721.transferFrom(camp.owner, msg.sender, camp.tokenId);    // send the nft
+            Token20.transferFrom(msg.sender, prom, camp.fee);               // pay the promoter
+            Token20.transferFrom(msg.sender, address(this), cfee);          // pay the contract
             }
         else {
             require(msg.value >= camp.price);
-            payable(camp.owner).transfer(pay);  // pay nft
-            Token721.transferFrom(camp.owner, msg.sender, camp.tokenId); // send the nft
-            payable(prom).transfer(camp.fee);   // send the nft
-            payable(address(this)).transfer(cfee); // pay the contract
+            payable(camp.owner).transfer(pay);                              // pay nft
+            Token721.transferFrom(camp.owner, msg.sender, camp.tokenId);    // send the nft
+            payable(prom).transfer(camp.fee);                               // pay the promoter
+            payable(address(this)).transfer(cfee);                          // pay the contract
         }
         txs.push(Transactions(t, _rlid, cid, block.timestamp));
         emit Log(logs,msg.sender,address(this),_rlid,bytes("link tx failed"),block.timestamp); 
