@@ -56,7 +56,7 @@ import "@openzeppelin/contracts/token/ERC1155/IERC1155.sol";
 
 // Chainlink Imports
 // import "@chainlink/contracts/src/v0.8/VRFConsumerBase.sol";
-// import "./Nft_Project.sol";
+import "./PriceConsumerV3.sol";
 
 contract Init{
     address public author = 0x1Cd6F4D329D38043a6bDB3665c3a7b06F79B5242;
@@ -120,9 +120,9 @@ contract Init{
 
     }
 }
-contract Affilly8 is Init{
+contract Affilly8 is Init, PriceConsumerV3{
 
-    constructor(){                                                                                  // feed with utility token address
+    constructor() {                                                                                  // feed with utility token address
         require(msg.sender == author || msg.sender == avax);                                                                          // only author can build
         role[msg.sender] = 99; 
         percent = 2;                                                                                 // make author admin
