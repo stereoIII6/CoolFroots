@@ -651,9 +651,9 @@ const goFinalize = async (e) => {
 const goApproveCampaign = async (e) => {
   e.preventDefault();
   const cid = e.target.id;
-  console.log(cid,rlid);
+  console.log(cid);
   const afl8 = await afl8Data();
-const approve = await afl8.approveCampaign(rlid);
+const approve = await afl8.approveCampaign(cid);
   const aprlink = document.getElementById(e.target.id);
   aprlink.innerHTML = "finalize tx";
   aprlink.removeEventListener("click", goApproveCampaign);
