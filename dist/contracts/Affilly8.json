@@ -113,8 +113,7 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function",
-      "constant": true
+      "type": "function"
     },
     {
       "inputs": [],
@@ -127,8 +126,7 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function",
-      "constant": true
+      "type": "function"
     },
     {
       "inputs": [],
@@ -141,8 +139,7 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function",
-      "constant": true
+      "type": "function"
     },
     {
       "inputs": [],
@@ -155,8 +152,7 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function",
-      "constant": true
+      "type": "function"
     },
     {
       "inputs": [
@@ -215,8 +211,7 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function",
-      "constant": true
+      "type": "function"
     },
     {
       "inputs": [
@@ -253,8 +248,7 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function",
-      "constant": true
+      "type": "function"
     },
     {
       "inputs": [
@@ -273,8 +267,7 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function",
-      "constant": true
+      "type": "function"
     },
     {
       "inputs": [],
@@ -287,8 +280,7 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function",
-      "constant": true
+      "type": "function"
     },
     {
       "inputs": [
@@ -317,8 +309,7 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function",
-      "constant": true
+      "type": "function"
     },
     {
       "inputs": [
@@ -350,8 +341,7 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function",
-      "constant": true
+      "type": "function"
     },
     {
       "inputs": [
@@ -370,8 +360,7 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function",
-      "constant": true
+      "type": "function"
     },
     {
       "inputs": [
@@ -454,8 +443,7 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function",
-      "constant": true
+      "type": "function"
     },
     {
       "inputs": [
@@ -489,8 +477,7 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function",
-      "constant": true
+      "type": "function"
     },
     {
       "inputs": [],
@@ -508,8 +495,7 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function",
-      "constant": true
+      "type": "function"
     },
     {
       "inputs": [
@@ -543,8 +529,7 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function",
-      "constant": true
+      "type": "function"
     },
     {
       "inputs": [
@@ -563,8 +548,7 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function",
-      "constant": true
+      "type": "function"
     },
     {
       "inputs": [
@@ -596,8 +580,7 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function",
-      "constant": true
+      "type": "function"
     },
     {
       "inputs": [],
@@ -610,8 +593,7 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function",
-      "constant": true
+      "type": "function"
     },
     {
       "inputs": [],
@@ -624,8 +606,7 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function",
-      "constant": true
+      "type": "function"
     },
     {
       "inputs": [
@@ -644,8 +625,7 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function",
-      "constant": true
+      "type": "function"
     },
     {
       "inputs": [],
@@ -749,8 +729,7 @@
         }
       ],
       "stateMutability": "payable",
-      "type": "function",
-      "payable": true
+      "type": "function"
     },
     {
       "inputs": [
@@ -769,8 +748,7 @@
         }
       ],
       "stateMutability": "payable",
-      "type": "function",
-      "payable": true
+      "type": "function"
     },
     {
       "inputs": [
@@ -789,8 +767,7 @@
         }
       ],
       "stateMutability": "payable",
-      "type": "function",
-      "payable": true
+      "type": "function"
     },
     {
       "inputs": [
@@ -809,8 +786,7 @@
         }
       ],
       "stateMutability": "payable",
-      "type": "function",
-      "payable": true
+      "type": "function"
     },
     {
       "inputs": [
@@ -17149,7 +17125,7 @@
         4274
       ],
       "PriceConsumerV3": [
-        6391
+        6392
       ],
       "Strings": [
         3950
@@ -17225,7 +17201,7 @@
         "nameLocation": "-1:-1:-1",
         "nodeType": "ImportDirective",
         "scope": 5333,
-        "sourceUnit": 6392,
+        "sourceUnit": 6393,
         "src": "6867:31:22",
         "symbolAliases": [],
         "unitAlias": ""
@@ -20720,7 +20696,7 @@
               "id": 4277,
               "name": "PriceConsumerV3",
               "nodeType": "IdentifierPath",
-              "referencedDeclaration": 6391,
+              "referencedDeclaration": 6392,
               "src": "9106:15:22"
             },
             "id": 4278,
@@ -20735,7 +20711,7 @@
         "id": 5332,
         "linearizedBaseContracts": [
           5332,
-          6391,
+          6392,
           4274
         ],
         "name": "Affilly8",
@@ -21587,7 +21563,7 @@
                   "id": 4282,
                   "name": "PriceConsumerV3",
                   "nodeType": "IdentifierPath",
-                  "referencedDeclaration": 6391,
+                  "referencedDeclaration": 6392,
                   "src": "9155:15:22"
                 },
                 "nodeType": "ModifierInvocation",
@@ -34533,7 +34509,7 @@
         4274
       ],
       "PriceConsumerV3": [
-        6391
+        6392
       ],
       "Strings": [
         3950
@@ -34609,7 +34585,7 @@
         "nameLocation": "-1:-1:-1",
         "nodeType": "ImportDirective",
         "scope": 5333,
-        "sourceUnit": 6392,
+        "sourceUnit": 6393,
         "src": "6867:31:22",
         "symbolAliases": [],
         "unitAlias": ""
@@ -38104,7 +38080,7 @@
               "id": 4277,
               "name": "PriceConsumerV3",
               "nodeType": "IdentifierPath",
-              "referencedDeclaration": 6391,
+              "referencedDeclaration": 6392,
               "src": "9106:15:22"
             },
             "id": 4278,
@@ -38119,7 +38095,7 @@
         "id": 5332,
         "linearizedBaseContracts": [
           5332,
-          6391,
+          6392,
           4274
         ],
         "name": "Affilly8",
@@ -38971,7 +38947,7 @@
                   "id": 4282,
                   "name": "PriceConsumerV3",
                   "nodeType": "IdentifierPath",
-                  "referencedDeclaration": 6391,
+                  "referencedDeclaration": 6392,
                   "src": "9155:15:22"
                 },
                 "nodeType": "ModifierInvocation",
@@ -51878,23 +51854,9 @@
     "name": "solc",
     "version": "0.8.14+commit.80d49f37.Emscripten.clang"
   },
-  "networks": {
-    "4": {
-      "events": {},
-      "links": {},
-      "address": "0x2EF7903621D818dd921B7d7B60FD69f82Ef3E933",
-      "transactionHash": "0x3b8fb13b00baa4730739ee6d2708ef622ac98743efd83952672f5b57a92797e2"
-    },
-    "43113": {
-      "events": {},
-      "links": {},
-      "address": "0x7d9cc993392CEA37a56a843B580BC569F65C82E2",
-      "transactionHash": "0x175790eaaed174f083a1a60a64b84d3d67818088b6867e80129c6da88bd449e2"
-    }
-  },
+  "networks": {},
   "schemaVersion": "3.4.4",
-  "updatedAt": "2022-05-28T05:11:06.890Z",
-  "networkType": "ethereum",
+  "updatedAt": "2022-05-28T20:33:49.082Z",
   "devdoc": {
     "kind": "dev",
     "methods": {},

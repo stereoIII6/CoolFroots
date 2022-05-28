@@ -485,7 +485,6 @@ const createCampaign = (e) => {
   profile.style.display = "none";
   campaignform.style.display = "grid";
 };
-
 const makeCampaign = async (e) => {
   e.preventDefault();
   campaignform.style.display = "none";
@@ -517,7 +516,6 @@ const makeCampaign = async (e) => {
   console.log("make campaign ::: ",obj);
   // createCampaignList();
 };
-
 const createCampaignList = async () => {
   const afl8 = await afl8Data();
   const count = await afl8.getCampaignCount();
@@ -531,7 +529,6 @@ const createCampaignList = async () => {
   }
   showCampaignList();
 };
-
 const showCampaignList = async () => {
   const afl8 = await afl8Data();
   // console.log(campaigns);
@@ -570,8 +567,25 @@ const showCampaignList = async () => {
     console.log(accounts[0], camps.owner);
     if(String(accounts[0]).toLowerCase()  == String(camps.owner).toLowerCase()) {
       cBtns[t].innerHTML = "approve token for collection"; 
-      cBtns[t].addEventListener("click", goApproveCampaign);
-      console.log("owner");
+      const deploymentKey = Object.keys(affilly8.networks)[0];
+      const contract = await new ethers.Contract(
+        camps.tokenAddress,
+        NFT_Project.abi,
+        signer
+        );
+        console.log("owner is approved",Number(camps.tokenId._hex));
+        let num = Number(camps.tokenId._hex);
+        const isApr = await contract.isApproved(num,affilly8.networks[deploymentKey].address); 
+      if(isApr) {
+        cBtns[t].innerHTML = "campaign approved";
+        cBtns[t].background = "tomato";
+      }
+      else {
+        cBtns[t].id = camps.tokenAddress+"/"+camps.tokenId; 
+        cBtns[t].addEventListener("click", goApproveCampaign);
+      }
+        
+      
     }
     else {cBtns[t].addEventListener("click", goCreateLink);console.log("promoter");}
     t++;
@@ -596,6 +610,7 @@ const createLinkList = async () => {
   showLinkList();
 };
 const showLinkList = async () => {
+  const afl8 = await afl8Data();
   let block = "";
   let aprlink;
   links.map((link) => {
@@ -626,7 +641,8 @@ const showLinkList = async () => {
     let i = 0;
     while(i < acBtns.length){
     const camps = await afl8.campaigns(i);
-    if(String(accounts[0]).toLowerCase()  == String(camps.owner).toLowerCase()) { acBtns[i].style.display = "none"; }
+    console.log(String(accounts[0]).toLowerCase()  === String(camps.owner).toLowerCase())
+    if(String(accounts[0]).toLowerCase()  === String(camps.owner).toLowerCase()) { acBtns[i].style.display = "none"; }
     else acBtns[i].addEventListener("click", goApproveFunds);
     i++;}
     };
@@ -652,14 +668,19 @@ const goFinalize = async (e) => {
 const goApproveCampaign = async (e) => {
   e.preventDefault();
   const cid = e.target.id;
-  console.log(cid);
-  const afl8 = await afl8Data();
-  const camp = await afl8.campaigns(cid);
-  const tId = camp.tokenId;
-  console.log(camp,tId);
-  const appr = await afl8.approveCampaign(cid);
+  const tokenData = e.target.id;
+  const conAdr = tokenData.split("/")[0];
+  const tokenId = tokenData.split("/")[1];
+  console.log(cid, conAdr, tokenId);
+  const deploymentKey = Object.keys(affilly8.networks)[0];
+  const contract = await new ethers.Contract(
+    conAdr,
+    NFT_Project.abi,
+    signer
+    );
+  const apr = await contract.approve(affilly8.networks[deploymentKey].address,tokenId);
   const aprlink = document.getElementById(e.target.id);
-  aprlink.innerHTML = "finalize tx";
+  aprlink.style.display = "none";
   aprlink.removeEventListener("click", goApproveCampaign);
   aprlink.addEventListener("click", goFinalize);
   // createTxList();
