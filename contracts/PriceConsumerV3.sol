@@ -7,8 +7,8 @@ contract PriceConsumerV3 {
 
     AggregatorV3Interface internal priceFeed;
 
-    constructor() {
-        priceFeed = AggregatorV3Interface(0x2A3796273d47c4eD363b361D3AEFb7F7E2A13782);
+    constructor(address _adr) {
+        priceFeed = AggregatorV3Interface(_adr);
     }
 
     /**

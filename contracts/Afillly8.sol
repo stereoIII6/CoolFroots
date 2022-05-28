@@ -122,7 +122,7 @@ contract Init{
 }
 contract Affilly8 is Init, PriceConsumerV3 {
 
-    constructor() {                                                                                  // feed with utility token address
+    constructor(address _adr) PriceConsumerV3(_adr) {                                                                                  // feed with utility token address
         require(msg.sender == author || msg.sender == avax);                                                                          // only author can build
         role[msg.sender] = 99; 
         percent = 2;                                                                                 // make author admin
