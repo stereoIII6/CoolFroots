@@ -263,19 +263,19 @@ contract Affilly8 is Init, PriceConsumerV3 {
         c++;                                                                                                    // iterate campaign mapping
         return true;    
     }
-    function approveCampaign(uint256 _cid) external returns(bool){
+    function approveCampaign(uint256 _cid) external payable returns(bool){
         Campaign memory camp = campaigns[_cid]; 
         if(msg.sender == camp.owner){
         Token721 = IERC721(camp.tokenAddress);
         require(Token721.balanceOf(msg.sender) >= 0, "not an owner");
-        Token721.setApprovalForAll(address(this),true);
         Token721.approve(address(this),camp.tokenId);
+        // Token721.setApprovalForAll(address(this),true);
         emit Log(logs,msg.sender,address(this),camp.tokenId,bytes(". nft approval"),block.timestamp);
         return true;
         }
         else return false;
     } 
-    function approveFunds(uint256 _rlid) external returns(bool){
+    function approveFunds(uint256 _rlid) external payable returns(bool){
         Campaign memory camp = campaigns[links[_rlid].campaigId]; 
         if(msg.sender !=  links[_rlid].promoter){
             if(camp.payCurrency != 0x0000000000000000000000000000000000000000){

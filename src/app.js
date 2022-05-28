@@ -45,9 +45,10 @@ uauth
     // user does not exist
   });
 
-const affilly8 = require("../build/contracts/Affilly8.json");
-const NFT_Project = require("../build/contracts/NFT_Project.json");
-const ERC721 = require("../build/contracts/ERC721.json");
+const affilly8 = require("../dist/contracts/Affilly8.json");
+const NFT_Project = require("../dist/contracts/NFT_Project.json");
+const ERC721 = require("../dist/contracts/ERC721.json");
+const EthPrice = require("../dist/contracts/PriceConsumerV3.json");
 const provider = new ethers.providers.Web3Provider(window.ethereum);
 const signer = provider.getSigner();
 // links & buttons
@@ -513,7 +514,7 @@ const makeCampaign = async (e) => {
     fee.value,
     duration.value
   );
-  console.log(makeCamp);
+  console.log("make campaign ::: ",obj);
   // createCampaignList();
 };
 
@@ -653,7 +654,10 @@ const goApproveCampaign = async (e) => {
   const cid = e.target.id;
   console.log(cid);
   const afl8 = await afl8Data();
-const approve = await afl8.approveCampaign(cid);
+  const camp = await afl8.campaigns(cid);
+  const tId = camp.tokenId;
+  console.log(camp,tId);
+  const appr = await afl8.approveCampaign(cid);
   const aprlink = document.getElementById(e.target.id);
   aprlink.innerHTML = "finalize tx";
   aprlink.removeEventListener("click", goApproveCampaign);
@@ -752,23 +756,26 @@ const afl8Data = async () => {
 const getTokens = async () => {
 
   const afl8 = await afl8Data();
-  let role = await afl8.role(accounts[0]);
+  // let role = await afl8.role(accounts[0]);
   getProjects();
   let j = 0;
+  let contract;
   while (j < contractList.length) {
-    let contract = await new ethers.Contract(
+      contract = await new ethers.Contract(
       contractList[j],
       NFT_Project.abi,
       signer
       );
     let bal = await contract.balanceOf(accounts[0]);
     
-    console.log("Role : " + Number(role._hex), "Balance : " + Number(bal._hex));
+    // console.log("Role : " + Number(role._hex), "Balance : " + Number(bal._hex));
     let i = 0;
     let tokens = [];
-    let tok = await contract.myNFTs(accounts[0], i);
+    let tok = [];
     while (i < bal) {
-      let t = Number(tok._hex);
+      tok[i] = await contract.myNFTs(accounts[0], i);
+      let t = Number(tok[i]._hex);
+      console.log(Number(tok[i]._hex));
       let iUrl = await contract.tokenURI(t);
       // console.log("url ...",iUrl)
       let response = await fetch(iUrl);
@@ -788,7 +795,7 @@ const getTokens = async () => {
         '<div class="tokenShow" id="show-' +
         contractList[j] +
         "/" +
-        Number(tok._hex) +
+        Number(tok[indx]._hex) +
         '" name="' +
         token.name +
         '"><img id="imgShow" src="' +
@@ -800,7 +807,7 @@ const getTokens = async () => {
         '</i><div id="' +
         contractList[j] +
         "/%/" +
-        Number(tok._hex) +
+        Number(tok[indx]._hex) +
         "/%/" +
         token.name +
         "/%/" +

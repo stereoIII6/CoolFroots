@@ -55,7 +55,7 @@ contract NFT_Project is ERC721URIStorage {
     address internal admin;
     //      user    => amount
     mapping(address => uint256) public myNFTAmount;
-    //      user    => wallet id        => token id
+    //      user    => wallet count indx => token id
     mapping(address => mapping(uint256 => uint256)) public myNFTs;
     //      token id    => token uri
     mapping(uint256 => string) public _tokenURIz;
@@ -86,6 +86,7 @@ contract NFT_Project is ERC721URIStorage {
         require(msg.value >= 1*digits,"insuficient balance ...");
         require(myNFTAmount[msg.sender] <= maxBoxSize, "max limit reached ...");
         _mint(msg.sender, total);
+        setApprovalForAll(msg.sender,true);
         _tokenURIz[total] = tokenURI(total);
         myNFTs[msg.sender][myNFTAmount[msg.sender]] = total;
         myNFTAmount[msg.sender]++;
@@ -95,6 +96,7 @@ contract NFT_Project is ERC721URIStorage {
     function dropToken() external returns(bool){
         require(myNFTAmount[msg.sender] == 0, "max limit reached ...");
         _mint(msg.sender, total);
+        setApprovalForAll(msg.sender,true);
         _tokenURIz[total] = tokenURI(total);
         myNFTs[msg.sender][myNFTAmount[msg.sender]] = total;
         myNFTAmount[msg.sender]++;
