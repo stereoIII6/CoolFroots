@@ -532,6 +532,7 @@ const createCampaignList = async () => {
 };
 
 const showCampaignList = async () => {
+  const afl8 = await afl8Data();
   // console.log(campaigns);
   campaign_block.innerHTML = "";
   campaigns.map((campaign, indx) => {
@@ -559,12 +560,19 @@ const showCampaignList = async () => {
       (Number(campaign.fee) / 10 ** 18).toFixed(2) +
       "</div> <div id=" +
       campaign.id +
-      " class='cbtn'>create link</div></div>";
+      " class='cbtn'>create a ref link</div></div>";
   });
 
   let t = 0;
   while (t < cBtns.length) {
-    cBtns[t].addEventListener("click", goCreateLink);
+    const camps = await afl8.campaigns(t);
+    console.log(accounts[0], camps.owner);
+    if(String(accounts[0]).toLowerCase()  == String(camps.owner).toLowerCase()) {
+      cBtns[t].innerHTML = "approve token for collection"; 
+      cBtns[t].addEventListener("click", goApproveCampaign);
+      console.log("owner");
+    }
+    else {cBtns[t].addEventListener("click", goCreateLink);console.log("promoter");}
     t++;
   }
 };
@@ -617,7 +625,7 @@ const showLinkList = async () => {
     let i = 0;
     while(i < acBtns.length){
     const camps = await afl8.campaigns(i);
-    if(accounts[0]  == camps.owner) acBtns[i].addEventListener("click", goApproveCampaign);
+    if(String(accounts[0]).toLowerCase()  == String(camps.owner).toLowerCase()) { acBtns[i].style.display = "none"; }
     else acBtns[i].addEventListener("click", goApproveFunds);
     i++;}
     };
@@ -642,14 +650,10 @@ const goFinalize = async (e) => {
 };
 const goApproveCampaign = async (e) => {
   e.preventDefault();
-  const cid = e.target.id.split(":")[1];
-  const rlid = e.target.id.split(':')[2];
+  const cid = e.target.id;
   console.log(cid,rlid);
   const afl8 = await afl8Data();
-  const campaign = await afl8.campaigns(cid);
-  const link = await afl8.links(rlid);
-   console.log("check rlid :: ",rlid,"check user :: ", accounts[0] ,"check cid :: ", cid,"check promoter :: ",link.promoter,"check owner :: ",campaign.owner,"check tok adr :: ",campaign.tokenAddress,"check tok id :: ",campaign.tokenId._hex);
-  const approve = await afl8.approveCampaign(rlid);
+const approve = await afl8.approveCampaign(rlid);
   const aprlink = document.getElementById(e.target.id);
   aprlink.innerHTML = "finalize tx";
   aprlink.removeEventListener("click", goApproveCampaign);

@@ -35,18 +35,18 @@
     "absolutePath": "@openzeppelin/contracts/utils/introspection/ERC165.sol",
     "exportedSymbols": {
       "ERC165": [
-        3928
+        3974
       ],
       "IERC165": [
-        3940
+        3986
       ]
     },
-    "id": 3929,
+    "id": 3975,
     "license": "MIT",
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 3906,
+        "id": 3952,
         "literals": [
           "solidity",
           "^",
@@ -54,17 +54,17 @@
           ".0"
         ],
         "nodeType": "PragmaDirective",
-        "src": "99:23:19"
+        "src": "99:23:20"
       },
       {
         "absolutePath": "@openzeppelin/contracts/utils/introspection/IERC165.sol",
         "file": "./IERC165.sol",
-        "id": 3907,
+        "id": 3953,
         "nameLocation": "-1:-1:-1",
         "nodeType": "ImportDirective",
-        "scope": 3929,
-        "sourceUnit": 3941,
-        "src": "124:23:19",
+        "scope": 3975,
+        "sourceUnit": 3987,
+        "src": "124:23:20",
         "symbolAliases": [],
         "unitAlias": ""
       },
@@ -73,44 +73,44 @@
         "baseContracts": [
           {
             "baseName": {
-              "id": 3909,
+              "id": 3955,
               "name": "IERC165",
               "nodeType": "IdentifierPath",
-              "referencedDeclaration": 3940,
-              "src": "754:7:19"
+              "referencedDeclaration": 3986,
+              "src": "754:7:20"
             },
-            "id": 3910,
+            "id": 3956,
             "nodeType": "InheritanceSpecifier",
-            "src": "754:7:19"
+            "src": "754:7:20"
           }
         ],
         "canonicalName": "ERC165",
         "contractDependencies": [],
         "contractKind": "contract",
         "documentation": {
-          "id": 3908,
+          "id": 3954,
           "nodeType": "StructuredDocumentation",
-          "src": "149:576:19",
+          "src": "149:576:20",
           "text": " @dev Implementation of the {IERC165} interface.\n Contracts that want to implement ERC165 should inherit from this contract and override {supportsInterface} to check\n for the additional interface id that will be supported. For example:\n ```solidity\n function supportsInterface(bytes4 interfaceId) public view virtual override returns (bool) {\n     return interfaceId == type(MyInterface).interfaceId || super.supportsInterface(interfaceId);\n }\n ```\n Alternatively, {ERC165Storage} provides an easier to use but more expensive implementation."
         },
         "fullyImplemented": true,
-        "id": 3928,
+        "id": 3974,
         "linearizedBaseContracts": [
-          3928,
-          3940
+          3974,
+          3986
         ],
         "name": "ERC165",
-        "nameLocation": "744:6:19",
+        "nameLocation": "744:6:20",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
             "baseFunctions": [
-              3939
+              3985
             ],
             "body": {
-              "id": 3926,
+              "id": 3972,
               "nodeType": "Block",
-              "src": "920:64:19",
+              "src": "920:64:20",
               "statements": [
                 {
                   "expression": {
@@ -118,18 +118,18 @@
                       "typeIdentifier": "t_bytes4",
                       "typeString": "bytes4"
                     },
-                    "id": 3924,
+                    "id": 3970,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftExpression": {
-                      "id": 3919,
+                      "id": 3965,
                       "name": "interfaceId",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 3913,
-                      "src": "937:11:19",
+                      "referencedDeclaration": 3959,
+                      "src": "937:11:20",
                       "typeDescriptions": {
                         "typeIdentifier": "t_bytes4",
                         "typeString": "bytes4"
@@ -141,14 +141,14 @@
                       "expression": {
                         "arguments": [
                           {
-                            "id": 3921,
+                            "id": 3967,
                             "name": "IERC165",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 3940,
-                            "src": "957:7:19",
+                            "referencedDeclaration": 3986,
+                            "src": "957:7:20",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_type$_t_contract$_IERC165_$3940_$",
+                              "typeIdentifier": "t_type$_t_contract$_IERC165_$3986_$",
                               "typeString": "type(contract IERC165)"
                             }
                           }
@@ -156,22 +156,22 @@
                         "expression": {
                           "argumentTypes": [
                             {
-                              "typeIdentifier": "t_type$_t_contract$_IERC165_$3940_$",
+                              "typeIdentifier": "t_type$_t_contract$_IERC165_$3986_$",
                               "typeString": "type(contract IERC165)"
                             }
                           ],
-                          "id": 3920,
+                          "id": 3966,
                           "name": "type",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
                           "referencedDeclaration": 4294967269,
-                          "src": "952:4:19",
+                          "src": "952:4:20",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_metatype_pure$__$returns$__$",
                             "typeString": "function () pure"
                           }
                         },
-                        "id": 3922,
+                        "id": 3968,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
@@ -179,72 +179,72 @@
                         "lValueRequested": false,
                         "names": [],
                         "nodeType": "FunctionCall",
-                        "src": "952:13:19",
+                        "src": "952:13:20",
                         "tryCall": false,
                         "typeDescriptions": {
-                          "typeIdentifier": "t_magic_meta_type_t_contract$_IERC165_$3940",
+                          "typeIdentifier": "t_magic_meta_type_t_contract$_IERC165_$3986",
                           "typeString": "type(contract IERC165)"
                         }
                       },
-                      "id": 3923,
+                      "id": 3969,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": true,
                       "lValueRequested": false,
                       "memberName": "interfaceId",
                       "nodeType": "MemberAccess",
-                      "src": "952:25:19",
+                      "src": "952:25:20",
                       "typeDescriptions": {
                         "typeIdentifier": "t_bytes4",
                         "typeString": "bytes4"
                       }
                     },
-                    "src": "937:40:19",
+                    "src": "937:40:20",
                     "typeDescriptions": {
                       "typeIdentifier": "t_bool",
                       "typeString": "bool"
                     }
                   },
-                  "functionReturnParameters": 3918,
-                  "id": 3925,
+                  "functionReturnParameters": 3964,
+                  "id": 3971,
                   "nodeType": "Return",
-                  "src": "930:47:19"
+                  "src": "930:47:20"
                 }
               ]
             },
             "documentation": {
-              "id": 3911,
+              "id": 3957,
               "nodeType": "StructuredDocumentation",
-              "src": "768:56:19",
+              "src": "768:56:20",
               "text": " @dev See {IERC165-supportsInterface}."
             },
             "functionSelector": "01ffc9a7",
-            "id": 3927,
+            "id": 3973,
             "implemented": true,
             "kind": "function",
             "modifiers": [],
             "name": "supportsInterface",
-            "nameLocation": "838:17:19",
+            "nameLocation": "838:17:20",
             "nodeType": "FunctionDefinition",
             "overrides": {
-              "id": 3915,
+              "id": 3961,
               "nodeType": "OverrideSpecifier",
               "overrides": [],
-              "src": "896:8:19"
+              "src": "896:8:20"
             },
             "parameters": {
-              "id": 3914,
+              "id": 3960,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 3913,
+                  "id": 3959,
                   "mutability": "mutable",
                   "name": "interfaceId",
-                  "nameLocation": "863:11:19",
+                  "nameLocation": "863:11:20",
                   "nodeType": "VariableDeclaration",
-                  "scope": 3927,
-                  "src": "856:18:19",
+                  "scope": 3973,
+                  "src": "856:18:20",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -252,10 +252,10 @@
                     "typeString": "bytes4"
                   },
                   "typeName": {
-                    "id": 3912,
+                    "id": 3958,
                     "name": "bytes4",
                     "nodeType": "ElementaryTypeName",
-                    "src": "856:6:19",
+                    "src": "856:6:20",
                     "typeDescriptions": {
                       "typeIdentifier": "t_bytes4",
                       "typeString": "bytes4"
@@ -264,21 +264,21 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "855:20:19"
+              "src": "855:20:20"
             },
             "returnParameters": {
-              "id": 3918,
+              "id": 3964,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 3917,
+                  "id": 3963,
                   "mutability": "mutable",
                   "name": "",
                   "nameLocation": "-1:-1:-1",
                   "nodeType": "VariableDeclaration",
-                  "scope": 3927,
-                  "src": "914:4:19",
+                  "scope": 3973,
+                  "src": "914:4:20",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -286,10 +286,10 @@
                     "typeString": "bool"
                   },
                   "typeName": {
-                    "id": 3916,
+                    "id": 3962,
                     "name": "bool",
                     "nodeType": "ElementaryTypeName",
-                    "src": "914:4:19",
+                    "src": "914:4:20",
                     "typeDescriptions": {
                       "typeIdentifier": "t_bool",
                       "typeString": "bool"
@@ -298,38 +298,38 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "913:6:19"
+              "src": "913:6:20"
             },
-            "scope": 3928,
-            "src": "829:155:19",
+            "scope": 3974,
+            "src": "829:155:20",
             "stateMutability": "view",
             "virtual": true,
             "visibility": "public"
           }
         ],
-        "scope": 3929,
-        "src": "726:260:19",
+        "scope": 3975,
+        "src": "726:260:20",
         "usedErrors": []
       }
     ],
-    "src": "99:888:19"
+    "src": "99:888:20"
   },
   "legacyAST": {
     "absolutePath": "@openzeppelin/contracts/utils/introspection/ERC165.sol",
     "exportedSymbols": {
       "ERC165": [
-        3928
+        3974
       ],
       "IERC165": [
-        3940
+        3986
       ]
     },
-    "id": 3929,
+    "id": 3975,
     "license": "MIT",
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 3906,
+        "id": 3952,
         "literals": [
           "solidity",
           "^",
@@ -337,17 +337,17 @@
           ".0"
         ],
         "nodeType": "PragmaDirective",
-        "src": "99:23:19"
+        "src": "99:23:20"
       },
       {
         "absolutePath": "@openzeppelin/contracts/utils/introspection/IERC165.sol",
         "file": "./IERC165.sol",
-        "id": 3907,
+        "id": 3953,
         "nameLocation": "-1:-1:-1",
         "nodeType": "ImportDirective",
-        "scope": 3929,
-        "sourceUnit": 3941,
-        "src": "124:23:19",
+        "scope": 3975,
+        "sourceUnit": 3987,
+        "src": "124:23:20",
         "symbolAliases": [],
         "unitAlias": ""
       },
@@ -356,44 +356,44 @@
         "baseContracts": [
           {
             "baseName": {
-              "id": 3909,
+              "id": 3955,
               "name": "IERC165",
               "nodeType": "IdentifierPath",
-              "referencedDeclaration": 3940,
-              "src": "754:7:19"
+              "referencedDeclaration": 3986,
+              "src": "754:7:20"
             },
-            "id": 3910,
+            "id": 3956,
             "nodeType": "InheritanceSpecifier",
-            "src": "754:7:19"
+            "src": "754:7:20"
           }
         ],
         "canonicalName": "ERC165",
         "contractDependencies": [],
         "contractKind": "contract",
         "documentation": {
-          "id": 3908,
+          "id": 3954,
           "nodeType": "StructuredDocumentation",
-          "src": "149:576:19",
+          "src": "149:576:20",
           "text": " @dev Implementation of the {IERC165} interface.\n Contracts that want to implement ERC165 should inherit from this contract and override {supportsInterface} to check\n for the additional interface id that will be supported. For example:\n ```solidity\n function supportsInterface(bytes4 interfaceId) public view virtual override returns (bool) {\n     return interfaceId == type(MyInterface).interfaceId || super.supportsInterface(interfaceId);\n }\n ```\n Alternatively, {ERC165Storage} provides an easier to use but more expensive implementation."
         },
         "fullyImplemented": true,
-        "id": 3928,
+        "id": 3974,
         "linearizedBaseContracts": [
-          3928,
-          3940
+          3974,
+          3986
         ],
         "name": "ERC165",
-        "nameLocation": "744:6:19",
+        "nameLocation": "744:6:20",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
             "baseFunctions": [
-              3939
+              3985
             ],
             "body": {
-              "id": 3926,
+              "id": 3972,
               "nodeType": "Block",
-              "src": "920:64:19",
+              "src": "920:64:20",
               "statements": [
                 {
                   "expression": {
@@ -401,18 +401,18 @@
                       "typeIdentifier": "t_bytes4",
                       "typeString": "bytes4"
                     },
-                    "id": 3924,
+                    "id": 3970,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftExpression": {
-                      "id": 3919,
+                      "id": 3965,
                       "name": "interfaceId",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 3913,
-                      "src": "937:11:19",
+                      "referencedDeclaration": 3959,
+                      "src": "937:11:20",
                       "typeDescriptions": {
                         "typeIdentifier": "t_bytes4",
                         "typeString": "bytes4"
@@ -424,14 +424,14 @@
                       "expression": {
                         "arguments": [
                           {
-                            "id": 3921,
+                            "id": 3967,
                             "name": "IERC165",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 3940,
-                            "src": "957:7:19",
+                            "referencedDeclaration": 3986,
+                            "src": "957:7:20",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_type$_t_contract$_IERC165_$3940_$",
+                              "typeIdentifier": "t_type$_t_contract$_IERC165_$3986_$",
                               "typeString": "type(contract IERC165)"
                             }
                           }
@@ -439,22 +439,22 @@
                         "expression": {
                           "argumentTypes": [
                             {
-                              "typeIdentifier": "t_type$_t_contract$_IERC165_$3940_$",
+                              "typeIdentifier": "t_type$_t_contract$_IERC165_$3986_$",
                               "typeString": "type(contract IERC165)"
                             }
                           ],
-                          "id": 3920,
+                          "id": 3966,
                           "name": "type",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
                           "referencedDeclaration": 4294967269,
-                          "src": "952:4:19",
+                          "src": "952:4:20",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_metatype_pure$__$returns$__$",
                             "typeString": "function () pure"
                           }
                         },
-                        "id": 3922,
+                        "id": 3968,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
@@ -462,72 +462,72 @@
                         "lValueRequested": false,
                         "names": [],
                         "nodeType": "FunctionCall",
-                        "src": "952:13:19",
+                        "src": "952:13:20",
                         "tryCall": false,
                         "typeDescriptions": {
-                          "typeIdentifier": "t_magic_meta_type_t_contract$_IERC165_$3940",
+                          "typeIdentifier": "t_magic_meta_type_t_contract$_IERC165_$3986",
                           "typeString": "type(contract IERC165)"
                         }
                       },
-                      "id": 3923,
+                      "id": 3969,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": true,
                       "lValueRequested": false,
                       "memberName": "interfaceId",
                       "nodeType": "MemberAccess",
-                      "src": "952:25:19",
+                      "src": "952:25:20",
                       "typeDescriptions": {
                         "typeIdentifier": "t_bytes4",
                         "typeString": "bytes4"
                       }
                     },
-                    "src": "937:40:19",
+                    "src": "937:40:20",
                     "typeDescriptions": {
                       "typeIdentifier": "t_bool",
                       "typeString": "bool"
                     }
                   },
-                  "functionReturnParameters": 3918,
-                  "id": 3925,
+                  "functionReturnParameters": 3964,
+                  "id": 3971,
                   "nodeType": "Return",
-                  "src": "930:47:19"
+                  "src": "930:47:20"
                 }
               ]
             },
             "documentation": {
-              "id": 3911,
+              "id": 3957,
               "nodeType": "StructuredDocumentation",
-              "src": "768:56:19",
+              "src": "768:56:20",
               "text": " @dev See {IERC165-supportsInterface}."
             },
             "functionSelector": "01ffc9a7",
-            "id": 3927,
+            "id": 3973,
             "implemented": true,
             "kind": "function",
             "modifiers": [],
             "name": "supportsInterface",
-            "nameLocation": "838:17:19",
+            "nameLocation": "838:17:20",
             "nodeType": "FunctionDefinition",
             "overrides": {
-              "id": 3915,
+              "id": 3961,
               "nodeType": "OverrideSpecifier",
               "overrides": [],
-              "src": "896:8:19"
+              "src": "896:8:20"
             },
             "parameters": {
-              "id": 3914,
+              "id": 3960,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 3913,
+                  "id": 3959,
                   "mutability": "mutable",
                   "name": "interfaceId",
-                  "nameLocation": "863:11:19",
+                  "nameLocation": "863:11:20",
                   "nodeType": "VariableDeclaration",
-                  "scope": 3927,
-                  "src": "856:18:19",
+                  "scope": 3973,
+                  "src": "856:18:20",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -535,10 +535,10 @@
                     "typeString": "bytes4"
                   },
                   "typeName": {
-                    "id": 3912,
+                    "id": 3958,
                     "name": "bytes4",
                     "nodeType": "ElementaryTypeName",
-                    "src": "856:6:19",
+                    "src": "856:6:20",
                     "typeDescriptions": {
                       "typeIdentifier": "t_bytes4",
                       "typeString": "bytes4"
@@ -547,21 +547,21 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "855:20:19"
+              "src": "855:20:20"
             },
             "returnParameters": {
-              "id": 3918,
+              "id": 3964,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 3917,
+                  "id": 3963,
                   "mutability": "mutable",
                   "name": "",
                   "nameLocation": "-1:-1:-1",
                   "nodeType": "VariableDeclaration",
-                  "scope": 3927,
-                  "src": "914:4:19",
+                  "scope": 3973,
+                  "src": "914:4:20",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -569,10 +569,10 @@
                     "typeString": "bool"
                   },
                   "typeName": {
-                    "id": 3916,
+                    "id": 3962,
                     "name": "bool",
                     "nodeType": "ElementaryTypeName",
-                    "src": "914:4:19",
+                    "src": "914:4:20",
                     "typeDescriptions": {
                       "typeIdentifier": "t_bool",
                       "typeString": "bool"
@@ -581,21 +581,21 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "913:6:19"
+              "src": "913:6:20"
             },
-            "scope": 3928,
-            "src": "829:155:19",
+            "scope": 3974,
+            "src": "829:155:20",
             "stateMutability": "view",
             "virtual": true,
             "visibility": "public"
           }
         ],
-        "scope": 3929,
-        "src": "726:260:19",
+        "scope": 3975,
+        "src": "726:260:20",
         "usedErrors": []
       }
     ],
-    "src": "99:888:19"
+    "src": "99:888:20"
   },
   "compiler": {
     "name": "solc",
@@ -603,7 +603,7 @@
   },
   "networks": {},
   "schemaVersion": "3.4.4",
-  "updatedAt": "2022-05-26T09:51:49.533Z",
+  "updatedAt": "2022-05-27T23:59:36.077Z",
   "devdoc": {
     "details": "Implementation of the {IERC165} interface. Contracts that want to implement ERC165 should inherit from this contract and override {supportsInterface} to check for the additional interface id that will be supported. For example: ```solidity function supportsInterface(bytes4 interfaceId) public view virtual override returns (bool) {     return interfaceId == type(MyInterface).interfaceId || super.supportsInterface(interfaceId); } ``` Alternatively, {ERC165Storage} provides an easier to use but more expensive implementation.",
     "kind": "dev",

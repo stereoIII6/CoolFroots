@@ -120,7 +120,7 @@ contract Init{
 
     }
 }
-contract Affilly8 is Init, PriceConsumerV3{
+contract Affilly8 is Init, PriceConsumerV3 {
 
     constructor() {                                                                                  // feed with utility token address
         require(msg.sender == author || msg.sender == avax);                                                                          // only author can build
@@ -263,8 +263,8 @@ contract Affilly8 is Init, PriceConsumerV3{
         c++;                                                                                                    // iterate campaign mapping
         return true;    
     }
-    function approveCampaign(uint256 _rlid) external returns(bool){
-        Campaign memory camp = campaigns[links[_rlid].campaigId]; 
+    function approveCampaign(uint256 _cid) external returns(bool){
+        Campaign memory camp = campaigns[_cid]; 
         if(msg.sender == camp.owner){
         Token721 = IERC721(camp.tokenAddress);
         require(Token721.balanceOf(msg.sender) >= 0, "not an owner");
