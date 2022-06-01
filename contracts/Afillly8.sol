@@ -265,27 +265,25 @@ contract Affilly8 is Init, PriceConsumerV3 {
     }
     function approveCampaign(uint256 _cid) external payable returns(bool){
         Campaign memory camp = campaigns[_cid]; 
-        if(msg.sender == camp.owner){
+        require(msg.sender == camp.owner,"you are not owner of the campaign");
         Token721 = IERC721(camp.tokenAddress);
         require(Token721.balanceOf(msg.sender) >= 0, "not an owner");
         Token721.approve(address(this),camp.tokenId);
         // Token721.setApprovalForAll(address(this),true);
         emit Log(logs,msg.sender,address(this),camp.tokenId,bytes(". nft approval"),block.timestamp);
         return true;
-        }
-        else return false;
+        
     } 
     function approveFunds(uint256 _rlid) external payable returns(bool){
         Campaign memory camp = campaigns[links[_rlid].campaigId]; 
-        if(msg.sender !=  links[_rlid].promoter){
-            if(camp.payCurrency != 0x0000000000000000000000000000000000000000){
+        require(msg.sender !=  links[_rlid].promoter && msg.sender != camp.owner,"not allowed to approve owner or promoter of this campaign / reflink");
+            require(camp.payCurrency != 0x0000000000000000000000000000000000000000, "not neccessary gas currency is always approved");
                 Token20 = IERC20(camp.payCurrency);
                 Token20.approve(address(this),camp.price);
                 emit Log(logs,msg.sender,address(this),camp.tokenId,bytes(". token approval"),block.timestamp);
             return true;
-            }
-        }
-        else return false;
+            
+        
     }  
     // finalize a tx    
     function finalize(uint _rlid) external payable returns(bool){   

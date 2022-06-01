@@ -3,6 +3,7 @@ require('dotenv').config();
 
 const Affilly8 = artifacts.require("Affilly8");
 const NFT_Factory = artifacts.require("NFT_Factory");
+const NFT_Project = artifacts.require("NFT_Project");
 const MLQ = artifacts.require("MLQ");
 
 module.exports = function (deployer) {
@@ -59,6 +60,7 @@ module.exports = function (deployer) {
   // deployer.deploy(s0xiety, process.env.ADMIN);
   deployer.deploy(Affilly8,ethUsdPrc);
   deployer.deploy(NFT_Factory);
+  deployer.deploy(NFT_Project, process.env.ADMIN, process.env.AVAX, 10000, "Bored Mock Apes 2022", "BMA", "https://ipfs.io/ipfs/QmS15h8bKG6AEGTd7BbLnSXE4ndJSN48tKzW71HTrXeZ4T", 4, 6);
   deployer.deploy(MLQ);
 };
 

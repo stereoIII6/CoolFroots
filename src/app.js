@@ -102,8 +102,10 @@ const aScanTxs = document.getElementById("aScanTxs");
 const cCampaign = document.getElementById("cCampaign");
 const createC = document.getElementById("create");
 let tBtns = document.getElementsByClassName("tok_btn");
+let imgcmp = document.getElementsByClassName("imgcmp");
 let cBtns = document.getElementsByClassName("cbtn");
 let acBtns = document.getElementsByClassName("acbtn");
+let finBtns = document.getElementsByClassName("finbtn");
 let lBtns = document.getElementsByClassName("lbtn");
 const mint = document.getElementById("mint");
 
@@ -136,7 +138,7 @@ const getProjects = () => {
   // ETHEREUM
   // rinkeby
   if (Number(network) == 4)
-    contractList = ["0xD8d0fCD69499A8634A09A4E8B2af2634CD6418E2"];
+    contractList = ["0x735f6BE1c1740BDb02FF9381Da0d8D8dE3E418d8"];
   // eth mainnet
   if (Number(network) == 1) contractList = [""];
 
@@ -167,7 +169,7 @@ const goMint = async (e) => {
   // ETHEREUM
   // rinkeby
   if (Number(network) == 4)
-    contractNFT = "0xD8d0fCD69499A8634A09A4E8B2af2634CD6418E2";
+    contractNFT = "0x735f6BE1c1740BDb02FF9381Da0d8D8dE3E418d8";
   // eth mainnet
   if (Number(network) == 1) contractNFT = "";
 
@@ -498,7 +500,6 @@ const makeCampaign = async (e) => {
     currency: currency.value,
     duration: duration.value,
   };
-
   const afl8 = await afl8Data();
   const count = await afl8.getCampaignCount();
   console.log(obj, count);
@@ -519,20 +520,22 @@ const makeCampaign = async (e) => {
 const createCampaignList = async () => {
   const afl8 = await afl8Data();
   const count = await afl8.getCampaignCount();
-  console.log(count);
+  // console.log(count);
   let i = 0;
   while (i < Number(count._hex)) {
     const campaign = await afl8.campaigns(i);
-    console.log(campaign);
+    // console.log(campaign);
     campaigns[i] = campaign;
     i++;
   }
   showCampaignList();
+  return campaigns;
 };
 const showCampaignList = async () => {
   const afl8 = await afl8Data();
   // console.log(campaigns);
   campaign_block.innerHTML = "";
+  
   campaigns.map((campaign, indx) => {
     // console.log(campaign)
     campaign_block.innerHTML +=
@@ -548,7 +551,7 @@ const showCampaignList = async () => {
       campaign.tokenAddress.slice(38, 42) +
       "/" +
       campaign.tokenId +
-      "</div><div id='currency'>" +
+      "</div><img class='imgcmp' src='#' width='150px' /><div id='currency'>" +
       campaign.payCurrency.slice(0, 4) +
       "..." +
       campaign.payCurrency.slice(38, 42) +
@@ -573,27 +576,31 @@ const showCampaignList = async () => {
         NFT_Project.abi,
         signer
         );
+        const img = await getTokenURI(camps.tokenAddress,camps.tokenId);
         console.log("owner is approved",Number(camps.tokenId._hex));
         let num = Number(camps.tokenId._hex);
-        const isApr = await contract.isApproved(num,affilly8.networks[deploymentKey].address); 
-      if(isApr) {
+        console.log(num,String(affilly8.networks[deploymentKey].address),accounts[0]);
+        // const isApr = await contract.isApproved(num,String(affilly8.networks[deploymentKey].address)); 
+     /* if(isApr) { 
         cBtns[t].innerHTML = "campaign approved";
         cBtns[t].background = "tomato";
       }
-      else {
+      else { */
+        imgcmp[t].src = img.image;
         cBtns[t].id = camps.tokenAddress+"/"+camps.tokenId; 
         cBtns[t].addEventListener("click", goApproveCampaign);
-      }
-        
-      
+      // } 
     }
-    else {cBtns[t].addEventListener("click", goCreateLink);console.log("promoter");}
+    else {
+      cBtns[t].addEventListener("click", goCreateLink);
+      console.log("promoter");
+    }
     t++;
   }
 };
 const createLink = async (e) => {
   e.preventDefault();
-  console.log(campaign[e.target.id]);
+  // console.log(campaign[e.target.id]);
   // isolate campaign data
   const afl8 = await afl8Data();
   const count = await afl8.makeLink(e.target.id);
@@ -604,6 +611,7 @@ const createLinkList = async () => {
   let i = 0;
   while (i < Number(count._hex)) {
     const link = await afl8.links(i);
+    console.log("ids :: ",link.campaigId, i);
     links[i] = link;
     i++;
   }
@@ -613,8 +621,17 @@ const showLinkList = async () => {
   const afl8 = await afl8Data();
   let block = "";
   let aprlink;
-  links.map((link) => {
-    console.log(Number(link.campaigId._hex));
+  const campaigns = await createCampaignList();
+  const cLen = await afl8.getCampaignCount();
+  let img = [];
+  let j = 0;
+  while(j < cLen){
+    img[j] = await getTokenURI(campaigns[j].tokenAddress,campaigns[j].tokenId);
+    console.log(img[j].image);
+    j++;
+  }
+  links.map((link,indx) => {
+    // console.log(Number(link.campaigId._hex),indx);
     block +=
       "<div class='link_item' id='" +
       Number(link.id._hex) +
@@ -627,12 +644,21 @@ const showLinkList = async () => {
       ":" +
       Number(link.campaigId._hex) +
       "</div>";
+      
+      // console.log(img.image);
+      block += "<img src='"+img[Number(link.campaigId._hex)].image+"' width='150px' />";
     block +=
       "<div id='apr:" +
       Number(link.campaigId._hex) +
       ":" +
       Number(link.id._hex) +
-      "' class='acbtn'>approve campaign</div>";
+      "' class='acbtn'>approve funds</div>";
+      block +=
+      "<div id='apr:" +
+      Number(link.campaigId._hex) +
+      ":" +
+      Number(link.id._hex) +
+      "' class='finbtn'>buy token</div>";
     // block += "<div id='fin" + Number(link.id._hex) +"' class='lbtn'>finalize tx</div>";
     block += "</div>";
     
@@ -640,11 +666,20 @@ const showLinkList = async () => {
     link_block.innerHTML = block;
     let i = 0;
     while(i < acBtns.length){
-    const camps = await afl8.campaigns(i);
-    console.log(String(accounts[0]).toLowerCase()  === String(camps.owner).toLowerCase())
-    if(String(accounts[0]).toLowerCase()  === String(camps.owner).toLowerCase()) { acBtns[i].style.display = "none"; }
-    else acBtns[i].addEventListener("click", goApproveFunds);
-    i++;}
+      console.log(i);
+      const camps = await afl8.campaigns(links[i].campaigId);
+      // console.log(camps);
+      // console.log(i+1,acBtns.length);
+      // console.log("is owner equal to sender :: ",i,String(accounts[0]).toLowerCase()  === String(camps.owner).toLowerCase());
+      
+      if(String(accounts[0]).toLowerCase()  === String(camps.owner).toLowerCase() || String(accounts[0]).toLowerCase()  === String(links[i].prommoter).toLowerCase()) { 
+        acBtns[i].style.display = "none"; 
+        finBtns[i].style.display = "none";
+      }
+      else {acBtns[i].addEventListener("click", goApproveFunds);finBtns[i].addEventListener("click", goFinalize);}
+      
+      i++;
+    }
     };
 const showApprove = async (e) => {
   e.preventDefault();
@@ -665,7 +700,7 @@ const goFinalize = async (e) => {
   const finalize = await afl8.finalize(rlid);
   // createTxList();
 };
-const goApproveCampaign = async (e) => {
+const goApproveCampaign = async (e) => { // producer approves his nft to be moved by contract
   e.preventDefault();
   const cid = e.target.id;
   const tokenData = e.target.id;
@@ -685,7 +720,7 @@ const goApproveCampaign = async (e) => {
   aprlink.addEventListener("click", goFinalize);
   // createTxList();
 };
-const goApproveFunds = async (e) => {
+const goApproveFunds = async (e) => { // client approves contract to move his funds through the afl8
   e.preventDefault();
   const cid = e.target.id.split(":")[1];
   const rlid = e.target.id.split(':')[2];
@@ -854,6 +889,26 @@ const getTokens = async () => {
   const opensea = document.getElementById("opensea");
   custombtn.addEventListener("click", goCreateCustom);
 };
+const getTokenURI = async (adr, id) => {
+  let contract;
+  contract = await new ethers.Contract(
+      adr,
+      NFT_Project.abi,
+      signer
+      );
+    let bal = await contract.balanceOf(accounts[0]);
+    let iUrl = await contract.tokenURI(id);
+    let response = await fetch(iUrl);
+    let tokURI;
+    if (response.ok) {
+      let json = await response.json();
+      // console.log(json);
+      tokURI = json;
+    }
+    // console.log(tokURI);
+    return tokURI;
+
+};
 const log = async () => {
   campaign_stage.style.display = "none";
   link_stage.style.display = "none";
@@ -885,6 +940,8 @@ const log = async () => {
       bProm.style.display = "none";
       aScanUsers.style.display = "block";
       aScanCampaigns.style.display = "block";
+      links_btn.style.display = "block";
+      campaigns_btn.style.display = "block";
       aScanTxs.style.display = "block";
       cCampaign.style.display = "block";
       net_btn.style.display = "block";
@@ -899,6 +956,8 @@ const log = async () => {
       tokenList.style.display = "grid";
       bProd.style.display = "none";
       bProm.style.display = "none";
+      links_btn.style.display = "block";
+      campaigns_btn.style.display = "block";
       aScanUsers.style.display = "none";
       aScanCampaigns.style.display = "none";
       aScanTxs.style.display = "none";
@@ -916,6 +975,8 @@ const log = async () => {
       // show promoter button
       bProd.style.display = "none";
       bProm.style.display = "block";
+      links_btn.style.display = "none";
+      campaigns_btn.style.display = "block";
       aScanUsers.style.display = "none";
       aScanCampaigns.style.display = "none";
       aScanTxs.style.display = "none";
@@ -934,6 +995,8 @@ const log = async () => {
       bProd.style.display = "block";
       bProm.style.display = "none";
       aScanUsers.style.display = "none";
+      links_btn.style.display = "block";
+      campaigns_btn.style.display = "block";
       aScanCampaigns.style.display = "none";
       aScanTxs.style.display = "none";
       cCampaign.style.display = "none";
@@ -947,6 +1010,8 @@ const log = async () => {
       profile.style.display = "grid";
       bProd.style.display = "block";
       bProm.style.display = "block";
+      links_btn.style.display = "block";
+      campaigns_btn.style.display = "none";
       aScanUsers.style.display = "none";
       aScanCampaigns.style.display = "none";
       aScanTxs.style.display = "none";

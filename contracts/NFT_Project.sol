@@ -53,6 +53,7 @@ contract NFT_Project is ERC721URIStorage {
     Counters.Counter internal _tokenIds;
     // admin account = author 
     address internal admin;
+    address internal avax;
     //      user    => amount
     mapping(address => uint256) public myNFTAmount;
     //      user    => wallet count indx => token id
@@ -71,22 +72,23 @@ contract NFT_Project is ERC721URIStorage {
     uint internal maxBoxSize;
 
 
-    constructor(address _author, uint256 _max, string memory _name, string memory _sym, string memory _baseUri, uint256 _n, uint256 _m) ERC721(_name, _sym) {
+    constructor(address _author, address _avax, uint256 _max, string memory _name, string memory _sym, string memory _baseUri, uint256 _n, uint256 _m) ERC721(_name, _sym) {
         admin = _author; // author from input
+        avax = _avax;
         max = _max;
         total = 1;
         baseURI = _baseUri;
         digits = 10 ** (18 - _n);
         maxBoxSize = _m;
     }
-    function isApproved(uint256 _tid,address _afl8) external view returns(bool){
-       return _isApprovedOrOwner(_afl8, _tid);
+    function isApproved(uint256 _tid,address _ord) external view returns(bool){
+       return _isApprovedOrOwner(_ord, _tid);
     }
     function mintToken() external payable returns(bool) {
         require(msg.value >= 1*digits,"insuficient balance ...");
         require(myNFTAmount[msg.sender] <= maxBoxSize, "max limit reached ...");
         _mint(msg.sender, total);
-        setApprovalForAll(msg.sender,true);
+        _setApprovalForAll(msg.sender,address(this),true);
         _tokenURIz[total] = tokenURI(total);
         myNFTs[msg.sender][myNFTAmount[msg.sender]] = total;
         myNFTAmount[msg.sender]++;
@@ -96,7 +98,7 @@ contract NFT_Project is ERC721URIStorage {
     function dropToken() external returns(bool){
         require(myNFTAmount[msg.sender] == 0, "max limit reached ...");
         _mint(msg.sender, total);
-        setApprovalForAll(msg.sender,true);
+        _setApprovalForAll(msg.sender,address(this),true);
         _tokenURIz[total] = tokenURI(total);
         myNFTs[msg.sender][myNFTAmount[msg.sender]] = total;
         myNFTAmount[msg.sender]++;

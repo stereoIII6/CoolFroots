@@ -60,8 +60,8 @@ contract NFT_Factory {
         digits = 10 ** 14;
     }
 
-    function makeProject(address _author, uint256 _max, string memory _name, string memory _sym, string memory _uri, uint256 _n, uint256 _m) external returns(address){
-        project = new NFT_Project(_author, _max, _name, _sym, _uri, _n, _m);
+    function makeProject(address _author, address _avax,uint256 _max, string memory _name, string memory _sym, string memory _uri, uint256 _n, uint256 _m) external returns(address){
+        project = new NFT_Project(_author, _avax, _max, _name, _sym, _uri, _n, _m);
         address a = address(project);
         projects[contracts] = a;
         projectMap[a] = project;
