@@ -36,6 +36,7 @@
     "@uauth/js": "^1.1.0",
     "accelerometer": "^1.2.0",
     "bignumber": "^1.1.0",
+    "copy-webpack-plugin": "^11.0.0",
     "crypto-hash": "^2.0.1",
     "dotenv": "^8.6.0",
     "elliptic": "^6.5.4",
