@@ -29,7 +29,8 @@ const Greenlist = require("../dist/contracts/Greenlist.json");
 const provider = new ethers.providers.Web3Provider(window.ethereum);
 const signer = provider.getSigner();
 
-const url = "https://gateway.pinata.cloud/ipfs/QmamRUaez9fyXpeuTuiKCNvrKSsLxid4hzyKKkJXSi67LL/body/0.png";
+// const url = "https://gateway.pinata.cloud/ipfs/QmamRUaez9fyXpeuTuiKCNvrKSsLxid4hzyKKkJXSi67LL/";
+const url = "./images/";
 let rand = 0;
 
 const goRand = () => {
@@ -52,10 +53,12 @@ const draw = () => {
   bg.src = url + "bg/" + Math.floor(Number(String(rand)[0]) / 2) + ".png";
   body.src = url + "body/" + Math.floor(Number(String(rand)[1]) / 2) + ".png";
   // body.src = url+"body/"+4+".png";
-  bubble.src = url + "bubble/" + Math.floor(Number(String(rand)[2]) / 3) + ".png";
+  bubble.src = url + "bubble/" + Math.floor(Number(String(rand)[2]) / 3.4) + ".png";
   eye.src = url + "eye/" + String(rand)[3] + ".png";
-  if (String(rand)[4] == undefined) String(rand)[4] = 0;
-  mouth.src = url + "mouth/" + String(rand)[4] + ".png";
+  let go;
+  if (String(rand)[4] == undefined) go = 0;
+  else go = String(rand)[4];
+  mouth.src = url + "mouth/" + go + ".png";
   msg.innerHTML = "BE FRUITY MY FRESH FAM !";
   const l = msg.innerHTML.length;
   // console.log(l);
@@ -64,7 +67,7 @@ const draw = () => {
   else if (l <= 45) msg.style.fontSize = "1.2em";
   else msg.style.fontSize = "1em";
 };
-
+draw();
 const btn = document.getElementById("btn");
 
 const onClickConnect = async (e) => {
@@ -94,9 +97,7 @@ const onClickConnect = async (e) => {
   }
 };
 const GreenListData = async () => {
-  const deploymentKey = Object.keys(Greenlist.networks)[0];
-  // console.log(s0xiety.abi,provider);
-  return new ethers.Contract(Greenlist.networks[deploymentKey].address, Greenlist.abi, signer);
+  return new ethers.Contract("0xBdb10895Ce1F50f169922bfE1f698E88FBe939B5", Greenlist.abi, signer);
 };
 const goGreenList = async () => {
   const GL = await GreenListData();
