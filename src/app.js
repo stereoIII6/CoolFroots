@@ -29,7 +29,7 @@ const Greenlist = require("../dist/contracts/Greenlist.json");
 const provider = new ethers.providers.Web3Provider(window.ethereum);
 const signer = provider.getSigner();
 
-const url = "./images/";
+const url = "https://gateway.pinata.cloud/ipfs/QmamRUaez9fyXpeuTuiKCNvrKSsLxid4hzyKKkJXSi67LL/body/0.png";
 let rand = 0;
 
 const goRand = () => {
