@@ -1,5 +1,6 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const CopyWebpackPlugin = require("copy-webpack-plugin");
 const { LoaderOptionsPlugin } = require("webpack");
 
 module.exports = {
@@ -31,5 +32,10 @@ module.exports = {
     hot: true,
     liveReload: true,
   },
-  plugins: [new HtmlWebpackPlugin({ title: "affilly8.dao", file: "index.html", template: "public/app.html" })],
+  plugins: [
+    new CopyWebpackPlugin({
+      patterns: [{ from: "public/images", to: "images" }],
+    }),
+    new HtmlWebpackPlugin({ title: "affilly8.dao", file: "index.html", template: "public/app.html" }),
+  ],
 };
