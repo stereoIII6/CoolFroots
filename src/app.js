@@ -30,7 +30,7 @@ const provider = new ethers.providers.Web3Provider(window.ethereum);
 const signer = provider.getSigner();
 
 // const url = "https://gateway.pinata.cloud/ipfs/QmamRUaez9fyXpeuTuiKCNvrKSsLxid4hzyKKkJXSi67LL/";
-const url = "./images/";
+const url = "https://fruityfreshfrenz.netlify.app/images/";
 let rand = 0;
 
 const goRand = () => {
