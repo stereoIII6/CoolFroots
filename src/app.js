@@ -150,14 +150,6 @@ requirements :
 
 */
 const web3init = async () => {
-  set.style.display.none;
-  new_msg.style.display.none;
-  const GL = await GreenListData();
-  const oc_message = await GL.showMsg().then((result) => {
-    msg.innerHTML = result;
-    return result;
-  });
-
   const isMetaMaskInstalled = () => {
     //Have to check the ethereum binding on the window object to see if it's installed
     const { ethereum } = window;
@@ -184,5 +176,7 @@ const web3init = async () => {
   MetaMaskClientCheck();
 };
 // IMPRTANT INITIAL FUNCTION CALL
+set.style.display.none;
+new_msg.style.display.none;
 web3init();
 // IMPORTANT FUNCTION WEB3INIT DO NOT EDIT END //

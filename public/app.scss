@@ -22,6 +22,10 @@ input {
   margin-bottom: 1em;
   font-size: 2em;
 }
+#set,
+#new_msg {
+  display: none;
+}
 #dias_canvas,
 #uForm {
   border: 1px solid black;
