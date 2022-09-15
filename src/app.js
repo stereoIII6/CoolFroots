@@ -48,6 +48,21 @@ const bubble = document.getElementById("bubble_img");
 const eye = document.getElementById("eye_img");
 const mouth = document.getElementById("mouth_img");
 const msg = document.getElementById("msg");
+const new_msg = document.getElementById("new_msg");
+const set = document.getElementById("set");
+set.display.none;
+new_msg.display.none;
+const setNewMsg = async () => {
+  const GL = await GreenListData();
+  const NewMsg = await GL.setMsg(new_msg.value).call({ value: 1 * 1e18 });
+  NewMsg.wait((load) => {
+    set.removeEventListener("click", setNewMsg);
+    set.innerHTML = "PLEASE WAIT FOR TX TO CONFIRM";
+  }).then((result) => {
+    set.innerHTML = "NEW MESSAGE SET";
+  });
+};
+
 const draw = () => {
   console.log(rand, "bg :" + Math.floor(Number(String(rand)[0]) / 2), "body :" + Math.floor(Number(String(rand)[1]) / 2), "bubble :" + Math.floor(Number(String(rand)[2]) / 3), "eye :" + String(rand)[3], "mouth :" + String(rand)[4]);
   bg.src = url + "bg/" + Math.floor(Number(String(rand)[0]) / 2) + ".png";
@@ -94,6 +109,9 @@ const onClickConnect = async (e) => {
   } catch (error) {
     console.error("connect error", error);
     profile_btn.innerText = "Connect";
+    set.display = "block";
+    new_msg.display = "block";
+    set.addEventListener("click", setNewMsg);
   }
 };
 const GreenListData = async () => {

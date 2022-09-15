@@ -15,7 +15,8 @@ button {
   width: 100%;
   text-align: center;
 }
-button {
+button,
+input {
   width: calc(100% - 0.6em);
   text-align: center;
   margin-bottom: 1em;
