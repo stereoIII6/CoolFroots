@@ -17,13 +17,14 @@ button {
 }
 button,
 input {
-  width: calc(100% - 0.6em);
+  width: calc(100%);
   text-align: center;
   margin-bottom: 1em;
   font-size: 2em;
 }
 #set,
-#new_msg {
+#new_msg,
+#inf {
   display: none;
 }
 #dias_canvas,

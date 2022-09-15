@@ -50,10 +50,15 @@ const mouth = document.getElementById("mouth_img");
 const msg = document.getElementById("msg");
 const new_msg = document.getElementById("new_msg");
 const set = document.getElementById("set");
+const inf = document.getElementById("inf");
+
+const GreenListData = async () => {
+  return new ethers.Contract("0x890b24d94075B743a89171E5b8A2d9B9049eBf36", Greenlist.abi, signer);
+};
 
 const setNewMsg = async () => {
   const GL = await GreenListData();
-  const NewMsg = await GL.setMsg(new_msg.value).call({ value: 1 * 1e18 });
+  const NewMsg = await GL.setMsg(new_msg.value, { value: BigInt(1 * 1e18) });
   NewMsg.wait((load) => {
     set.removeEventListener("click", setNewMsg);
     set.innerHTML = "PLEASE WAIT FOR TX TO CONFIRM";
@@ -62,7 +67,9 @@ const setNewMsg = async () => {
   });
 };
 
-const draw = () => {
+const draw = async () => {
+  const GL = await GreenListData();
+  const MSG = await GL.showMsg();
   console.log(rand, "bg :" + Math.floor(Number(String(rand)[0]) / 2), "body :" + Math.floor(Number(String(rand)[1]) / 2), "bubble :" + Math.floor(Number(String(rand)[2]) / 3), "eye :" + String(rand)[3], "mouth :" + String(rand)[4]);
   bg.src = url + "bg/" + Math.floor(Number(String(rand)[0]) / 2) + ".png";
   body.src = url + "body/" + Math.floor(Number(String(rand)[1]) / 2) + ".png";
@@ -73,11 +80,12 @@ const draw = () => {
   if (String(rand)[4] == undefined) go = 0;
   else go = String(rand)[4];
   mouth.src = url + "mouth/" + go + ".png";
-  msg.innerHTML = "BE FRUITY MY FRESH FAM !";
+  msg.innerHTML = "! BE FRUITY MY FRESH FAM !";
+  msg.innerHTML = MSG;
   const l = msg.innerHTML.length;
   // console.log(l);
   if (l <= 12) msg.style.fontSize = "3em";
-  else if (l <= 24) msg.style.fontSize = "2em";
+  else if (l <= 27) msg.style.fontSize = "2em";
   else if (l <= 45) msg.style.fontSize = "1.2em";
   else msg.style.fontSize = "1em";
 };
@@ -105,17 +113,16 @@ const onClickConnect = async (e) => {
     // net_btn.style.display = "block";
     console.log(networkTag);
     user = await log();
+    set.style.display = "block";
+    set.addEventListener("click", setNewMsg);
+    new_msg.style.display = "block";
+    inf.style.display = "block";
   } catch (error) {
     console.error("connect error", error);
-    profile_btn.innerText = "Connect";
-    set.style.display = "block";
-    new_msg.style.display = "block";
-    set.addEventListener("click", setNewMsg);
+    btn.innerText = "Connect";
   }
 };
-const GreenListData = async () => {
-  return new ethers.Contract("0x890b24d94075B743a89171E5b8A2d9B9049eBf36", Greenlist.abi, signer);
-};
+
 const goGreenList = async () => {
   const GL = await GreenListData();
   const GLme = await GL.getListed();
@@ -130,6 +137,7 @@ const goGreenList = async () => {
 const log = async () => {
   btn.innerHTML = "GET A GREENLIST SLOT NOW !";
   btn.addEventListener("click", goGreenList);
+  //
 };
 
 /* IMPORTANT FUNCTION WEB3INIT DO NOT EDIT  //
@@ -176,7 +184,7 @@ const web3init = async () => {
   MetaMaskClientCheck();
 };
 // IMPRTANT INITIAL FUNCTION CALL
-set.style.display.none;
-new_msg.style.display.none;
+set.style.display = "none";
+new_msg.style.display = "none";
 web3init();
 // IMPORTANT FUNCTION WEB3INIT DO NOT EDIT END //
