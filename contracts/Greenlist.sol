@@ -44,6 +44,10 @@ contract Greenlist {
         return true;
     }
 
+    function showMsg() external view returns (string memory) {
+        return message;
+    }
+
     function withdraw() external returns (uint256) {
         require(admin == msg.sender, "you are not admin");
         payable(admin).transfer(address(this).balance);

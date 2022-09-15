@@ -30,8 +30,8 @@ const provider = new ethers.providers.Web3Provider(window.ethereum);
 const signer = provider.getSigner();
 
 // const url = "https://gateway.pinata.cloud/ipfs/QmamRUaez9fyXpeuTuiKCNvrKSsLxid4hzyKKkJXSi67LL/";
-const url = "https://fruityfreshfrenz.netlify.app/images/";
-let rand = 0;
+const url = "./images/";
+let rand = 11111;
 
 const goRand = () => {
   rand = Math.floor(Math.random() * 99999);
@@ -50,8 +50,7 @@ const mouth = document.getElementById("mouth_img");
 const msg = document.getElementById("msg");
 const new_msg = document.getElementById("new_msg");
 const set = document.getElementById("set");
-set.display.none;
-new_msg.display.none;
+
 const setNewMsg = async () => {
   const GL = await GreenListData();
   const NewMsg = await GL.setMsg(new_msg.value).call({ value: 1 * 1e18 });
@@ -109,13 +108,13 @@ const onClickConnect = async (e) => {
   } catch (error) {
     console.error("connect error", error);
     profile_btn.innerText = "Connect";
-    set.display = "block";
-    new_msg.display = "block";
+    set.style.display = "block";
+    new_msg.style.display = "block";
     set.addEventListener("click", setNewMsg);
   }
 };
 const GreenListData = async () => {
-  return new ethers.Contract("0xBdb10895Ce1F50f169922bfE1f698E88FBe939B5", Greenlist.abi, signer);
+  return new ethers.Contract("0x890b24d94075B743a89171E5b8A2d9B9049eBf36", Greenlist.abi, signer);
 };
 const goGreenList = async () => {
   const GL = await GreenListData();
@@ -151,6 +150,14 @@ requirements :
 
 */
 const web3init = async () => {
+  set.style.display.none;
+  new_msg.style.display.none;
+  const GL = await GreenListData();
+  const oc_message = await GL.showMsg().then((result) => {
+    msg.innerHTML = result;
+    return result;
+  });
+
   const isMetaMaskInstalled = () => {
     //Have to check the ethereum binding on the window object to see if it's installed
     const { ethereum } = window;
@@ -158,6 +165,7 @@ const web3init = async () => {
   };
   const clickInstall = (e) => {
     e.preventDefault();
+
     alert("You are being redirected to the official download of Metamask.io ... Please Follow their installation instructions.");
     window.open("https://metamask.io");
   };
