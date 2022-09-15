@@ -1,129 +1,55 @@
-*{box-sizing: border-box;}
+* {
+  box-sizing: border-box;
+}
 
 ////////////////////////////////@at-root
 
-body{
-    margin:0px auto; 
-    width: 100%; 
-    height: 100%; 
-    display:grid;
-    grid-template-rows:30px calc(100% - 60px) 30px;
-    grid-gap: 1em;
-    font-family: courier;
-  }
-  #head{
-    grid-row:1;
-  }
-  #nav{
-    width: 100%; 
-    padding: 0.5em;
-    display:grid;
-    grid-template-columns:1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr ;
-    grid-gap: 1em;
-  }
-  #logo{grid-column: 1;margin:0.3em 0 0 1em;transform: rotate(-1deg);}
-  #links{
-    grid-column: 2/7;
-    display: grid;
-    grid-template-columns:1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr ;
-    grid-gap: 1em;}
-
-
-  #log{
-    grid-column: 7/9;
-display: grid;
-grid-template-rows: 1fr;
-grid-template-columns:  1fr 1fr 1fr 1fr 1fr 1fr 2fr;
-grid-gap: 1em;
-  }
-  #logform, #profile, #campaignform, #approveform, #linkform{
-    display:none;
-    grid-column: 5/-1;
-    grid-template-rows:1fr 1fr 1fr 1fr 1fr;
-    grid-gap: 1em;}
-     #tokenList{
-        display:none;
-        grid-column: 2/-1;
-        grid-row: 1/-1;
-        grid-template-columns:1fr 1fr 1fr 1fr 1fr;
-        grid-template-rows:1fr 1fr 1fr 1fr 1fr;
-        grid-gap: 1em;
-        overflow-y: scroll;
-        overflow-x: hidden;
-      }
-        #campaignshow{
-          display:none;
-          grid-column: 2/5;
-          grid-row: 1/-1;
-          grid-template-columns:1fr 1fr 1fr 1fr 1fr;
-          grid-gap: 1em;
-          width:100%; height: auto; padding:1em;border-radius: 9px;background: lightgrey; border: 1px solid white;
-        }
-          #campaignimg{grid-column:1/-1;grid-row:1/-1;width:100%;border-radius:9px;}
-    
-    .tokenShow{width:100%; height: auto; padding:1em;border-radius: 9px;background: lightgrey; border: 1px solid white;}
-    #imgShow{width: 100%;border-radius:9px;}
-    #profile_btn{grid-column:4/6;}
-    #ud{grid-column: 3;display: none;}
-    .acbtn, .cbtn, .lbtn, .tbtn, .tok_btn, .btn, input, select, option{
-    background:white;text-align:center;border:1px solid lightgrey; border-radius: 9px;padding:0.5em;font-size:0.7em;width:100%;}
-    .btn:hover{background: lightgrey;}
-    select, option{padding-top: 1em;padding-bottom: 1em;}
-    #new, #guest, #promoter, #producer, #admin{ 
-    display: none;
-    grid-template-columns:1fr 1fr 1fr 1fr 1fr;
-    grid-gap: 1em;
-    justify-content: right;
-  }
-  #new{display:grid;}
-  #body{
-    padding:1em;
-    grid-row:2;
-    background: lightgrey;
-    display:grid;
-    grid-template-rows:350px 250px 250px;
-    grid-template-columns: 1fr ;
-    grid-gap: 1em;
-  }
-  #home_stage, #campaign_stage, #link_stage, #tx_stage{
-
-    grid-column: 1/-1;
-    display: none;
-    grid-template-rows:400px 400px;
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
-    grid-gap: 1em;    
-  }
-  #campaign_block,#link_block,#tx_block{
-    grid-column: 1/-1;
-    display: grid;
-    grid-gap: 1em;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-    grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr;
-    padding: 2em;
-  }
-  .campaign_item{padding: 1em; border: 1px solid white;border-radius: 9px;}
-  #home_stage{display: grid;}
-  h2{
-      margin: 0.5em;
-      background: black; 
-      color: white; 
-      font-size: 1.5em; 
-      font-family: impact;
-      transform: rotate(-1deg);
-      width: 300px;
-      height:110px;
-      padding: 0.5em;
-      text-align:center;
-    }
-    i{font-family: courier;}
-  .list{grid-column:1/5;grid-row:1/-1;border-radius: 9px;border: 1px solid white;text-align: center;overflow-y: scroll;max-height: 600px;}
-  .detail{grid-column:5/7;border-radius: 9px;border: 1px solid white;text-align: center;max-height: 40em;overflow: scroll;}
-  ul{margin:0;padding:0;}
-  .list_item{background:ivory;list-style: none;padding:0.5em;margin:0;text-align: left;}
-  .list_item:nth-child(even){background:lightgrey;}
-  #foot{
-    padding: 0.5em;
-    grid-row:3;
-    display:grid;
-    grid-template-rows:30px calc(100% - 60px) 30px;
-  }
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Permanent+Marker&display=swap");
+body {
+  text-align: center;
+}
+h1,
+h2,
+button {
+  font-family: "Permanent Marker", cursive;
+  width: 100%;
+  text-align: center;
+}
+button {
+  width: calc(100% - 0.6em);
+  text-align: center;
+  margin-bottom: 1em;
+  font-size: 2em;
+}
+#dias_canvas,
+#uForm {
+  border: 1px solid black;
+  width: 500px;
+  height: 500px;
+  position: relative;
+  top: 0;
+  left: calc(50% - 250px);
+}
+.layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+.ly_img {
+  width: 100%;
+  height: 100%;
+}
+#msg {
+  position: absolute;
+  top: 40px;
+  left: 280px;
+  text-align: center;
+  width: 180px;
+  height: 120px;
+  font-size: 2em;
+  overflow: none;
+  line-break: auto;
+  font-family: "Permanent Marker", cursive;
+}
