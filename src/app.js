@@ -41,7 +41,7 @@ const goRand = () => {
   draw();
 };
 
-setInterval(goRand, 9000);
+setInterval(goRand, 25000);
 const bg = document.getElementById("bg_img");
 const body = document.getElementById("body_img");
 const bubble = document.getElementById("bubble_img");
