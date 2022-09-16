@@ -31,13 +31,13 @@ const signer = provider.getSigner();
 
 // const url = "https://gateway.pinata.cloud/ipfs/QmamRUaez9fyXpeuTuiKCNvrKSsLxid4hzyKKkJXSi67LL/";
 const url = "./images/";
-let rand = 11111;
+let rand = 111111;
 
 const goRand = () => {
   rand = Math.floor(Math.random() * 99999);
   // console.log(rand);
-  if (rand < 999) rand *= 99;
-  if (rand < 9999) rand *= 9;
+  if (rand < 9999) rand *= 99;
+  if (rand < 99999) rand *= 9;
   draw();
 };
 
@@ -45,6 +45,7 @@ setInterval(goRand, 5000);
 const bg = document.getElementById("bg_img");
 const body = document.getElementById("body_img");
 const bubble = document.getElementById("bubble_img");
+const brow = document.getElementById("brow_img");
 const eye = document.getElementById("eye_img");
 const mouth = document.getElementById("mouth_img");
 const msg = document.getElementById("msg");
@@ -82,10 +83,11 @@ const draw = async () => {
   body.src = url + "body/" + Math.floor(Number(String(rand)[1])) + ".png";
   // body.src = url+"body/"+4+".png";
   bubble.src = url + "bubble/" + Math.floor(Number(String(rand)[2]) / 2) + ".png";
-  eye.src = url + "eye/" + String(rand)[3] + ".png";
+  brow.src = url + "brow/" + Math.floor(Number(String(rand)[3])) + ".png";
+  eye.src = url + "eye/" + String(rand)[4] + ".png";
   let go;
-  if (String(rand)[4] == undefined) go = 0;
-  else go = String(rand)[4];
+  if (String(rand)[5] == undefined) go = 0;
+  else go = String(rand)[5];
   mouth.src = url + "mouth/" + go + ".png";
   msg.innerHTML = "YOU CAN EDIT THIS MESSAGE !";
   // console.log(accounts[0]);
