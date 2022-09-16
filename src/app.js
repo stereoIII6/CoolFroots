@@ -70,11 +70,11 @@ const setNewMsg = async () => {
 const draw = async () => {
   const GL = await GreenListData();
   const MSG = await GL.showMsg();
-  console.log(rand, "bg :" + Math.floor(Number(String(rand)[0]) / 2), "body :" + Math.floor(Number(String(rand)[1]) / 2), "bubble :" + Math.floor(Number(String(rand)[2]) / 3), "eye :" + String(rand)[3], "mouth :" + String(rand)[4]);
-  bg.src = url + "bg/" + Math.floor(Number(String(rand)[0]) / 2) + ".png";
-  body.src = url + "body/" + Math.floor(Number(String(rand)[1]) / 2) + ".png";
+  console.log(rand, "bg :" + Math.floor(Number(String(rand)[0])), "body :" + Math.floor(Number(String(rand)[1]) / 2), "bubble :" + Math.floor(Number(String(rand)[2]) / 3), "eye :" + String(rand)[3], "mouth :" + String(rand)[4]);
+  bg.src = url + "bg/" + Math.floor(Number(String(rand)[0])) + ".png";
+  body.src = url + "body/" + Math.floor(Number(String(rand)[1])) + ".png";
   // body.src = url+"body/"+4+".png";
-  bubble.src = url + "bubble/" + Math.floor(Number(String(rand)[2]) / 3.4) + ".png";
+  bubble.src = url + "bubble/" + Math.floor(Number(String(rand)[2]) / 2) + ".png";
   eye.src = url + "eye/" + String(rand)[3] + ".png";
   let go;
   if (String(rand)[4] == undefined) go = 0;
