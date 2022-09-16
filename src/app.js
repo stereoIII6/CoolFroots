@@ -66,7 +66,16 @@ const setNewMsg = async () => {
     set.innerHTML = "NEW MESSAGE SET";
   });
 };
-
+let MSG;
+const getMSG = async () => {
+  const GL = await GreenListData();
+  const MSGH = GL.showMsg().then((result) => {
+    console.log(result);
+    return result;
+  });
+  console.log(MSGH);
+  return MSGH;
+};
 const draw = async () => {
   console.log(rand, "bg :" + Math.floor(Number(String(rand)[0])), "body :" + Math.floor(Number(String(rand)[1]) / 2), "bubble :" + Math.floor(Number(String(rand)[2]) / 3), "eye :" + String(rand)[3], "mouth :" + String(rand)[4]);
   bg.src = url + "bg/" + Math.floor(Number(String(rand)[0])) + ".png";
@@ -78,9 +87,9 @@ const draw = async () => {
   if (String(rand)[4] == undefined) go = 0;
   else go = String(rand)[4];
   mouth.src = url + "mouth/" + go + ".png";
-  msg.innerHTML = "BE FRUITY MY FRESH FRENZ !";
-  console.log(signer);
-  if (signer._address !== null) msg.innerHTML = MSG;
+  msg.innerHTML = "YOU CAN EDIT THIS MESSAGE !";
+  // console.log(accounts[0]);
+  if (accounts[0]) msg.innerHTML = await getMSG();
   const l = msg.innerHTML.length;
   // console.log(l);
   if (l <= 12) msg.style.fontSize = "3em";
