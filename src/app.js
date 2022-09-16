@@ -140,10 +140,12 @@ const goGreenList = async () => {
     btn.innerHTML = "PLEASE WAIT FOR TX TO CONFIRM";
   }).then((load) => {
     btn.innerHTML = "YOU ARE ON THE GREENLIST";
+    btn.style.background = "white";
+    btn.style.color = "mediumseagreen";
   });
 };
 const log = async () => {
-  btn.innerHTML = "GET A GREENLIST SLOT NOW !";
+  btn.innerHTML = "GET A GREENLIST SLOT NOW";
   btn.addEventListener("click", goGreenList);
   //
 };
