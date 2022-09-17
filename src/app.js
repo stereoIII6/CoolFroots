@@ -147,7 +147,10 @@ const getStamp = async () => {
     return Number(result._hex);
   });
   // console.log(Math.floor((1000 * (stamp + 60 * 60) - Number(String(Date.now()))) / (60 * 1000)));
-  if (1000 * (stamp + 60 * 60) >= Number(Date.now())) set.innerHTML = "YOU HAVE TO WAIT " + Math.floor((1000 * (stamp + 60 * 60) - Number(String(Date.now()))) / (60 * 1000)) + " MIN UNTIL THE NEXT UPDATE !";
+  if (1000 * (stamp + 60 * 60) >= Number(Date.now())) {
+    set.innerHTML = "YOU HAVE TO WAIT " + Math.floor((1000 * (stamp + 60 * 60) - Number(String(Date.now()))) / (60 * 1000)) + " MIN UNTIL THE NEXT UPDATE !";
+    set.removeEventListener("click", setNewMsg);
+  } else set.addEventListener("click", setNewMsg);
 };
 const netSwap = async () => {
   provider = new ethers.providers.Web3Provider(window.ethereum);
@@ -169,7 +172,7 @@ const goPoly = async () => {
           symbol: "MATIC",
           decimals: 18, //In number form
         },
-        rpcUrls: ["https://polygon-mainnet.public.blastapi.io"],
+        rpcUrls: ["https://polygon-rpc.com/"],
         blockExplorerUrls: ["https://polygonscan.com"],
       },
     ],
