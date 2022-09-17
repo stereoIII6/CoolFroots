@@ -52,12 +52,14 @@ const msg = document.getElementById("msg");
 const new_msg = document.getElementById("new_msg");
 const set = document.getElementById("set");
 const inf = document.getElementById("inf");
+const slots = document.getElementById("slots");
+const stamp = document.getElementById("stamp");
 // users
 // 0xCECBDA74A1539F55dd73D92CBa274208262eBEFc
 // 0x325A04e1f9baa3B081aDf627272D6B5328c54496
 const GreenListData = async () => {
   if (network == 137) return new ethers.Contract("0xb2330f3836799B36F0be49Df1043C62d30253479", Greenlist.abi, signer);
-  else if (network == 80001) return new ethers.Contract("0x0458e1c2eE2259d34f49749DB3f192fF80951992", Greenlist.abi, signer);
+  else if (network == 80001) return new ethers.Contract("0x420B8B939892fA27De2d2AeC34e644647AAc3D56", Greenlist.abi, signer);
 };
 const setAdminMsg = async () => {
   const GL = await GreenListData();
@@ -126,7 +128,21 @@ const draw = async () => {
 };
 draw();
 const btn = document.getElementById("btn");
-
+const setSlot = async () => {
+  const GL = await GreenListData();
+  const slot = await GL.l().then((result) => {
+    console.log(result);
+    return Number(result._hex);
+  });
+  slots.innerHTML = 1234 - slot;
+};
+const getStamp = async () => {
+  const GL = await GreenListData();
+  const slot = await GL.stamp().then((result) => {
+    console.log(result);
+    return Number(result._hex);
+  });
+};
 const onClickConnect = async (e) => {
   e.preventDefault();
   try {
@@ -153,6 +169,18 @@ const onClickConnect = async (e) => {
       console.log(result);
       return result;
     });
+    setSlot();
+    /*
+    const GL = await GreenListData();
+    const slot = await GL.l().then((result) => {
+      console.log(result);
+      return Number(result._hex);
+    });
+    slots.innerHTML = slot;
+    const stamp = await GL.stamp().then((result) => {
+      console.log(result);
+      return result;
+    });*/
     // console.log(admin, accounts[0], Number(admin) === Number(accounts[0]), Number(admin), Number(accounts[0]));
     if (Number(admin) === Number(accounts[0])) {
       set.removeEventListener("click", setNewMsg);

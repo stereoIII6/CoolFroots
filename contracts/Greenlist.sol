@@ -4,8 +4,8 @@ pragma solidity ^0.8.10;
 contract Greenlist {
     address public admin;
 
-    uint256 l;
-    uint256 max;
+    uint256 public l;
+    uint256 public max;
     string public message;
     uint256 public stamp;
 
