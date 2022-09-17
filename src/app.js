@@ -52,18 +52,43 @@ const msg = document.getElementById("msg");
 const new_msg = document.getElementById("new_msg");
 const set = document.getElementById("set");
 const inf = document.getElementById("inf");
-
+// users
+// 0xCECBDA74A1539F55dd73D92CBa274208262eBEFc
+// 0x325A04e1f9baa3B081aDf627272D6B5328c54496
 const GreenListData = async () => {
-  return new ethers.Contract("0x890b24d94075B743a89171E5b8A2d9B9049eBf36", Greenlist.abi, signer);
+  if (network == 137) return new ethers.Contract("0xb2330f3836799B36F0be49Df1043C62d30253479", Greenlist.abi, signer);
+  else if (network == 80001) return new ethers.Contract("0x0458e1c2eE2259d34f49749DB3f192fF80951992", Greenlist.abi, signer);
 };
-
+const setAdminMsg = async () => {
+  const GL = await GreenListData();
+  const NewMsg = await GL.setMsgAdmin(new_msg.value)
+    .then((result) => {
+      set.innerHTML = "ADMIN MESSAGE RESET";
+      return result;
+    })
+    .catch((err) => {
+      console.error(err);
+      set.innerHTML = err.message.split(": ")[1];
+    });
+  NewMsg.wait().then((result) => {
+    console.log(result);
+    set.innerHTML = "NEW MESSAGE SET";
+  });
+};
 const setNewMsg = async () => {
   const GL = await GreenListData();
-  const NewMsg = await GL.setMsg(new_msg.value, { value: BigInt(1 * 1e18) });
-  NewMsg.wait((load) => {
-    set.removeEventListener("click", setNewMsg);
-    set.innerHTML = "PLEASE WAIT FOR TX TO CONFIRM";
-  }).then((result) => {
+  const NewMsg = await GL.setMsg(new_msg.value, { value: BigInt(1 * 1e18) })
+    .then((result) => {
+      set.innerHTML = "MESSAGE BEING SET";
+      return result;
+    })
+    .catch((err) => {
+      console.error(err.message.data);
+
+      set.innerHTML = err.data.message.split(": ")[1];
+    });
+  NewMsg.wait().then((result) => {
+    console.log(result);
     set.innerHTML = "NEW MESSAGE SET";
   });
 };
@@ -95,7 +120,7 @@ const draw = async () => {
   const l = msg.innerHTML.length;
   // console.log(l);
   if (l <= 12) msg.style.fontSize = "3em";
-  else if (l <= 27) msg.style.fontSize = "2em";
+  else if (l <= 32) msg.style.fontSize = "2em";
   else if (l <= 45) msg.style.fontSize = "1.2em";
   else msg.style.fontSize = "1em";
 };
@@ -110,6 +135,8 @@ const onClickConnect = async (e) => {
     btn.innerHTML = "connecting ...";
     // set eventlistener for profile button
     btn.removeEventListener("click", onClickConnect);
+    btn.innerHTML = "GET A GREENLIST SLOT NOW";
+    btn.addEventListener("click", goGreenList);
     // get wallet address and account data of client and store in main state accounts
     accounts = await ethereum.request({ method: "eth_requestAccounts" });
     // get network data
@@ -117,39 +144,55 @@ const onClickConnect = async (e) => {
     var networkTag = "Switch Network";
     // evaluate legal networks
     if (Number(network) === 137) networkTag = "Polygon";
-    else networkTag = "Switch To Polygon";
-
-    // net_btn.innerHTML = networkTag;
-    // net_btn.style.display = "block";
-    console.log(networkTag);
-    user = await log();
+    if (Number(network) === 80001) networkTag = "Mumbai";
+    else networkTag = "Switch To Polygon or Mumbai";
+    // console.log(networkTag);
     set.style.display = "block";
-    set.addEventListener("click", setNewMsg);
+    const GL = await GreenListData();
+    const admin = await GL.admin().then((result) => {
+      console.log(result);
+      return result;
+    });
+    // console.log(admin, accounts[0], Number(admin) === Number(accounts[0]), Number(admin), Number(accounts[0]));
+    if (Number(admin) === Number(accounts[0])) {
+      set.removeEventListener("click", setNewMsg);
+      set.addEventListener("click", setAdminMsg);
+      console.log("admin");
+    } else {
+      set.removeEventListener("click", setAdminMsg);
+      set.addEventListener("click", setNewMsg);
+      console.log("user");
+    }
     new_msg.style.display = "block";
     inf.style.display = "block";
   } catch (error) {
     console.error("connect error", error);
-    btn.innerText = "Connect";
+    btn.innerText = "CONNECT";
   }
 };
 
 const goGreenList = async () => {
   const GL = await GreenListData();
-  const GLme = await GL.getListed();
+  const GLme = await GL.getListed()
+    .then((result) => {
+      console.log(result);
+      return result;
+    })
+    .catch((err) => {
+      console.error(err.message);
+      btn.innerHTML = err.data.message.split(": ")[1];
+      btn.removeEventListener("click", goGreenList);
+    });
   GLme.wait((load) => {
     console.log(load);
     btn.removeEventListener("click", goGreenList);
     btn.innerHTML = "PLEASE WAIT FOR TX TO CONFIRM";
   }).then((load) => {
+    console.log(load);
     btn.innerHTML = "YOU ARE ON THE GREENLIST";
     btn.style.background = "white";
     btn.style.color = "mediumseagreen";
   });
-};
-const log = async () => {
-  btn.innerHTML = "GET A GREENLIST SLOT NOW";
-  btn.addEventListener("click", goGreenList);
-  //
 };
 
 /* IMPORTANT FUNCTION WEB3INIT DO NOT EDIT  //

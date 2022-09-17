@@ -20,6 +20,14 @@ button {
   font-family: "Permanent Marker", cursive;
   width: 100%;
   text-align: center;
+  border: 1px solid darkgrey;
+  border-radius: 9px;
+  background: mediumseagreen;
+  color: white;
+}
+button:hover {
+  background: white !important;
+  color: mediumseagreen !important;
 }
 button,
 input {
