@@ -121,7 +121,7 @@ const draw = async () => {
   mouth.src = url + "mouth/" + go + ".png";
   msg.innerHTML = "YOU CAN EDIT THIS MESSAGE !";
   // // console.log(accounts[0]);
-  if (typeof accounts[0] === "undefined" || accounts[0] === null) msg.innerHTML = await getMSG();
+  if (typeof accounts[0] !== "undefined" || accounts[0] !== null) msg.innerHTML = await getMSG();
   const l = msg.innerHTML.length;
   // // console.log(l);
   if (l <= 12) msg.style.fontSize = "3em";
@@ -196,8 +196,7 @@ const onClickConnect = async (e) => {
     if (Number(network) !== 137 && Number(network) !== 80001) {
       // prompt network switch to polygon main
       goPoly(e);
-    } else if (Number(network) === 80001) networkTag = "Mumbai";
-    else if (Number(network) === 137) {
+    } else {
       networkTag = "Polygon";
       // console.log(networkTag);
       set.style.display = "block";
