@@ -26,8 +26,8 @@ const ipfs = client.create({
   protocol: "https",
 });
 const Greenlist = require("../dist/contracts/Greenlist.json");
-const provider = new ethers.providers.Web3Provider(window.ethereum);
-const signer = provider.getSigner();
+let provider = new ethers.providers.Web3Provider(window.ethereum);
+let signer = provider.getSigner();
 
 // const url = "https://gateway.pinata.cloud/ipfs/QmamRUaez9fyXpeuTuiKCNvrKSsLxid4hzyKKkJXSi67LL/";
 const url = "./images/";
@@ -35,7 +35,7 @@ let rand = 111111;
 
 const goRand = () => {
   rand = Math.floor(Math.random() * 99999);
-  // console.log(rand);
+  // // console.log(rand);
   if (rand < 9999) rand *= 99;
   if (rand < 99999) rand *= 9;
   draw();
@@ -53,9 +53,7 @@ const new_msg = document.getElementById("new_msg");
 const set = document.getElementById("set");
 const inf = document.getElementById("inf");
 const slots = document.getElementById("slots");
-// users
-// 0xCECBDA74A1539F55dd73D92CBa274208262eBEFc
-// 0x325A04e1f9baa3B081aDf627272D6B5328c54496
+
 const GreenListData = async () => {
   if (network == 137) return new ethers.Contract("0x97E07a5f15d3FB3FE2bB3692c5D44183bA28F277", Greenlist.abi, signer);
   else if (network == 80001) return new ethers.Contract("0x420B8B939892fA27De2d2AeC34e644647AAc3D56", Greenlist.abi, signer);
@@ -72,7 +70,7 @@ const setAdminMsg = async () => {
       set.innerHTML = err.message.split(": ")[1];
     });
   NewMsg.wait().then((result) => {
-    console.log(result);
+    // console.log(result);
     set.innerHTML = "NEW MESSAGE SET";
   });
 };
@@ -89,22 +87,28 @@ const setNewMsg = async () => {
       set.innerHTML = err.data.message.split(": ")[1];
     });
   NewMsg.wait().then((result) => {
-    console.log(result);
+    // console.log(result);
     set.innerHTML = "NEW MESSAGE SET";
   });
 };
 let MSG;
 const getMSG = async () => {
   const GL = await GreenListData();
-  const MSGH = GL.showMsg().then((result) => {
-    console.log(result);
-    return result;
-  });
-  console.log(MSGH);
+
+  const MSGH = GL.showMsg()
+    .then((result) => {
+      // console.log(result);
+      return result;
+    })
+    .catch((err) => {
+      console.error(err.data.message);
+    });
+
+  // console.log(MSGH);
   return MSGH;
 };
 const draw = async () => {
-  console.log(rand, "bg :" + Math.floor(Number(String(rand)[0])), "body :" + Math.floor(Number(String(rand)[1]) / 2), "bubble :" + Math.floor(Number(String(rand)[2]) / 3), "eye :" + String(rand)[3], "mouth :" + String(rand)[4]);
+  // console.log(rand, "bg :" + Math.floor(Number(String(rand)[0])), "body :" + Math.floor(Number(String(rand)[1]) / 2), "bubble :" + Math.floor(Number(String(rand)[2]) / 3), "eye :" + String(rand)[3], "mouth :" + String(rand)[4]);
   bg.src = url + "bg/" + Math.floor(Number(String(rand)[0])) + ".png";
   body.src = url + "body/" + Math.floor(Number(String(rand)[1])) + ".png";
   // body.src = url+"body/"+4+".png";
@@ -116,10 +120,10 @@ const draw = async () => {
   else go = String(rand)[5];
   mouth.src = url + "mouth/" + go + ".png";
   msg.innerHTML = "YOU CAN EDIT THIS MESSAGE !";
-  // console.log(accounts[0]);
-  if (accounts[0]) msg.innerHTML = await getMSG();
+  // // console.log(accounts[0]);
+  if (typeof accounts[0] === "undefined" || accounts[0] === null) msg.innerHTML = await getMSG();
   const l = msg.innerHTML.length;
-  // console.log(l);
+  // // console.log(l);
   if (l <= 12) msg.style.fontSize = "3em";
   else if (l <= 32) msg.style.fontSize = "2em";
   else if (l <= 45) msg.style.fontSize = "1.2em";
@@ -131,7 +135,7 @@ const btn = document.getElementById("btn");
 const setSlot = async () => {
   const GL = await GreenListData();
   const slot = await GL.l().then((result) => {
-    console.log(result);
+    // console.log(result);
     return Number(result._hex);
   });
   slots.innerHTML = 1234 - slot;
@@ -139,52 +143,84 @@ const setSlot = async () => {
 const getStamp = async () => {
   const GL = await GreenListData();
   const stamp = await GL.stamp().then((result) => {
-    console.log(result);
+    // console.log(result);
     return Number(result._hex);
   });
-  console.log(Math.floor((1000 * (stamp + 60 * 60) - Number(String(Date.now()))) / (60 * 1000)));
+  // console.log(Math.floor((1000 * (stamp + 60 * 60) - Number(String(Date.now()))) / (60 * 1000)));
   if (1000 * (stamp + 60 * 60) >= Number(Date.now())) set.innerHTML = "YOU HAVE TO WAIT " + Math.floor((1000 * (stamp + 60 * 60) - Number(String(Date.now()))) / (60 * 1000)) + " MIN UNTIL THE NEXT UPDATE !";
+};
+const netSwap = async () => {
+  provider = new ethers.providers.Web3Provider(window.ethereum);
+  accounts = await ethereum.request({ method: "eth_requestAccounts" });
+  await provider.send("eth_requestAccounts", []);
+  signer = await provider.getSigner();
+  network = await ethereum.request({ method: "net_version" });
+  window.location.reload();
+};
+const goPoly = async () => {
+  const change = await ethereum.request({
+    method: "wallet_addEthereumChain",
+    params: [
+      {
+        chainId: "0x89",
+        chainName: "Polygon",
+        nativeCurrency: {
+          name: "Polygon",
+          symbol: "MATIC",
+          decimals: 18, //In number form
+        },
+        rpcUrls: ["https://polygon-mainnet.public.blastapi.io"],
+        blockExplorerUrls: ["https://polygonscan.com"],
+      },
+    ],
+  });
+  netSwap();
 };
 const onClickConnect = async (e) => {
   e.preventDefault();
   try {
     // set label for profile button
-    console.log("connecting");
+    // console.log("connecting");
     btn.innerHTML = "connecting ...";
     // set eventlistener for profile button
-    btn.removeEventListener("click", onClickConnect);
-    btn.innerHTML = "GET A GREENLIST SLOT NOW";
-    btn.addEventListener("click", goGreenList);
+
     // get wallet address and account data of client and store in main state accounts
     accounts = await ethereum.request({ method: "eth_requestAccounts" });
     // get network data
     network = await ethereum.request({ method: "net_version" });
     var networkTag = "Switch Network";
     // evaluate legal networks
-    if (Number(network) === 137) networkTag = "Polygon";
-    if (Number(network) === 80001) networkTag = "Mumbai";
-    else networkTag = "Switch To Polygon or Mumbai";
-    // console.log(networkTag);
-    set.style.display = "block";
-    const GL = await GreenListData();
-    const admin = await GL.admin().then((result) => {
-      console.log(result);
-      return result;
-    });
-    setSlot();
-    if (Number(admin) === Number(accounts[0])) {
-      set.removeEventListener("click", setNewMsg);
-      set.addEventListener("click", setAdminMsg);
-      getStamp();
-      console.log("admin");
-    } else {
-      set.removeEventListener("click", setAdminMsg);
-      set.addEventListener("click", setNewMsg);
-      getStamp();
-      console.log("user", set.innerHTML);
+    if (Number(network) !== 137 && Number(network) !== 80001) {
+      // prompt network switch to polygon main
+      goPoly(e);
+    } else if (Number(network) === 80001) networkTag = "Mumbai";
+    else if (Number(network) === 137) {
+      networkTag = "Polygon";
+      // console.log(networkTag);
+      set.style.display = "block";
+      btn.removeEventListener("click", onClickConnect);
+      btn.innerHTML = "GET A GREENLIST SLOT NOW";
+      btn.addEventListener("click", goGreenList);
+      const GL = await GreenListData();
+      const admin = await GL.admin().then((result) => {
+        // console.log(result);
+        return result;
+      });
+      setSlot();
+      if (Number(admin) === Number(accounts[0])) {
+        set.removeEventListener("click", setNewMsg);
+        set.addEventListener("click", setAdminMsg);
+        getStamp();
+        // console.log("admin");
+      } else {
+        set.removeEventListener("click", setAdminMsg);
+        set.addEventListener("click", setNewMsg);
+        getStamp();
+        // console.log("user", set.innerHTML);
+      }
+      new_msg.style.display = "block";
+      inf.style.display = "block";
     }
-    new_msg.style.display = "block";
-    inf.style.display = "block";
   } catch (error) {
     console.error("connect error", error);
     btn.innerText = "CONNECT";
@@ -195,7 +231,7 @@ const goGreenList = async () => {
   const GL = await GreenListData();
   const GLme = await GL.getListed()
     .then((result) => {
-      console.log(result);
+      // console.log(result);
       return result;
     })
     .catch((err) => {
@@ -204,11 +240,11 @@ const goGreenList = async () => {
       btn.removeEventListener("click", goGreenList);
     });
   GLme.wait((load) => {
-    console.log(load);
+    // console.log(load);
     btn.removeEventListener("click", goGreenList);
     btn.innerHTML = "PLEASE WAIT FOR TX TO CONFIRM";
   }).then((load) => {
-    console.log(load);
+    // console.log(load);
     btn.innerHTML = "YOU ARE ON THE GREENLIST";
     btn.style.background = "white";
     btn.style.color = "mediumseagreen";
