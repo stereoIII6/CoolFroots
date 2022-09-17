@@ -53,12 +53,11 @@ const new_msg = document.getElementById("new_msg");
 const set = document.getElementById("set");
 const inf = document.getElementById("inf");
 const slots = document.getElementById("slots");
-const stamp = document.getElementById("stamp");
 // users
 // 0xCECBDA74A1539F55dd73D92CBa274208262eBEFc
 // 0x325A04e1f9baa3B081aDf627272D6B5328c54496
 const GreenListData = async () => {
-  if (network == 137) return new ethers.Contract("0xb2330f3836799B36F0be49Df1043C62d30253479", Greenlist.abi, signer);
+  if (network == 137) return new ethers.Contract("0x97E07a5f15d3FB3FE2bB3692c5D44183bA28F277", Greenlist.abi, signer);
   else if (network == 80001) return new ethers.Contract("0x420B8B939892fA27De2d2AeC34e644647AAc3D56", Greenlist.abi, signer);
 };
 const setAdminMsg = async () => {
@@ -126,6 +125,7 @@ const draw = async () => {
   else if (l <= 45) msg.style.fontSize = "1.2em";
   else msg.style.fontSize = "1em";
 };
+
 draw();
 const btn = document.getElementById("btn");
 const setSlot = async () => {
@@ -138,10 +138,12 @@ const setSlot = async () => {
 };
 const getStamp = async () => {
   const GL = await GreenListData();
-  const slot = await GL.stamp().then((result) => {
+  const stamp = await GL.stamp().then((result) => {
     console.log(result);
     return Number(result._hex);
   });
+  console.log(Math.floor((1000 * (stamp + 60 * 60) - Number(String(Date.now()))) / (60 * 1000)));
+  if (1000 * (stamp + 60 * 60) >= Number(Date.now())) set.innerHTML = "YOU HAVE TO WAIT " + Math.floor((1000 * (stamp + 60 * 60) - Number(String(Date.now()))) / (60 * 1000)) + " MIN UNTIL THE NEXT UPDATE !";
 };
 const onClickConnect = async (e) => {
   e.preventDefault();
@@ -170,26 +172,16 @@ const onClickConnect = async (e) => {
       return result;
     });
     setSlot();
-    /*
-    const GL = await GreenListData();
-    const slot = await GL.l().then((result) => {
-      console.log(result);
-      return Number(result._hex);
-    });
-    slots.innerHTML = slot;
-    const stamp = await GL.stamp().then((result) => {
-      console.log(result);
-      return result;
-    });*/
-    // console.log(admin, accounts[0], Number(admin) === Number(accounts[0]), Number(admin), Number(accounts[0]));
     if (Number(admin) === Number(accounts[0])) {
       set.removeEventListener("click", setNewMsg);
       set.addEventListener("click", setAdminMsg);
+      getStamp();
       console.log("admin");
     } else {
       set.removeEventListener("click", setAdminMsg);
       set.addEventListener("click", setNewMsg);
-      console.log("user");
+      getStamp();
+      console.log("user", set.innerHTML);
     }
     new_msg.style.display = "block";
     inf.style.display = "block";
