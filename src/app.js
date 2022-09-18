@@ -64,6 +64,9 @@ const swap = document.getElementById("swap");
 const social = document.getElementById("social");
 const minty = document.getElementById("minty");
 const glist = document.getElementById("glist");
+swap.style.opacity = 0.5;
+minty.style.opacity = 0.5;
+community.style.opacity = 0.5;
 
 const goInfo = () => {
   shutAll();
