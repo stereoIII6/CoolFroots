@@ -77,10 +77,12 @@ input {
   grid-template-columns: 500px;
   margin-left: 1em;
   overflow: hidden;
+  justify-self: end;
 }
 #minty,
 #swap,
-#community {
+#community,
+#info {
   width: auto !important;
   float: right;
   font-size: 0.5em;
@@ -94,6 +96,11 @@ input {
   text-align: center;
   width: 500px;
   margin-left: 1em;
+}
+#about,
+#road,
+#mint {
+  display: none;
 }
 #uForm {
   grid-row: 2;
