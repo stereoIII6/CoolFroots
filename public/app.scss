@@ -11,11 +11,12 @@ body {
 }
 #body {
   display: grid;
-  grid-template-rows: 100px 600px 1fr 1fr 1fr;
+  margin-top: -20px;
+  grid-template-rows: 100px 1fr;
   grid-template-columns: 1fr 1fr;
   grid-gap: 1em;
   text-align: center;
-  height: auto;
+  height: 100%;
   overflow: scroll;
 }
 h1 {
@@ -100,7 +101,9 @@ input {
 }
 #about,
 #road,
-#mint {
+#mint,
+#social,
+#market {
   display: none;
 }
 #uForm {
@@ -116,8 +119,10 @@ input {
   grid-row: 2;
   grid-column: 2;
 }
-#mint {
-  grid-row: 4;
+#mint,
+#market,
+#social {
+  grid-row: 2;
   grid-column: 1/-1;
 }
 #share {
