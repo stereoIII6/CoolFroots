@@ -43,7 +43,7 @@ const goRand = () => {
 
 setInterval(goRand, 5000);
 const bg = document.getElementById("bg_img");
-const body = document.getElementById("body_img");
+const bodi = document.getElementById("bodi_img");
 const bubble = document.getElementById("bubble_img");
 const brow = document.getElementById("brow_img");
 const eye = document.getElementById("eye_img");
@@ -53,10 +53,11 @@ const new_msg = document.getElementById("new_msg");
 const set = document.getElementById("set");
 const inf = document.getElementById("inf");
 const slots = document.getElementById("slots");
-
+/** wise bunker outdoor enrich piano spray online they issue foster wonder switch */
 const GreenListData = async () => {
   if (network == 137) return new ethers.Contract("0x97E07a5f15d3FB3FE2bB3692c5D44183bA28F277", Greenlist.abi, signer);
   else if (network == 80001) return new ethers.Contract("0x420B8B939892fA27De2d2AeC34e644647AAc3D56", Greenlist.abi, signer);
+  else if (network == 9001) return new ethers.Contract("0xecE922B118eEd554Fb9d3318a81FecB8C8D1bD95", Greenlist.abi, signer);
 };
 const setAdminMsg = async () => {
   const GL = await GreenListData();
@@ -110,7 +111,7 @@ const getMSG = async () => {
 const draw = async () => {
   // console.log(rand, "bg :" + Math.floor(Number(String(rand)[0])), "body :" + Math.floor(Number(String(rand)[1]) / 2), "bubble :" + Math.floor(Number(String(rand)[2]) / 3), "eye :" + String(rand)[3], "mouth :" + String(rand)[4]);
   bg.src = url + "bg/" + Math.floor(Number(String(rand)[0])) + ".png";
-  body.src = url + "body/" + Math.floor(Number(String(rand)[1])) + ".png";
+  bodi.src = url + "body/" + Math.floor(Number(String(rand)[1])) + ".png";
   // body.src = url+"body/"+4+".png";
   bubble.src = url + "bubble/" + Math.floor(Number(String(rand)[2]) / 2) + ".png";
   brow.src = url + "brow/" + Math.floor(Number(String(rand)[3])) + ".png";
@@ -193,7 +194,7 @@ const onClickConnect = async (e) => {
     network = await ethereum.request({ method: "net_version" });
     var networkTag = "Switch Network";
     // evaluate legal networks
-    if (Number(network) !== 137 && Number(network) !== 80001) {
+    if (Number(network) !== 137 && Number(network) !== 80001 && Number(network) !== 9001) {
       // prompt network switch to polygon main
       goPoly(e);
     } else {
