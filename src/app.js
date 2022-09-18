@@ -53,6 +53,52 @@ const new_msg = document.getElementById("new_msg");
 const set = document.getElementById("set");
 const inf = document.getElementById("inf");
 const slots = document.getElementById("slots");
+const dias = document.getElementById("dias_canvas");
+const uform = document.getElementById("uForm");
+const about = document.getElementById("about");
+const road = document.getElementById("road");
+const mint = document.getElementById("mint");
+const info = document.getElementById("info");
+const community = document.getElementById("community");
+const swap = document.getElementById("swap");
+const social = document.getElementById("social");
+const minty = document.getElementById("minty");
+const glist = document.getElementById("glist");
+
+const goInfo = () => {
+  shutAll();
+  about.style.display = "block";
+  road.style.display = "block";
+};
+info.addEventListener("click", goInfo);
+const goMint = () => {
+  shutAll();
+  mint.style.display = "block";
+};
+minty.addEventListener("click", goMint);
+const goGreen = () => {
+  shutAll();
+  dias.style.display = "grid";
+  uform.style.display = "block";
+};
+glist.addEventListener("click", goGreen);
+const goS0x = () => {
+  shutAll();
+  social.style.display = "grid";
+};
+community.addEventListener("click", goS0x);
+const goSwap = () => {
+  shutAll();
+  market.style.display = "grid";
+};
+swap.addEventListener("click", goSwap);
+const shutAll = () => {
+  uform.style.display = "none";
+  dias.style.display = "none";
+  about.style.display = "none";
+  road.style.display = "none";
+  mint.style.display = "none";
+};
 /** wise bunker outdoor enrich piano spray online they issue foster wonder switch */
 const GreenListData = async () => {
   if (network == 137) return new ethers.Contract("0x97E07a5f15d3FB3FE2bB3692c5D44183bA28F277", Greenlist.abi, signer);

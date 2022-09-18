@@ -82,7 +82,8 @@ input {
 #minty,
 #swap,
 #community,
-#info {
+#info,
+#glist {
   width: auto !important;
   float: right;
   font-size: 0.5em;
@@ -107,11 +108,12 @@ input {
   grid-column: 2;
 }
 #about {
-  grid-row: 3;
+  justify-self: end;
+  grid-row: 2;
   grid-column: 1;
 }
 #road {
-  grid-row: 3;
+  grid-row: 2;
   grid-column: 2;
 }
 #mint {
