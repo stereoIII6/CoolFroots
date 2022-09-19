@@ -3,6 +3,7 @@ pragma solidity ^0.8.10;
 
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import "./ICE.sol";
 
 contract FruityFreshFrenz is ERC721 {
     // Public Constants
@@ -21,6 +22,9 @@ contract FruityFreshFrenz is ERC721 {
     mapping(address => bool) public GL; // IS USER GREENLISTED
     mapping(uint256 => bytes) public dias; // TOKEN ID SHOWS DIAS BYTES OBJECT
     mapping(uint256 => uint256) public tid; // TOKEN ID SHOWS DIAS ID
+    mapping(uint256 => string) public status;
+    mapping(uint256 => address) public ownedBy;
+    mapping(address => uint256) private minter;
 
     modifier onlyO() {
         // ONLY OWNER CAN USE MOD FUNX
@@ -71,6 +75,21 @@ contract FruityFreshFrenz is ERC721 {
         return minted;
     }
 
+    function setStatus(uint256 _id, string memory _status)
+        external
+        returns (bool)
+    {
+        ICE ice = ICE();
+        require(ownedBy[_id] == msg.sender, "YOU ARE NOT THE HOLDER");
+        require(start == false, "MINT IS STILL IN PROGRESS");
+        status[_id] = _status;
+        return true;
+    }
+
+    function changeMintState() external onlyO returns (bool) {
+        return start = !start;
+    }
+
     function mintOne(
         address _adr,
         uint256 _diasID,
@@ -80,6 +99,7 @@ contract FruityFreshFrenz is ERC721 {
         _mint(_adr, minted);
         tid[minted] = _diasID;
         dias[minted] = bytes(_diasOBJ);
+        minter[_adr] = minted;
         minted++;
         return minted;
     }

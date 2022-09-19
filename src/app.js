@@ -112,7 +112,7 @@ const setAdminMsg = async () => {
   const GL = await GreenListData();
   const NewMsg = await GL.setMsgAdmin(new_msg.value)
     .then((result) => {
-      set.innerHTML = "ADMIN MESSAGE RESET";
+      set.innerHTML = "ADMIN MESSIGE RESET";
       return result;
     })
     .catch((err) => {
@@ -121,14 +121,14 @@ const setAdminMsg = async () => {
     });
   NewMsg.wait().then((result) => {
     // console.log(result);
-    set.innerHTML = "NEW MESSAGE SET";
+    set.innerHTML = "NU MESSIGE SET";
   });
 };
 const setNewMsg = async () => {
   const GL = await GreenListData();
   const NewMsg = await GL.setMsg(new_msg.value, { value: BigInt(1 * 1e18) })
     .then((result) => {
-      set.innerHTML = "MESSAGE BEING SET";
+      set.innerHTML = "MESSIGE BEING SET";
       return result;
     })
     .catch((err) => {
@@ -138,7 +138,7 @@ const setNewMsg = async () => {
     });
   NewMsg.wait().then((result) => {
     // console.log(result);
-    set.innerHTML = "NEW MESSAGE SET";
+    set.innerHTML = "NU MESSIGE SET";
   });
 };
 let MSG;
@@ -169,7 +169,7 @@ const draw = async () => {
   if (String(rand)[5] == undefined) go = 0;
   else go = String(rand)[5];
   mouth.src = url + "mouth/" + go + ".png";
-  msg.innerHTML = "YOU CAN EDIT THIS MESSAGE !";
+  msg.innerHTML = "U CAN EDIT DIS MESSIGE !";
   // // console.log(accounts[0]);
   if (typeof accounts[0] !== "undefined" || accounts[0] !== null) msg.innerHTML = await getMSG();
   const l = msg.innerHTML.length;
@@ -198,7 +198,7 @@ const getStamp = async () => {
   });
   // console.log(Math.floor((1000 * (stamp + 60 * 60) - Number(String(Date.now()))) / (60 * 1000)));
   if (1000 * (stamp + 60 * 60) >= Number(Date.now())) {
-    set.innerHTML = "YOU HAVE TO WAIT " + Math.floor((1000 * (stamp + 60 * 60) - Number(String(Date.now()))) / (60 * 1000)) + " MIN UNTIL THE NEXT UPDATE !";
+    set.innerHTML = "U NIED 2 W8 " + Math.floor((1000 * (stamp + 60 * 60) - Number(String(Date.now()))) / (60 * 1000)) + " MIN UNTIL THE NEXT UPDATE !";
     set.removeEventListener("click", setNewMsg);
   } else set.addEventListener("click", setNewMsg);
 };
@@ -234,7 +234,7 @@ const onClickConnect = async (e) => {
   try {
     // set label for profile button
     // console.log("connecting");
-    btn.innerHTML = "connecting ...";
+    btn.innerHTML = "LO DING ...";
     // set eventlistener for profile button
 
     // get wallet address and account data of client and store in main state accounts
@@ -251,7 +251,7 @@ const onClickConnect = async (e) => {
       // console.log(networkTag);
       set.style.display = "block";
       btn.removeEventListener("click", onClickConnect);
-      btn.innerHTML = "GET A GREENLIST SLOT NOW";
+      btn.innerHTML = "GWAB GREENLIZ SLOZ NOW";
       btn.addEventListener("click", goGreenList);
       const GL = await GreenListData();
       const admin = await GL.admin().then((result) => {
@@ -260,12 +260,12 @@ const onClickConnect = async (e) => {
       });
       setSlot();
       if (Number(admin) === Number(accounts[0])) {
-        set.removeEventListener("click", setNewMsg);
+        // set.removeEventListener("click", setNewMsg);
         set.addEventListener("click", setAdminMsg);
-        getStamp();
+        // getStamp();
         // console.log("admin");
       } else {
-        set.removeEventListener("click", setAdminMsg);
+        // set.removeEventListener("click", setAdminMsg);
         set.addEventListener("click", setNewMsg);
         getStamp();
         // console.log("user", set.innerHTML);
@@ -275,7 +275,7 @@ const onClickConnect = async (e) => {
     }
   } catch (error) {
     console.error("connect error", error);
-    btn.innerText = "CONNECT";
+    btn.innerText = "CONNEC";
   }
 };
 
@@ -294,10 +294,10 @@ const goGreenList = async () => {
   GLme.wait((load) => {
     // console.log(load);
     btn.removeEventListener("click", goGreenList);
-    btn.innerHTML = "PLEASE WAIT FOR TX TO CONFIRM";
+    btn.innerHTML = "PLEAZ WAIT 4 TX 2 FINNISH";
   }).then((load) => {
     // console.log(load);
-    btn.innerHTML = "YOU ARE ON THE GREENLIST";
+    btn.innerHTML = "WOWZERS ... UR ON DA GREENLIZ NOW";
     btn.style.background = "white";
     btn.style.color = "mediumseagreen";
   });
