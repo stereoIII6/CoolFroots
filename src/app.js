@@ -45,7 +45,7 @@ let diasIds = [];
 for (let i = 1; i < 5555; i++) {
   diasIds[i] = Math.floor(Math.random() * 999999 + 100000);
   for (let o; o < i; o++) {
-    while (diasIds[o] === diasIds[i] || diasIds[i] <= 99999 || diasIds[i] >= 999999) diasIds[i] = Math.floor(Math.random() * 999999);
+    while (diasIds[o] === diasIds[i] || diasIds[i] < 100000 || diasIds[i] > 999999) diasIds[i] = Math.floor(Math.random() * 999999);
   }
 }
 
@@ -284,7 +284,25 @@ const goEvmos = async () => {
 const goGreenMint = async (e) => {
   e.preventDefault();
   const FCT = await FrootyCoolTingsData();
-  const doGreenMint = await FCT.greenMint(diasID, diasOBJ)
+  const count = await FCT.minted()
+    .then((result) => {
+      return result;
+    })
+    .catch((err) => {
+      console.error(err);
+    });
+  const diasTemp = await fetch("./json/dias_base.json")
+    .then((response) => response.json())
+    .then((json) => {
+      console.log(json);
+      return json;
+    });
+  const minted = await FCT.minted().then((result) => {
+    return Number(result._hex);
+  });
+  let diasID = diasTemp.diasIds[minted];
+  let diasOBJ = diasTemp.diasObject;
+  const doGreenMint = await FCT.greenMint([diasID], [diasOBJ])
     .then((result) => {
       return result;
     })
@@ -324,7 +342,9 @@ const goSetFCT = async () => {
     .catch((err) => {
       console.error(err);
     });
-  setFCT.wait().then(alert("THE FROOT CONTRACT HAS BEEN SET TO " + FrootyCoolTingz.networks[deploymentKey].address)[a]);
+  setFCT.wait().then((result) => {
+    alert("THE FROOT CONTRACT HAS BEEN SET TO " + FrootyCoolTingz.networks[deploymentKey].address)[a];
+  });
 };
 const onClickConnect = async (e) => {
   e.preventDefault();
@@ -388,6 +408,13 @@ const onClickConnect = async (e) => {
         .catch((err) => {
           console.error(err);
         });
+      const slozMax = await GL.max()
+        .then((result) => {
+          return result;
+        })
+        .catch((err) => {
+          console.error(err);
+        });
       const minted = await FCT.minted()
         .then((result) => {
           return result;
@@ -395,19 +422,38 @@ const onClickConnect = async (e) => {
         .catch((err) => {
           console.error(err);
         });
-      if (mintState) {
-        console.log(mintState);
-        mintHead.innerHTML = "MINT IS LIVE NOW !";
-        gMint.addEventListener("click", goGreenMint);
-        pMint.addEventListener("click", goPubMint);
-      } else {
-        console.log(mintState);
-        mintHead.innerHTML = `<h2>MINT GO'S LIVE AFTER<br/> ${1 - slozNum} MORE GREENLIST !</h2>`; // Testnet
-        // else mintHead.innerHTML = `<h2>MINT GO'S LIVE AFTER<br/> ${1234 - mintState} MORE GREENLIST !</h2>`; // Mainnet
+      console.log(slozNum, slozMax);
+      if (slozNum == slozMax) {
+        const cMS = await FCT.changeMS()
+          .then((result) => {
+            return result;
+            console.log(result);
+          })
+          .catch((err) => {
+            console.error(err);
+          });
 
-        gMint.removeEventListener("click", goGreenMint);
-        pMint.removeEventListener("click", goPubMint);
-        // minty.disabled = true;
+        if (cMS) {
+          console.log(cMS);
+          mintHead.innerHTML = "MINT IS LIVE NOW !";
+          gMint.addEventListener("click", goGreenMint);
+          pMint.addEventListener("click", goPubMint);
+        } else {
+          console.log(cMS);
+          const slotsNum = await FCT.slots()
+            .then((result) => {
+              return result;
+            })
+            .catch((err) => {
+              console.error(err);
+            });
+          mintHead.innerHTML = `<h2>MINT GO'S LIVE AFTER<br/> ${1 - slotsNum} MORE GREENLIST !</h2>`; // Testnet
+          // else mintHead.innerHTML = `<h2>MINT GO'S LIVE AFTER<br/> ${1234 - mintState} MORE GREENLIST !</h2>`; // Mainnet
+
+          gMint.removeEventListener("click", goGreenMint);
+          pMint.removeEventListener("click", goPubMint);
+          // minty.disabled = true;
+        }
       }
       gCount.innerHTML = 1 - slozNum; // Testnet
       // gCount.innerHTML = 1234 - slozNum; // Mainnet

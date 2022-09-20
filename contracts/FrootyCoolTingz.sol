@@ -184,7 +184,7 @@ contract FrootyCoolTingz is ERC721 {
     {
         // INIT CONTRACT SET PUB VARS
         minted = 1;
-        slots = 1;
+        slots = 0;
         owner = msg.sender;
         nam = "Frooty Cool Tingz";
         sym = "FROOT";
@@ -230,7 +230,7 @@ contract FrootyCoolTingz is ERC721 {
         require(start == true, "MINT IS NOT YET LIVE");
         bool boo = GLC.isListed(msg.sender);
         require(boo == true, "YOU ARE NOT GREENLISTED");
-        require(slots < sloz, "ALL SLOTS HAVE BEEN MINTED");
+        require(slots <= sloz, "ALL SLOTS HAVE BEEN MINTED");
         _doMint(1, msg.sender, _diasIDs, _diasOBJs);
         ice.earn(msg.sender);
         if (block.timestamp % 9 == 0 || block.timestamp % 9 == 9)
@@ -255,13 +255,13 @@ contract FrootyCoolTingz is ERC721 {
     }
 
     function changeMintState() external onlyO returns (bool) {
-        return start = !start;
+        return cMS();
     }
 
     // ONLY TESTNET
     /* */
     function changeMS() external returns (bool) {
-        return start = !start;
+        return cMS();
     }
 
     // */
