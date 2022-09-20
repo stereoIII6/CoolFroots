@@ -80,6 +80,7 @@ const gCount = document.getElementById("gCount");
 const pCount = document.getElementById("pCount");
 const gMint = document.getElementById("greenmnt");
 const pMint = document.getElementById("pubmnt");
+const tCount = document.getElementById("tCount");
 
 // swap.style.opacity = 0.5;
 // minty.style.opacity = 0.5;
@@ -121,16 +122,24 @@ const shutAll = () => {
 };
 /** wise bunker outdoor enrich piano spray online they issue foster wonder switch */
 const GreenListData = async () => {
-  // if (network == 137) return new ethers.Contract("0x97E07a5f15d3FB3FE2bB3692c5D44183bA28F277", Greenlist.abi, signer);
-  // else if (network == 80001) return new ethers.Contract("0x420B8B939892fA27De2d2AeC34e644647AAc3D56", Greenlist.abi, signer);
-  /*else*/ if (network == 9000) return new ethers.Contract("0x0f6ee895f93a0525747DdD7c5c177fF65DBD7454", Greenlist.abi, signer);
-  // else if (network == 9001) return new ethers.Contract("0xecE922B118eEd554Fb9d3318a81FecB8C8D1bD95", Greenlist.abi, signer);
+  let a;
+  if (Number(network) === 9000) a = 0;
+  else if (Number(network) === 9001) a = 4;
+  else if (Number(network) === 80001) a = 1;
+  else if (Number(network) === 137) a = 3;
+  const deploymentKey = await Object.keys(Greenlist.networks)[a];
+  console.log(deploymentKey, a, network);
+  return new ethers.Contract(Greenlist.networks[deploymentKey].address, Greenlist.abi, signer);
 };
 const FrootyCoolTingsData = async () => {
-  // if (network == 137) return new ethers.Contract("0x97E07a5f15d3FB3FE2bB3692c5D44183bA28F277", Greenlist.abi, signer);
-  // else if (network == 80001) return new ethers.Contract("0x420B8B939892fA27De2d2AeC34e644647AAc3D56", Greenlist.abi, signer);
-  /*else*/ if (network == 9000) return new ethers.Contract("0x069BF09A8EDb8C1b3AC7f62bA57C601DBaCc6747", FrootyCoolTingz.abi, signer);
-  // else if (network == 9001) return new ethers.Contract("0xecE922B118eEd554Fb9d3318a81FecB8C8D1bD95", Greenlist.abi, signer);
+  let a;
+  if (Number(network) === 9000) a = 0;
+  else if (Number(network) === 9001) a = 4;
+  else if (Number(network) === 80001) a = 1;
+  else if (Number(network) === 137) a = 3;
+  const deploymentKey = await Object.keys(FrootyCoolTingz.networks)[a];
+  console.log(deploymentKey, a, network);
+  return new ethers.Contract(FrootyCoolTingz.networks[deploymentKey].address, FrootyCoolTingz.abi, signer);
 };
 const setAdminMsg = async () => {
   const GL = await GreenListData();
@@ -300,6 +309,23 @@ const goPubMint = async (e) => {
     return result;
   });
 };
+const goSetFCT = async () => {
+  const GL = await GreenListData();
+  let a;
+  if (Number(network) === 9000) a = 1;
+  if (Number(network) === 9001) a = 2;
+  if (Number(network) === 80001) a = 0;
+  if (Number(network) === 137) a = 3;
+  const deploymentKey = await Object.keys(FrootyCoolTingz.networks)[a];
+  const setFCT = await GL.setFCT(FrootyCoolTingz.networks[deploymentKey].address)
+    .then((result) => {
+      return result;
+    })
+    .catch((err) => {
+      console.error(err);
+    });
+  setFCT.wait().then(alert("THE FROOT CONTRACT HAS BEEN SET TO " + FrootyCoolTingz.networks[deploymentKey].address)[a]);
+};
 const onClickConnect = async (e) => {
   e.preventDefault();
   try {
@@ -328,6 +354,25 @@ const onClickConnect = async (e) => {
         // console.log(result);
         return result;
       });
+      const fctAdr = await GL.FCT()
+        .then((result) => {
+          return result;
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+      let a;
+      console.log(network, "here");
+      if (Number(network) === 80001) a = 0;
+      if (Number(network) === 9000) a = 1;
+      if (Number(network) === 9001) a = 2;
+      if (Number(network) === 137) a = 3;
+      const deploymentKey = await Object.keys(FrootyCoolTingz.networks)[a];
+      if (FrootyCoolTingz.networks[deploymentKey].address !== fctAdr) {
+        console.log(fctAdr);
+        goSetFCT();
+      }
+
       const FCT = await FrootyCoolTingsData();
       const mintState = await FCT.start()
         .then((result) => {
@@ -351,12 +396,14 @@ const onClickConnect = async (e) => {
           console.error(err);
         });
       if (mintState) {
+        console.log(mintState);
         mintHead.innerHTML = "MINT IS LIVE NOW !";
         gMint.addEventListener("click", goGreenMint);
         pMint.addEventListener("click", goPubMint);
       } else {
-        mintHead.innerHTML = `<h2>MINT GO'S LIVE AGTER JUST ${1 - slozNum} MORE GREENLIST SIGNUPS !</h2>`; // Testnet
-        // else mintHead.innerHTML = `<h2>MINT GO'S LIVE IN ${1234 - mintState} MORE GREENLIST SIGNUPS !</h2>`; // Mainnet
+        console.log(mintState);
+        mintHead.innerHTML = `<h2>MINT GO'S LIVE AFTER<br/> ${1 - slozNum} MORE GREENLIST !</h2>`; // Testnet
+        // else mintHead.innerHTML = `<h2>MINT GO'S LIVE AFTER<br/> ${1234 - mintState} MORE GREENLIST !</h2>`; // Mainnet
 
         gMint.removeEventListener("click", goGreenMint);
         pMint.removeEventListener("click", goPubMint);
@@ -366,7 +413,8 @@ const onClickConnect = async (e) => {
       // gCount.innerHTML = 1234 - slozNum; // Mainnet
       pCount.innerHTML = 5 - minted; // Testnet
       // pCount.innerHTML = 4321 - minted; // mainnet
-
+      tCount.innerHTML = 5 - minted + (1 - slozNum);
+      setSlot();
       if (Number(admin) === Number(accounts[0])) {
         // set.removeEventListener("click", setNewMsg);
         set.addEventListener("click", setAdminMsg);
@@ -389,9 +437,12 @@ const onClickConnect = async (e) => {
 
 const goGreenList = async () => {
   const GL = await GreenListData();
+
   const GLme = await GL.getListed()
     .then((result) => {
       // console.log(result);
+      btn.removeEventListener("click", goGreenList);
+      btn.innerHTML = "PLEAZ WAIT 4 TX 2 FINNISH";
       return result;
     })
     .catch((err) => {
@@ -399,15 +450,12 @@ const goGreenList = async () => {
       btn.innerHTML = err.data.message.split(": ")[1];
       btn.removeEventListener("click", goGreenList);
     });
-  GLme.wait((load) => {
-    // console.log(load);
-    btn.removeEventListener("click", goGreenList);
-    btn.innerHTML = "PLEAZ WAIT 4 TX 2 FINNISH";
-  }).then((load) => {
+  GLme.wait().then((load) => {
     // console.log(load);
     btn.innerHTML = "WOWZERS ... UR ON DA GREENLIZ NOW";
     btn.style.background = "white";
     btn.style.color = "mediumseagreen";
+    setSlot();
   });
 };
 

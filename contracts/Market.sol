@@ -3,7 +3,6 @@ pragma solidity ^0.8.10;
 
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
-import "./ICE.sol";
 import "./FrootyCoolTingz.sol";
 
 contract Market {
@@ -13,7 +12,10 @@ contract Market {
     mapping(uint256 => uint256) public tid2lc; // TAKES Token Id and returns ListCount
     mapping(address => mapping(uint256 => Listing)) public myListings; // LISTINGS OF USER
     uint256 l; // NUMBER OF LISTINGS
-    address ftcAdr; // FROOT ADDRESS
+    FrootyCoolTingz public fct; // FROOT ADDRESS
+    ICE public ice;
+    Greenlist public gl;
+    uint256 public roy;
 
     struct Listing {
         // STRUCT FOR SALES LISTINGS
@@ -62,8 +64,16 @@ contract Market {
         uint256 deadline;
     }
 
-    constructor() {
+    constructor(
+        address _FCT,
+        address _ICE,
+        address _GL
+    ) {
         admin = msg.sender;
+        fct = FrootyCoolTingz(_FCT);
+        ice = ICE(_ICE);
+        gl = Greenlist(_GL);
+        roy = 5;
     }
 
     function makeListing(
@@ -73,8 +83,7 @@ contract Market {
         uint256 _dead
     ) external returns (bool) {
         // MAKE A LISTING
-        FrootyCoolTingz FCT = FrootyCoolTingz(ftcAdr);
-        require(FCT.holder(_tid) == _adr, "You are not the owner !");
+        require(fct.holder(_tid) == _adr, "You are not the owner !");
         myListings[_adr][myListCount[_adr]] = Listing(
             l,
             _adr,

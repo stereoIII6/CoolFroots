@@ -9,6 +9,8 @@
     "dev": "webpack serve",
     "compile": "npx truffle compile",
     "migrate:dev": "npx truffle migrate --network develop",
+    "migrate:evmos": "npx truffle migrate --network evmos",
+    "migrate:tevmos": "npx truffle migrate --network tevmos",
     "migrate:mumbai": "npx truffle migrate --network mumbai",
     "migrate:polygon": "npx truffle migrate --network polygon",
     "migrate:arbi": "npx truffle migrate --network arbitrum",

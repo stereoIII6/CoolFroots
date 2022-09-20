@@ -35,7 +35,7 @@ contract Greenlist {
     constructor() {
         admin = msg.sender;
         // isListed[msg.sender] = true; // OFF ON TESTNET
-        users[0] = msg.sender;
+        // users[0] = msg.sender;
         message = "BE FRESH MY FRUITY FRENZ !";
         // l = 1; // Mainnet
         // max = 1234; // Mainnet
@@ -57,7 +57,7 @@ contract Greenlist {
         isListed[msg.sender] = true;
         users[l] = (msg.sender);
         l++;
-        if (l == max + 1) autoStart();
+        if (l == max) autoStart();
         return isListed[msg.sender];
     }
 
@@ -66,6 +66,7 @@ contract Greenlist {
         isListed[_adr] = true;
         users[l] = (_adr);
         l++;
+        if (l == max) autoStart();
         return isListed[_adr];
     }
 
@@ -101,7 +102,7 @@ contract Greenlist {
 
 contract ICE is ERC20 {
     uint256 public constant digits = 10**18;
-    uint256 public constant price = (1 * digits) / 10;
+    uint256 public constant price = (1 * digits) / 10000; // Testnet :: 10000 // Mainnet :: 10
 
     address admin;
 
@@ -142,7 +143,8 @@ contract ICE is ERC20 {
 
 contract FrootyCoolTingz is ERC721 {
     // Public Constants
-    uint256 public constant price = 5 * 10**18; // PRICE VAL
+    uint256 public constant price = 5 * 10**14; // PRICE VAL Testnet
+    // uint256 public constant price = 5 * 10**18; // PRICE VAL Mainnet
     uint256 public constant num = 1; // MAX MINTS / WALLET
     // MAINNET
     /* *
@@ -177,7 +179,9 @@ contract FrootyCoolTingz is ERC721 {
         _;
     }
 
-    constructor() ERC721("Frooty Cool Tingz", "FROOT") {
+    constructor(address _ICE, address _Greenlist)
+        ERC721("Frooty Cool Tingz", "FROOT")
+    {
         // INIT CONTRACT SET PUB VARS
         minted = 1;
         slots = 1;
@@ -191,8 +195,8 @@ contract FrootyCoolTingz is ERC721 {
         // */
         // TESTNET EVMOS
         /* */
-        ice = ICE(0xec09faf4b1c6F198cFF1535800d55123C8C848bE);
-        GLC = Greenlist(0x0f6ee895f93a0525747DdD7c5c177fF65DBD7454);
+        ice = ICE(_ICE);
+        GLC = Greenlist(_Greenlist);
         // */
     }
 

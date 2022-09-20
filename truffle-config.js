@@ -1,5 +1,5 @@
-const HDWalletProvider = require('@truffle/hdwallet-provider');
-require('dotenv').config();
+const HDWalletProvider = require("@truffle/hdwallet-provider");
+require("dotenv").config();
 const path = require("path");
 const mnemonic = process.env.MNEMONIC;
 
@@ -7,9 +7,9 @@ module.exports = {
   contracts_build_directory: path.join(__dirname, "dist/contracts"),
   networks: {
     develop: {
-      host: "127.0.0.1",     // Localhost (default: none)
-      port: 7545,            // Standard Ethereum port (default: none)
-      network_id: "5777",       // Any network (default: none)
+      host: "127.0.0.1", // Localhost (default: none)
+      port: 7545, // Standard Ethereum port (default: none)
+      network_id: "5777", // Any network (default: none)
     },
     polygon: {
       provider: () => new HDWalletProvider(mnemonic, process.env.POLY_URL),
@@ -72,47 +72,61 @@ module.exports = {
       network_id: 97,
       confirmations: 10,
       timeoutBlocks: 200,
-      skipDryRun: true
+      skipDryRun: true,
     },
     bsc: {
       provider: () => new HDWalletProvider(mnemonic, process.env.BSC_URL),
       network_id: 56,
       confirmations: 10,
       timeoutBlocks: 200,
-      skipDryRun: true
+      skipDryRun: true,
     },
     moonriver: {
       provider: () => new HDWalletProvider(mnemonic, process.env.MOONRIVER_URL),
       network_id: 1285,
       confirmations: 10,
       timeoutBlocks: 200,
-      skipDryRun: true
+      skipDryRun: true,
     },
     fuji: {
       provider: () => new HDWalletProvider(process.env.AVAX_MNEM, process.env.FUJI_URL),
       network_id: 43113,
       confirmations: 10,
+      timeoutBlocks: 2000,
+      skipDryRun: true,
+    },
+    evmos: {
+      provider: () => new HDWalletProvider(mnemonic, process.env.EVMOS_URL),
+      network_id: 9001,
+      confirmations: 10,
+      timeoutBlocks: 2000,
+      skipDryRun: true,
+    },
+    tevmos: {
+      provider: () => new HDWalletProvider(mnemonic, process.env.TEVMOS_URL),
+      network_id: 9000,
+      confirmations: 3,
       timeoutBlocks: 200,
-      skipDryRun: true
+      skipDryRun: true,
     },
     fujix: {
-      provider: function() {
-            return new HDWalletProvider({mnemonic: process.env.AVAX_MNEM, providerOrUrl: process.env.FUJI_URL, chainId: "0xa869"})
+      provider: function () {
+        return new HDWalletProvider({ mnemonic: process.env.AVAX_MNEM, providerOrUrl: process.env.FUJI_URL, chainId: "0xa869" });
       },
       network_id: "*",
       gas: 3000000,
       gasPrice: 470000000000,
-      skipDryRun: true
+      skipDryRun: true,
     },
     avax: {
-      provider: function() {
-            return new HDWalletProvider({mnemonic: process.env.AVAX_MNEM, providerOrUrl: process.env.AVAX_URL, chainId: "0xa86a"})
+      provider: function () {
+        return new HDWalletProvider({ mnemonic: process.env.AVAX_MNEM, providerOrUrl: process.env.AVAX_URL, chainId: "0xa86a" });
       },
       network_id: "*",
       gas: 3000000,
       gasPrice: 470000000000,
-      skipDryRun: true
-    }
+      skipDryRun: true,
+    },
   },
 
   // Set default mocha options here, use special reporters etc
@@ -122,7 +136,7 @@ module.exports = {
   // Configure your compilers
   compilers: {
     solc: {
-      version: "^0.8.0",    // Fetch exact version from solc-bin (default: truffle's version)
+      version: "^0.8.0", // Fetch exact version from solc-bin (default: truffle's version)
       // docker: true,        // Use "0.5.1" you've installed locally with docker (default: false)
       // settings: {          // See the solidity docs for advice about optimization and evmVersion
       //  optimizer: {
