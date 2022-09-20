@@ -5,7 +5,7 @@ import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "./ICE.sol";
 
-contract FruityFreshFrenz is ERC721 {
+contract FrootyCoolTingz is ERC721 {
     // Public Constants
     uint256 public constant price = 5 * 10**18; // PRICE VAL
     uint256 public constant num = 1; // MAX MINTS / WALLET
@@ -13,6 +13,7 @@ contract FruityFreshFrenz is ERC721 {
     uint256 public constant sloz = 1234; // MAX FREE MINTS
     // Public Variables
     address public owner; // CONTRACT OWNER
+    address iceAdr;
     uint256 public minted; // TOKENS MINTED 1-5000
     string public nam; // TOKEN NAME
     string public sym; // TOKEN SYMBOL
@@ -22,9 +23,9 @@ contract FruityFreshFrenz is ERC721 {
     mapping(address => bool) public GL; // IS USER GREENLISTED
     mapping(uint256 => bytes) public dias; // TOKEN ID SHOWS DIAS BYTES OBJECT
     mapping(uint256 => uint256) public tid; // TOKEN ID SHOWS DIAS ID
-    mapping(uint256 => string) public status;
-    mapping(uint256 => address) public ownedBy;
-    mapping(address => uint256) private minter;
+    mapping(uint256 => string) public status; // TOKEN STATUS MEESAGE
+    mapping(uint256 => address) public ownedBy; // TOKEN OWNED BY ADRESS
+    mapping(address => uint256) private minter; // HOW MANY TOKENS USER MINTED
 
     modifier onlyO() {
         // ONLY OWNER CAN USE MOD FUNX
@@ -32,13 +33,14 @@ contract FruityFreshFrenz is ERC721 {
         _;
     }
 
-    constructor() ERC721("FruityFreshFrenz", "FFF") {
+    constructor(address _ICE) ERC721("Frooty Cool Tingz", "FFF") {
         // INIT CONTRACT SET PUB VARS
         minted = 1;
         slots = 1;
         owner = msg.sender;
-        nam = "FruityFreshFrenz";
-        sym = "FFF";
+        nam = "Frooty Cool Tingz";
+        sym = "FROOT";
+        iceAdr = _ICE;
     }
 
     function isOwner(address _adr) external view returns (bool) {
@@ -77,16 +79,21 @@ contract FruityFreshFrenz is ERC721 {
 
     function setStatus(uint256 _id, string memory _status)
         external
+        payable
         returns (bool)
     {
-        ICE ice = ICE();
+        // SET STATUS MESSAGE OF TOKEN
         require(ownedBy[_id] == msg.sender, "YOU ARE NOT THE HOLDER");
         require(start == false, "MINT IS STILL IN PROGRESS");
+        require(msg.value >= 1 * 10**18);
+        ICE ice = ICE(iceAdr);
+        ice.earn(msg.sender);
         status[_id] = _status;
         return true;
     }
 
     function changeMintState() external onlyO returns (bool) {
+        // CHANGE MINTABLE STATE
         return start = !start;
     }
 
@@ -110,6 +117,7 @@ contract FruityFreshFrenz is ERC721 {
         uint256[] memory _diasIDs,
         string[] memory _diasOBJs
     ) internal returns (uint256) {
+        // INTERNAL MINT FUNCTION FOR MULTIMINTS UP TO 7
         require(balanceOf(_adr) + _amnt <= num, "EXCEEDED MAX MINTABLE TOKENS");
         require(minted + _amnt <= max, "NOT ENOUGH SUPPLY");
         // INTERNAL // MINTS UP TO 7 TOKENS IN ONE TX
