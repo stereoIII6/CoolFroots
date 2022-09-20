@@ -98,7 +98,13 @@ input {
 #mint {
   text-align: center;
   width: 500px;
+  position: relative;
+  left: calc(50% - 250px);
   margin-left: 1em;
+  display: grid;
+  grid-template-columns: 2;
+  grid-template-rows: 3;
+  grid-gap: 1em;
 }
 #about,
 #road,
@@ -106,6 +112,28 @@ input {
 #social,
 #market {
   display: none;
+}
+#minthead {
+  grid-column: 1/3;
+  grid-row: 1;
+  text-align: center;
+}
+#mintinfo {
+  grid-column: 1/3;
+  grid-row: 3;
+  text-align: center;
+}
+#greenmnt {
+  grid-row: 2;
+  background: mediumseagreen;
+  padding: 1em;
+  border-radius: 9px;
+}
+#pubmnt {
+  grid-row: 2;
+  background: cornflowerblue;
+  padding: 1em;
+  border-radius: 9px;
 }
 #uForm {
   grid-row: 2;

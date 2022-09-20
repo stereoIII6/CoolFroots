@@ -3,7 +3,7 @@
 //          MAIN CONTRACT               //
 //          III6 LifeAnd.Eth            //
 //          stereoIII6                  //
-//          stereodocbush@gmail.com      //
+//          stereodocbush@gmail.com     //
 //                                      //
 //////////////////////////////////////////
 
@@ -26,6 +26,7 @@ const ipfs = client.create({
   protocol: "https",
 });
 const Greenlist = require("../dist/contracts/Greenlist.json");
+const FrootyCoolTingz = require("../dist/contracts/FrootyCoolTingz.json");
 let provider = new ethers.providers.Web3Provider(window.ethereum);
 let signer = provider.getSigner();
 
@@ -40,6 +41,16 @@ const goRand = () => {
   if (rand < 99999) rand *= 9;
   draw();
 };
+let diasIds = [];
+for (let i = 1; i < 5555; i++) {
+  diasIds[i] = Math.floor(Math.random() * 999999 + 100000);
+  for (let o; o < i; o++) {
+    while (diasIds[o] === diasIds[i] || diasIds[i] <= 99999 || diasIds[i] >= 999999) diasIds[i] = Math.floor(Math.random() * 999999);
+  }
+}
+
+console.log("dias shuffle", JSON.stringify(diasIds));
+console.log("sorted", JSON.stringify(diasIds.sort()));
 
 setInterval(goRand, 5000);
 const bg = document.getElementById("bg_img");
@@ -64,6 +75,12 @@ const swap = document.getElementById("swap");
 const social = document.getElementById("social");
 const minty = document.getElementById("minty");
 const glist = document.getElementById("glist");
+const mintHead = document.getElementById("minthead");
+const gCount = document.getElementById("gCount");
+const pCount = document.getElementById("pCount");
+const gMint = document.getElementById("greenmnt");
+const pMint = document.getElementById("pubmnt");
+
 // swap.style.opacity = 0.5;
 // minty.style.opacity = 0.5;
 // community.style.opacity = 0.5;
@@ -76,7 +93,7 @@ const goInfo = () => {
 info.addEventListener("click", goInfo);
 const goMint = () => {
   shutAll();
-  mint.style.display = "block";
+  mint.style.display = "grid";
 };
 minty.addEventListener("click", goMint);
 const goGreen = () => {
@@ -104,9 +121,16 @@ const shutAll = () => {
 };
 /** wise bunker outdoor enrich piano spray online they issue foster wonder switch */
 const GreenListData = async () => {
-  if (network == 137) return new ethers.Contract("0x97E07a5f15d3FB3FE2bB3692c5D44183bA28F277", Greenlist.abi, signer);
-  else if (network == 80001) return new ethers.Contract("0x420B8B939892fA27De2d2AeC34e644647AAc3D56", Greenlist.abi, signer);
-  else if (network == 9001) return new ethers.Contract("0xecE922B118eEd554Fb9d3318a81FecB8C8D1bD95", Greenlist.abi, signer);
+  // if (network == 137) return new ethers.Contract("0x97E07a5f15d3FB3FE2bB3692c5D44183bA28F277", Greenlist.abi, signer);
+  // else if (network == 80001) return new ethers.Contract("0x420B8B939892fA27De2d2AeC34e644647AAc3D56", Greenlist.abi, signer);
+  /*else*/ if (network == 9000) return new ethers.Contract("0x0f6ee895f93a0525747DdD7c5c177fF65DBD7454", Greenlist.abi, signer);
+  // else if (network == 9001) return new ethers.Contract("0xecE922B118eEd554Fb9d3318a81FecB8C8D1bD95", Greenlist.abi, signer);
+};
+const FrootyCoolTingsData = async () => {
+  // if (network == 137) return new ethers.Contract("0x97E07a5f15d3FB3FE2bB3692c5D44183bA28F277", Greenlist.abi, signer);
+  // else if (network == 80001) return new ethers.Contract("0x420B8B939892fA27De2d2AeC34e644647AAc3D56", Greenlist.abi, signer);
+  /*else*/ if (network == 9000) return new ethers.Contract("0x069BF09A8EDb8C1b3AC7f62bA57C601DBaCc6747", FrootyCoolTingz.abi, signer);
+  // else if (network == 9001) return new ethers.Contract("0xecE922B118eEd554Fb9d3318a81FecB8C8D1bD95", Greenlist.abi, signer);
 };
 const setAdminMsg = async () => {
   const GL = await GreenListData();
@@ -164,10 +188,10 @@ const draw = async () => {
   // body.src = url+"body/"+4+".png";
   bubble.src = url + "bubble/" + Math.floor(Number(String(rand)[2]) / 2) + ".png";
   brow.src = url + "brow/" + Math.floor(Number(String(rand)[3])) + ".png";
-  eye.src = url + "eye/" + String(rand)[4] + ".png";
+  eye.src = url + "eye/" + Math.floor(Number(String(rand)[4])) + ".png";
   let go;
-  if (String(rand)[5] == undefined) go = 0;
-  else go = String(rand)[5];
+  if (String(rand)[5] + String(rand)[0] == undefined) go = "0" + String(rand)[0];
+  else go = Math.floor(Number(String(rand)[5]));
   mouth.src = url + "mouth/" + go + ".png";
   msg.innerHTML = "U CAN EDIT DIS MESSIGE !";
   // // console.log(accounts[0]);
@@ -188,7 +212,7 @@ const setSlot = async () => {
     // console.log(result);
     return Number(result._hex);
   });
-  slots.innerHTML = 1234 - slot;
+  slots.innerHTML = 1 - slot;
 };
 const getStamp = async () => {
   const GL = await GreenListData();
@@ -229,6 +253,53 @@ const goPoly = async () => {
   });
   netSwap();
 };
+const goEvmos = async () => {
+  const change = await ethereum.request({
+    method: "wallet_addEthereumChain",
+    params: [
+      {
+        chainId: "0x2328",
+        chainName: "EVMOS",
+        nativeCurrency: {
+          name: "EVMOS",
+          symbol: "EVMOS",
+          decimals: 18, //In number form
+        },
+        rpcUrls: ["https://eth.bd.evmos.dev:8545"],
+        blockExplorerUrls: ["https://evm.evmos.dev/"],
+      },
+    ],
+  });
+  netSwap();
+};
+const goGreenMint = async (e) => {
+  e.preventDefault();
+  const FCT = await FrootyCoolTingsData();
+  const doGreenMint = await FCT.greenMint(diasID, diasOBJ)
+    .then((result) => {
+      return result;
+    })
+    .catch((err) => {
+      console.error(err);
+    });
+  doGreenMint.wait().then((result) => {
+    return result;
+  });
+};
+const goPubMint = async (e) => {
+  e.preventDefault();
+  const FCT = await FrootyCoolTingsData();
+  const doGreenMint = await FCT.mint(1, diasID, diasOBJ, { value: BigInt(1 * 1e18) })
+    .then((result) => {
+      return result;
+    })
+    .catch((err) => {
+      console.error(err);
+    });
+  doGreenMint.wait().then((result) => {
+    return result;
+  });
+};
 const onClickConnect = async (e) => {
   e.preventDefault();
   try {
@@ -243,11 +314,10 @@ const onClickConnect = async (e) => {
     network = await ethereum.request({ method: "net_version" });
     var networkTag = "Switch Network";
     // evaluate legal networks
-    if (Number(network) !== 137 && Number(network) !== 80001 && Number(network) !== 9001) {
-      // prompt network switch to polygon main
-      goPoly(e);
+    if (Number(network) !== 137 && Number(network) !== 80001 && Number(network) !== 9001 && Number(network) !== 9000) {
+      // prompt network switch to evmos main
+      goEvmos(e);
     } else {
-      networkTag = "Polygon";
       // console.log(networkTag);
       set.style.display = "block";
       btn.removeEventListener("click", onClickConnect);
@@ -258,7 +328,45 @@ const onClickConnect = async (e) => {
         // console.log(result);
         return result;
       });
-      setSlot();
+      const FCT = await FrootyCoolTingsData();
+      const mintState = await FCT.start()
+        .then((result) => {
+          return result;
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+      const slozNum = await GL.l()
+        .then((result) => {
+          return result;
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+      const minted = await FCT.minted()
+        .then((result) => {
+          return result;
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+      if (mintState) {
+        mintHead.innerHTML = "MINT IS LIVE NOW !";
+        gMint.addEventListener("click", goGreenMint);
+        pMint.addEventListener("click", goPubMint);
+      } else {
+        mintHead.innerHTML = `<h2>MINT GO'S LIVE AGTER JUST ${1 - slozNum} MORE GREENLIST SIGNUPS !</h2>`; // Testnet
+        // else mintHead.innerHTML = `<h2>MINT GO'S LIVE IN ${1234 - mintState} MORE GREENLIST SIGNUPS !</h2>`; // Mainnet
+
+        gMint.removeEventListener("click", goGreenMint);
+        pMint.removeEventListener("click", goPubMint);
+        // minty.disabled = true;
+      }
+      gCount.innerHTML = 1 - slozNum; // Testnet
+      // gCount.innerHTML = 1234 - slozNum; // Mainnet
+      pCount.innerHTML = 5 - minted; // Testnet
+      // pCount.innerHTML = 4321 - minted; // mainnet
+
       if (Number(admin) === Number(accounts[0])) {
         // set.removeEventListener("click", setNewMsg);
         set.addEventListener("click", setAdminMsg);
