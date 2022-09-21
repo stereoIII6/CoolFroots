@@ -8,6 +8,7 @@
 //////////////////////////////////////////
 
 import { ethers } from "ethers";
+import Web3 from "web3";
 import detectEthereumProvider from "@metamask/detect-provider";
 import "../public/app.scss";
 import { sha256 } from "crypto-hash";
@@ -27,7 +28,9 @@ const ipfs = client.create({
 });
 const Greenlist = require("../dist/contracts/Greenlist.json");
 const FrootyCoolTingz = require("../dist/contracts/FrootyCoolTingz.json");
-let provider = new ethers.providers.Web3Provider(window.ethereum);
+const Ice = require("../dist/contracts/ICE.json");
+const Market = require("../dist/contracts/Market.json");
+const provider = new ethers.providers.Web3Provider(window.ethereum);
 let signer = provider.getSigner();
 
 // const url = "https://gateway.pinata.cloud/ipfs/QmamRUaez9fyXpeuTuiKCNvrKSsLxid4hzyKKkJXSi67LL/";
@@ -79,12 +82,13 @@ const mintHead = document.getElementById("minthead");
 const gCount = document.getElementById("gCount");
 const pCount = document.getElementById("pCount");
 const gMint = document.getElementById("greenmnt");
+const gMintNow = document.getElementById("gMintNow");
 const pMint = document.getElementById("pubmnt");
+const pMintNow = document.getElementById("pMintNow");
 const tCount = document.getElementById("tCount");
+const btn = document.getElementById("btn");
 
-// swap.style.opacity = 0.5;
-// minty.style.opacity = 0.5;
-// community.style.opacity = 0.5;
+// MAIN NAVIGATION LINKS
 
 const goInfo = () => {
   shutAll();
@@ -120,7 +124,8 @@ const shutAll = () => {
   road.style.display = "none";
   mint.style.display = "none";
 };
-/** wise bunker outdoor enrich piano spray online they issue foster wonder switch */
+
+// CONTRACT IMPORT
 const GreenListData = async () => {
   let a;
   if (Number(network) === 9000) a = 0;
@@ -128,7 +133,7 @@ const GreenListData = async () => {
   else if (Number(network) === 80001) a = 1;
   else if (Number(network) === 137) a = 3;
   const deploymentKey = await Object.keys(Greenlist.networks)[a];
-  console.log(deploymentKey, a, network);
+  // console.log(deploymentKey, a, network);
   return new ethers.Contract(Greenlist.networks[deploymentKey].address, Greenlist.abi, signer);
 };
 const FrootyCoolTingsData = async () => {
@@ -138,9 +143,165 @@ const FrootyCoolTingsData = async () => {
   else if (Number(network) === 80001) a = 1;
   else if (Number(network) === 137) a = 3;
   const deploymentKey = await Object.keys(FrootyCoolTingz.networks)[a];
-  console.log(deploymentKey, a, network);
+  // console.log(deploymentKey, a, network);
   return new ethers.Contract(FrootyCoolTingz.networks[deploymentKey].address, FrootyCoolTingz.abi, signer);
 };
+const IceData = async () => {
+  let a;
+  if (Number(network) === 9000) a = 0;
+  else if (Number(network) === 9001) a = 4;
+  else if (Number(network) === 80001) a = 1;
+  else if (Number(network) === 137) a = 3;
+  const deploymentKey = await Object.keys(Ice.networks)[a];
+  // console.log(deploymentKey, a, network);
+  return new ethers.Contract(Ice.networks[deploymentKey].address, Ice.abi, signer);
+};
+const MarketData = async () => {
+  let a;
+  if (Number(network) === 9000) a = 0;
+  else if (Number(network) === 9001) a = 4;
+  else if (Number(network) === 80001) a = 1;
+  else if (Number(network) === 137) a = 3;
+  const deploymentKey = await Object.keys(Market.networks)[a];
+  // console.log(deploymentKey, a, network);
+  return new ethers.Contract(Market.networks[deploymentKey].address, Market.abi, signer);
+};
+// CONTRACT VARS
+// Greenlist
+let GL;
+let glSlotMax;
+let glSlotsTaken;
+let glMsg;
+let glStamp;
+let glAdmin;
+let glFctAdr;
+const getGreenVars = async () => {
+  GL = await GreenListData();
+  glSlotMax = await GL.max()
+    .then((result) => {
+      return Number(result._hex);
+    })
+    .catch((err) => {
+      console.error(err);
+    });
+  glSlotsTaken = await GL.l()
+    .then((result) => {
+      return Number(result._hex);
+    })
+    .catch((err) => {
+      console.error(err);
+    });
+  glMsg = await GL.message()
+    .then((result) => {
+      return Number(result._hex);
+    })
+    .catch((err) => {
+      console.error(err);
+    });
+  glStamp = await GL.stamp()
+    .then((result) => {
+      return Number(result._hex);
+    })
+    .catch((err) => {
+      console.error(err);
+    });
+  glAdmin = await GL.admin();
+  glFctAdr = await GL.FCT();
+  return glSlotMax, glSlotsTaken, glMsg, glStamp;
+};
+
+// ICE
+let ICE;
+let icePrice;
+const getIceVars = async () => {
+  ICE = await IceData();
+  icePrice = await ICE.price()
+    .then((result) => {
+      return Number(result._hex);
+    })
+    .catch((err) => {
+      console.error(err);
+    });
+};
+
+// Froots
+let FCT;
+let fctPrice;
+let fctMaxMints;
+let fctMax;
+let fctMinted;
+let fctSlotMax;
+let fctSlotsMinted;
+let fctStart;
+const getFrootVars = async () => {
+  FCT = await FrootyCoolTingsData();
+  fctPrice = await FCT.price()
+    .then((result) => {
+      return Number(result._hex);
+    })
+    .catch((err) => {
+      console.error(err);
+    });
+  fctMaxMints = await FCT.num()
+    .then((result) => {
+      return Number(result._hex);
+    })
+    .catch((err) => {
+      console.error(err);
+    });
+  fctMax = await FCT.max()
+    .then((result) => {
+      return Number(result._hex);
+    })
+    .catch((err) => {
+      console.error(err);
+    });
+  fctMinted = await FCT.minted()
+    .then((result) => {
+      return Number(result._hex);
+    })
+    .catch((err) => {
+      console.error(err);
+    });
+  fctSlotMax = await FCT.sloz()
+    .then((result) => {
+      return Number(result._hex);
+    })
+    .catch((err) => {
+      console.error(err);
+    });
+  fctSlotsMinted = await FCT.slots()
+    .then((result) => {
+      return Number(result._hex);
+    })
+    .catch((err) => {
+      console.error(err);
+    });
+  fctStart = await FCT.start()
+    .then((result) => {
+      return Number(result._hex);
+    })
+    .catch((err) => {
+      console.error(err);
+    });
+  // fctAdr = await FCT().address;
+  return fctStart, fctMax, fctMinted;
+};
+// Market
+let MRKT;
+let marketRoy;
+const getMarketVars = async () => {
+  MRKT = await MarketData();
+  marketRoy = await MRKT.roy()
+    .then((result) => {
+      return Number(result._hex);
+    })
+    .catch((err) => {
+      console.error(err);
+    });
+};
+
+// GREENMINT DISPLAY
 const setAdminMsg = async () => {
   const GL = await GreenListData();
   const NewMsg = await GL.setMsgAdmin(new_msg.value)
@@ -214,14 +375,15 @@ const draw = async () => {
 };
 
 draw();
-const btn = document.getElementById("btn");
+
 const setSlot = async () => {
-  const GL = await GreenListData();
-  const slot = await GL.l().then((result) => {
-    // console.log(result);
-    return Number(result._hex);
-  });
-  slots.innerHTML = 1 - slot;
+  slots.innerHTML = glSlotMax - glSlotsTaken;
+
+  gCount.innerHTML = fctSlotMax - fctSlotsMinted; // Testnet
+  // gCount.innerHTML = slozMax - slozNum; // Mainnet
+  pCount.innerHTML = fctMax - fctMinted + fctSlotsMinted; // Testnet
+  // pCount.innerHTML = 4321 - minted; // mainnet
+  tCount.innerHTML = fctMax - fctMinted + fctSlotsMinted;
 };
 const getStamp = async () => {
   const GL = await GreenListData();
@@ -283,7 +445,6 @@ const goEvmos = async () => {
 };
 const goGreenMint = async (e) => {
   e.preventDefault();
-  const FCT = await FrootyCoolTingsData();
   const count = await FCT.minted()
     .then((result) => {
       return result;
@@ -304,26 +465,51 @@ const goGreenMint = async (e) => {
   let diasOBJ = diasTemp.diasObject;
   const doGreenMint = await FCT.greenMint([diasID], [diasOBJ])
     .then((result) => {
+      gMintNow.innerHTML = "MINTING";
       return result;
     })
     .catch((err) => {
       console.error(err);
+      gMintNow.innerHTML = err.data.message.split(": ")[1];
     });
   doGreenMint.wait().then((result) => {
+    gMintNow.innerHTML = "MINTED";
+    setSlot();
     return result;
   });
 };
 const goPubMint = async (e) => {
   e.preventDefault();
-  const FCT = await FrootyCoolTingsData();
-  const doGreenMint = await FCT.mint(1, diasID, diasOBJ, { value: BigInt(1 * 1e18) })
+  const count = await FCT.minted()
     .then((result) => {
       return result;
     })
     .catch((err) => {
       console.error(err);
     });
-  doGreenMint.wait().then((result) => {
+  const diasTemp = await fetch("./json/dias_base.json")
+    .then((response) => response.json())
+    .then((json) => {
+      console.log(json);
+      return json;
+    });
+  const minted = await FCT.minted().then((result) => {
+    return Number(result._hex);
+  });
+  let diasID = diasTemp.diasIds[minted];
+  let diasOBJ = diasTemp.diasObject;
+  const doPubMint = await FCT.mint(1, [diasID], [diasOBJ], { value: BigInt(5 * 1e14) })
+    .then((result) => {
+      pMintNow.innerHTML = "MINTING";
+      return result;
+    })
+    .catch((err) => {
+      console.error(err);
+      pMintNow.innerHTML = err.data.message.split(": ")[1];
+    });
+  doPubMint.wait().then((result) => {
+    pMintNow.innerHTML = "MINTED";
+    setSlot();
     return result;
   });
 };
@@ -342,9 +528,8 @@ const goSetFCT = async () => {
     .catch((err) => {
       console.error(err);
     });
-  setFCT.wait().then((result) => {
-    alert("THE FROOT CONTRACT HAS BEEN SET TO " + FrootyCoolTingz.networks[deploymentKey].address)[a];
-  });
+  setFCT.wait().then((result) => {});
+  alert(`THE FROOT CONTRACT HAS BEEN SET TO ${FrootyCoolTingz.networks[deploymentKey].address}`);
 };
 const onClickConnect = async (e) => {
   e.preventDefault();
@@ -369,99 +554,39 @@ const onClickConnect = async (e) => {
       btn.removeEventListener("click", onClickConnect);
       btn.innerHTML = "GWAB GREENLIZ SLOZ NOW";
       btn.addEventListener("click", goGreenList);
-      const GL = await GreenListData();
-      const admin = await GL.admin().then((result) => {
-        // console.log(result);
-        return result;
-      });
-      const fctAdr = await GL.FCT()
-        .then((result) => {
-          return result;
-        })
-        .catch((err) => {
-          console.error(err);
-        });
+
+      await getGreenVars();
+      await getIceVars();
+      await getFrootVars();
+      await getMarketVars();
       let a;
-      console.log(network, "here");
+
       if (Number(network) === 80001) a = 0;
       if (Number(network) === 9000) a = 1;
       if (Number(network) === 9001) a = 2;
       if (Number(network) === 137) a = 3;
       const deploymentKey = await Object.keys(FrootyCoolTingz.networks)[a];
-      if (FrootyCoolTingz.networks[deploymentKey].address !== fctAdr) {
-        console.log(fctAdr);
+      console.log(Number(FrootyCoolTingz.networks[deploymentKey].address), Number(glFctAdr));
+      if (Number(FrootyCoolTingz.networks[deploymentKey].address) !== Number(glFctAdr)) {
+        // console.log(fctAdr);
         goSetFCT();
       }
+      console.log(fctStart);
+      if (fctMax > 0) {
+        mintHead.innerHTML = "<h2>MINT IS LIVE NOW !</h2>";
+        gMint.addEventListener("click", goGreenMint);
+        pMint.addEventListener("click", goPubMint);
+      } else {
+        mintHead.innerHTML = `<h2>MINT GO'S LIVE AFTER<br/> ${fctMax - fctMinted} MORE GREENLIST !</h2>`; // Testnet
+        // else mintHead.innerHTML = `<h2>MINT GO'S LIVE AFTER<br/> ${1234 - mintState} MORE GREENLIST !</h2>`; // Mainnet
 
-      const FCT = await FrootyCoolTingsData();
-      const mintState = await FCT.start()
-        .then((result) => {
-          return result;
-        })
-        .catch((err) => {
-          console.error(err);
-        });
-      const slozNum = await GL.l()
-        .then((result) => {
-          return result;
-        })
-        .catch((err) => {
-          console.error(err);
-        });
-      const slozMax = await GL.max()
-        .then((result) => {
-          return result;
-        })
-        .catch((err) => {
-          console.error(err);
-        });
-      const minted = await FCT.minted()
-        .then((result) => {
-          return result;
-        })
-        .catch((err) => {
-          console.error(err);
-        });
-      console.log(slozNum, slozMax);
-      if (slozNum == slozMax) {
-        const cMS = await FCT.changeMS()
-          .then((result) => {
-            return result;
-            console.log(result);
-          })
-          .catch((err) => {
-            console.error(err);
-          });
-
-        if (cMS) {
-          console.log(cMS);
-          mintHead.innerHTML = "MINT IS LIVE NOW !";
-          gMint.addEventListener("click", goGreenMint);
-          pMint.addEventListener("click", goPubMint);
-        } else {
-          console.log(cMS);
-          const slotsNum = await FCT.slots()
-            .then((result) => {
-              return result;
-            })
-            .catch((err) => {
-              console.error(err);
-            });
-          mintHead.innerHTML = `<h2>MINT GO'S LIVE AFTER<br/> ${1 - slotsNum} MORE GREENLIST !</h2>`; // Testnet
-          // else mintHead.innerHTML = `<h2>MINT GO'S LIVE AFTER<br/> ${1234 - mintState} MORE GREENLIST !</h2>`; // Mainnet
-
-          gMint.removeEventListener("click", goGreenMint);
-          pMint.removeEventListener("click", goPubMint);
-          // minty.disabled = true;
-        }
+        gMint.removeEventListener("click", goGreenMint);
+        pMint.removeEventListener("click", goPubMint);
+        // minty.disabled = true;
       }
-      gCount.innerHTML = 1 - slozNum; // Testnet
-      // gCount.innerHTML = 1234 - slozNum; // Mainnet
-      pCount.innerHTML = 5 - minted; // Testnet
-      // pCount.innerHTML = 4321 - minted; // mainnet
-      tCount.innerHTML = 5 - minted + (1 - slozNum);
+
       setSlot();
-      if (Number(admin) === Number(accounts[0])) {
+      if (Number(await GL.admin()) === Number(accounts[0])) {
         // set.removeEventListener("click", setNewMsg);
         set.addEventListener("click", setAdminMsg);
         // getStamp();
@@ -535,6 +660,7 @@ const web3init = async () => {
     window.open("https://metamask.io");
   };
   const MetaMaskClientCheck = () => {
+    console.log(isMetaMaskInstalled());
     //Now we check to see if MetaMask is installed
     if (!isMetaMaskInstalled()) {
       //If it isn't installed we ask the user to click to install it
@@ -542,7 +668,7 @@ const web3init = async () => {
       btn.addEventListener("click", clickInstall);
     } else {
       //If it is installed we change our button text
-      btn.innerText = "connect";
+      btn.innerText = "connec";
       btn.addEventListener("click", onClickConnect);
     }
   };

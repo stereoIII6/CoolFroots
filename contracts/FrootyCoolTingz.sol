@@ -290,7 +290,10 @@ contract FrootyCoolTingz is ERC721 {
         uint256[] memory _diasIDs,
         string[] memory _diasOBJs
     ) internal returns (uint256) {
-        require(balanceOf(_adr) + _amnt <= num, "EXCEEDED MAX MINTABLE TOKENS");
+        require(
+            balanceOf(_adr) + _amnt <= num,
+            "EXCEEDED MAX MINTABLE TOKENS PER WALLET"
+        );
         require(minted + _amnt <= max, "NOT ENOUGH SUPPLY");
         // INTERNAL // MINTS UP TO 7 TOKENS IN ONE TX
         mintOne(_adr, _diasIDs[0], _diasOBJs[0]);
