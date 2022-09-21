@@ -5556,5 +5556,135 @@
     999933,
     null
   ],
-  "diasObject": {}
+  "diasObject": {
+    "name": "Frooty Cool Tings",
+    "sym": "FROOT",
+    "author": "stereoIII6.eth",
+    "image": "https://ipfs.io/ipfs",
+    "id": 0,
+    "diasId": 999999,
+    "diasName": "ninetynine ninetynine ninetynine",
+    "traits": {
+      "background": 0,
+      "body": 0,
+      "bubble": 0,
+      "brows": 0,
+      "eyes": 0,
+      "mouth": 0,
+      "ice": 0,
+      "fly": 0
+    },
+    "dias": {
+      "layers": [
+        {
+          "id": 0,
+          "type": "image",
+          "name": "bg",
+          "data": {
+            "filename": "bg/0.png",
+            "hash": "123456789123456789123456789/",
+            "ipfs": "https://ipfs.io/ipfs/",
+            "fallback": "./images/"
+          },
+          "keys": [{ "id": 0, "name": "init", "x": 0, "y": 0, "w": 0, "h": 0, "o": 0, "r": 0, "plx": "far" }]
+        },
+        {
+          "id": 1,
+          "type": "image",
+          "name": "body",
+          "data": {
+            "filename": "body/0.png",
+            "hash": "123456789123456789123456789/",
+            "ipfs": "https://ipfs.io/ipfs/",
+            "fallback": "./images/"
+          },
+          "keys": [{ "id": 0, "name": "init", "x": 0, "y": 0, "w": 0, "h": 0, "o": 0, "r": 0, "plx": "mid" }]
+        },
+        {
+          "id": 2,
+          "type": "image",
+          "name": "mouth",
+          "data": {
+            "filename": "mouth/0.png",
+            "hash": "123456789123456789123456789/",
+            "ipfs": "https://ipfs.io/ipfs/",
+            "fallback": "./images/"
+          },
+          "keys": [{ "id": 0, "name": "init", "x": 0, "y": 0, "w": 0, "h": 0, "o": 0, "r": 0, "plx": "mid" }]
+        },
+        {
+          "id": 3,
+          "type": "image",
+          "name": "brow",
+          "data": {
+            "filename": "brow/0.png",
+            "hash": "123456789123456789123456789/",
+            "ipfs": "https://ipfs.io/ipfs/",
+            "fallback": "./images/"
+          },
+          "keys": [{ "id": 0, "name": "init", "x": 0, "y": 0, "w": 0, "h": 0, "o": 0, "r": 0, "plx": "mid" }]
+        },
+        {
+          "id": 4,
+          "type": "image",
+          "name": "eye",
+          "data": {
+            "filename": "eye/0.png",
+            "hash": "123456789123456789123456789/",
+            "ipfs": "https://ipfs.io/ipfs/",
+            "fallback": "./images/"
+          },
+          "keys": [{ "id": 0, "name": "init", "x": 0, "y": 0, "w": 0, "h": 0, "o": 0, "r": 0, "plx": "mid" }]
+        },
+        {
+          "id": 5,
+          "type": "image",
+          "name": "bubble",
+          "data": {
+            "filename": "bubble/0.png",
+            "hash": "123456789123456789123456789/",
+            "ipfs": "https://ipfs.io/ipfs/",
+            "fallback": "./images/"
+          },
+          "keys": [{ "id": 0, "name": "init", "x": 0, "y": 0, "w": 0, "h": 0, "o": 0, "r": 0, "plx": "close" }]
+        },
+        {
+          "id": 6,
+          "type": "text",
+          "name": "message_input",
+          "data": {
+            "filename": "message_input",
+            "hash": "null",
+            "ipfs": "null",
+            "fallback": "FROOTY COOL TING !"
+          },
+          "keys": [{ "id": 0, "name": "init", "x": 0, "y": 0, "w": 0, "h": 0, "o": 0, "r": 0, "plx": "close" }]
+        },
+        {
+          "id": 7,
+          "type": "image",
+          "name": "ice",
+          "data": {
+            "filename": "bubble/0.png",
+            "hash": "123456789123456789123456789/",
+            "ipfs": "https://ipfs.io/ipfs/",
+            "fallback": "./images/"
+          },
+          "keys": [{ "id": 0, "name": "init", "x": 0, "y": 0, "w": 0, "h": 0, "o": 0, "r": 0, "plx": "far" }]
+        },
+        {
+          "id": 8,
+          "type": "image",
+          "name": "fly",
+          "data": {
+            "filename": "bubble/0.png",
+            "hash": "123456789123456789123456789/",
+            "ipfs": "https://ipfs.io/ipfs/",
+            "fallback": "./images/"
+          },
+          "keys": [{ "id": 0, "name": "init", "x": 0, "y": 0, "w": 0, "h": 0, "o": 0, "r": 0, "plx": "far" }]
+        }
+      ]
+    }
+  }
 }
