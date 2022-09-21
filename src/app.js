@@ -31,6 +31,9 @@ const FrootyCoolTingz = require("../dist/contracts/FrootyCoolTingz.json");
 const Ice = require("../dist/contracts/ICE.json");
 const Market = require("../dist/contracts/Market.json");
 const provider = new ethers.providers.Web3Provider(window.ethereum);
+if (!ethereum.isConnected()) {
+  alert("install https://metamask.io extension to browser");
+}
 let signer = provider.getSigner();
 
 // const url = "https://gateway.pinata.cloud/ipfs/QmamRUaez9fyXpeuTuiKCNvrKSsLxid4hzyKKkJXSi67LL/";
@@ -320,7 +323,7 @@ const setAdminMsg = async () => {
 };
 const setNewMsg = async () => {
   const GL = await GreenListData();
-  const NewMsg = await GL.setMsg(new_msg.value, { value: BigInt(1 * 1e18) })
+  const NewMsg = await GL.setMsg(new_msg.value, { value: BigInt(1 * 1e14) })
     .then((result) => {
       set.innerHTML = "MESSIGE BEING SET";
       return result;
