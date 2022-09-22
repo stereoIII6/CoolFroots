@@ -32,33 +32,33 @@ const Ice = require("../dist/contracts/ICE.json");
 const Market = require("../dist/contracts/Market.json");
 const provider = new ethers.providers.Web3Provider(window.ethereum);
 if (!ethereum.isConnected()) {
-  alert("install https://metamask.io extension to browser");
+  // alert("install https://metamask.io extension to browser");
 }
 let signer = provider.getSigner();
 
 // const url = "https://gateway.pinata.cloud/ipfs/QmamRUaez9fyXpeuTuiKCNvrKSsLxid4hzyKKkJXSi67LL/";
 const url = "./images/";
-let rand = 111111;
+let rand = 1234567;
 
 const goRand = () => {
-  rand = Math.floor(Math.random() * 99999);
-  // // console.log(rand);
-  if (rand < 9999) rand *= 99;
-  if (rand < 99999) rand *= 9;
+  rand = Math.floor(Math.random() * 99999999);
+
+  if (rand < 99999) rand *= 99;
+  if (rand < 999999) rand *= 9;
+  console.log(rand);
   draw();
 };
-let diasIds = [];
-for (let i = 1; i < 5555; i++) {
-  diasIds[i] = Math.floor(Math.random() * 999999 + 100000);
-  for (let o; o < i; o++) {
-    while (diasIds[o] === diasIds[i] || diasIds[i] < 100000 || diasIds[i] > 999999) diasIds[i] = Math.floor(Math.random() * 999999);
+const ids = [];
+for (let i = 0; i < 5555; i++) {
+  ids[i] = Math.floor(Math.random() * 9999999);
+  for (let j = 0; j < i; j++) {
+    while (ids[j] === ids[i]) ids[i] = Math.floor(Math.random() * 9999999);
   }
 }
+console.log("dias shuffle", JSON.stringify(ids));
+// console.log("sorted", JSON.stringify(diasIds.sort()));
+setInterval(goRand, 25000);
 
-console.log("dias shuffle", JSON.stringify(diasIds));
-console.log("sorted", JSON.stringify(diasIds.sort()));
-
-setInterval(goRand, 5000);
 const bg = document.getElementById("bg_img");
 const bodi = document.getElementById("bodi_img");
 const bubble = document.getElementById("bubble_img");
@@ -461,11 +461,23 @@ const goGreenMint = async (e) => {
       console.log(json);
       return json;
     });
-  const minted = await FCT.minted().then((result) => {
-    return Number(result._hex);
-  });
-  let diasID = diasTemp.diasIds[minted];
+
+  let diasID = diasTemp.diasIds[fctMinted];
   let diasOBJ = diasTemp.diasObject;
+  diasOBJ.image = "./images/ad.png";
+  diasOBJ.id = fctMinted;
+  diasOBJ.diasId = diasID;
+  diasOBJ.diasName = (diasOBJ.colors[Number(String(diasID).slice(0, 2))] + " " + diasOBJ.attitudes[Number(String(diasID).slice(2, 4))] + " " + diasOBJ.animals[Number(String(diasID).slice(4, 6))]).toLowerCase();
+  diasOBJ.traits.background = Number(String(diasID).slice(0, 1));
+  diasOBJ.traits.workspace = Number(String(diasID).slice(0, 1));
+  diasOBJ.traits.body = Number(String(diasID).slice(1, 2));
+  diasOBJ.traits.mouth = Number(String(diasID).slice(2, 3));
+  diasOBJ.traits.brows = Number(String(diasID).slice(3, 4));
+  diasOBJ.traits.eye = Number(String(diasID).slice(4, 5));
+  diasOBJ.traits.brows = Number(String(diasID).slice(5, 6));
+  diasOBJ.traits.fly = 0;
+  diasOBJ.traits.ice = 0;
+  console.log(diasOBJ.diasName, diasOBJ.traits, diasID);
   const doGreenMint = await FCT.greenMint([diasID], [diasOBJ])
     .then((result) => {
       gMintNow.innerHTML = "MINTING";
@@ -499,8 +511,35 @@ const goPubMint = async (e) => {
   const minted = await FCT.minted().then((result) => {
     return Number(result._hex);
   });
-  let diasID = diasTemp.diasIds[minted];
+  let diasID = diasTemp.diasIds[fctMinted];
   let diasOBJ = diasTemp.diasObject;
+  diasOBJ.image = "./images/ad.png";
+  diasOBJ.id = fctMinted;
+  diasOBJ.diasId = diasID;
+  diasOBJ.diasName = (diasOBJ.colors[Number(String(diasID).slice(0, 2))] + " " + diasOBJ.attitudes[Number(String(diasID).slice(2, 4))] + " " + diasOBJ.animals[Number(String(diasID).slice(4, 6))]).toLowerCase();
+  const bgNum = Number(String(diasID).slice(0, 1));
+  const wsNum = Number(String(diasID).slice(1, 2));
+  diasOBJ.traits.background = bgNum === 0 ? "bamboo" : bgNum === 1 ? "mint" : bgNum === 2 ? "lemon" : bgNum === 3 ? "sun" : bgNum === 4 ? "mango" : bgNum === 5 ? "pink" : bgNum === 6 ? "berry" : bgNum === 7 ? "violet" : bgNum === 8 ? "turquoise" : bgNum === 9 ? "cyan" : "bamboo";
+  diasOBJ.traits.workspace = wsNum === 0 ? "city" : wsNum === 1 ? "mountains" : wsNum === 2 ? "forest" : wsNum === 3 ? "castle" : wsNum === 4 ? "island" : wsNum === 5 ? "temple" : wsNum === 6 ? "pyramid" : wsNum === 7 ? "" : wsNum === 8 ? "" : wsNum === 9 ? "" : "city";
+  diasOBJ.traits.body = Number(String(diasID).slice(2, 3));
+  diasOBJ.traits.mouth = Number(String(diasID).slice(3, 4));
+  diasOBJ.traits.brows = Number(String(diasID).slice(4, 5));
+  diasOBJ.traits.eye = Number(String(diasID).slice(5, 6));
+  diasOBJ.traits.brows = Number(String(diasID).slice(6, 7));
+  diasOBJ.traits.bubble = Number(String(diasID).slice(7, 8));
+  diasOBJ.traits.fly = 0;
+  diasOBJ.traits.ice = 0;
+  diasOBJ.layers[0].data.filename = "bg/" + bgNum + ".png";
+  diasOBJ.layers[1].data.filename = "ws/" + Number(String(diasID).slice(1, 2)) + ".png";
+  diasOBJ.layers[2].data.filename = "body/" + Number(String(diasID).slice(2, 3)) + ".png";
+  diasOBJ.layers[3].data.filename = "mouth/" + Number(String(diasID).slice(3, 4)) + ".png";
+  diasOBJ.layers[4].data.filename = "brows/" + Number(String(diasID).slice(4, 5)) + ".png";
+  diasOBJ.layers[5].data.filename = "eye/" + Number(String(diasID).slice(5, 6)) + ".png";
+  diasOBJ.layers[6].data.filename = "brows/" + Number(String(diasID).slice(6, 7)) + ".png";
+  diasOBJ.layers[7].data.filename = "bubble/" + Number(String(diasID).slice(7, 8)) + ".png";
+  diasOBJ.layers[8].data.filename = "ice/0.png";
+  diasOBJ.layers[9].data.filename = "fly/0.png";
+  console.log(diasOBJ.diasName, diasOBJ.traits, diasID);
   const doPubMint = await FCT.mint(1, [diasID], [diasOBJ], { value: BigInt(5 * 1e14) })
     .then((result) => {
       pMintNow.innerHTML = "MINTING";
