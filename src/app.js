@@ -35,11 +35,9 @@ if (!ethereum.isConnected()) {
   // alert("install https://metamask.io extension to browser");
 }
 let signer = provider.getSigner();
-
 // const url = "https://gateway.pinata.cloud/ipfs/QmamRUaez9fyXpeuTuiKCNvrKSsLxid4hzyKKkJXSi67LL/";
 const url = "./images/";
 let rand = 1234567;
-
 const goRand = () => {
   rand = Math.floor(Math.random() * 99999999);
 
@@ -131,40 +129,40 @@ const shutAll = () => {
 // CONTRACT IMPORT
 const GreenListData = async () => {
   let a;
-  if (Number(network) === 9000) a = 0;
-  else if (Number(network) === 9001) a = 4;
-  else if (Number(network) === 80001) a = 1;
-  else if (Number(network) === 137) a = 3;
+  if (Number(network) === 9000) a = 2;
+  else if (Number(network) === 9001) a = 2;
+  else if (Number(network) === 80001) a = 0;
+  else if (Number(network) === 137) a = 1;
   const deploymentKey = await Object.keys(Greenlist.networks)[a];
   // console.log(deploymentKey, a, network);
   return new ethers.Contract(Greenlist.networks[deploymentKey].address, Greenlist.abi, signer);
 };
 const FrootyCoolTingsData = async () => {
   let a;
-  if (Number(network) === 9000) a = 0;
-  else if (Number(network) === 9001) a = 4;
-  else if (Number(network) === 80001) a = 1;
-  else if (Number(network) === 137) a = 3;
+  if (Number(network) === 9000) a = 2;
+  else if (Number(network) === 9001) a = 2;
+  else if (Number(network) === 80001) a = 0;
+  else if (Number(network) === 137) a = 1;
   const deploymentKey = await Object.keys(FrootyCoolTingz.networks)[a];
   // console.log(deploymentKey, a, network);
   return new ethers.Contract(FrootyCoolTingz.networks[deploymentKey].address, FrootyCoolTingz.abi, signer);
 };
 const IceData = async () => {
   let a;
-  if (Number(network) === 9000) a = 0;
-  else if (Number(network) === 9001) a = 4;
-  else if (Number(network) === 80001) a = 1;
-  else if (Number(network) === 137) a = 3;
+  if (Number(network) === 9000) a = 2;
+  else if (Number(network) === 9001) a = 2;
+  else if (Number(network) === 80001) a = 0;
+  else if (Number(network) === 137) a = 1;
   const deploymentKey = await Object.keys(Ice.networks)[a];
   // console.log(deploymentKey, a, network);
   return new ethers.Contract(Ice.networks[deploymentKey].address, Ice.abi, signer);
 };
 const MarketData = async () => {
   let a;
-  if (Number(network) === 9000) a = 0;
-  else if (Number(network) === 9001) a = 4;
-  else if (Number(network) === 80001) a = 1;
-  else if (Number(network) === 137) a = 3;
+  if (Number(network) === 9000) a = 2;
+  else if (Number(network) === 9001) a = 2;
+  else if (Number(network) === 80001) a = 0;
+  else if (Number(network) === 137) a = 1;
   const deploymentKey = await Object.keys(Market.networks)[a];
   // console.log(deploymentKey, a, network);
   return new ethers.Contract(Market.networks[deploymentKey].address, Market.abi, signer);
