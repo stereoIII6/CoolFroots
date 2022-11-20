@@ -511,6 +511,7 @@ const goPubMint = async (e) => {
   });
   let diasID = diasTemp.diasIds[fctMinted];
   let diasOBJ = diasTemp.diasObject;
+  console.log("DIAS // ", diasOBJ);
   diasOBJ.image = "./images/ad.png";
   diasOBJ.id = fctMinted;
   diasOBJ.diasId = diasID;
@@ -527,16 +528,16 @@ const goPubMint = async (e) => {
   diasOBJ.traits.bubble = Number(String(diasID).slice(7, 8));
   diasOBJ.traits.fly = 0;
   diasOBJ.traits.ice = 0;
-  diasOBJ.layers[0].data.filename = "bg/" + bgNum + ".png";
-  diasOBJ.layers[1].data.filename = "ws/" + Number(String(diasID).slice(1, 2)) + ".png";
-  diasOBJ.layers[2].data.filename = "body/" + Number(String(diasID).slice(2, 3)) + ".png";
-  diasOBJ.layers[3].data.filename = "mouth/" + Number(String(diasID).slice(3, 4)) + ".png";
-  diasOBJ.layers[4].data.filename = "brows/" + Number(String(diasID).slice(4, 5)) + ".png";
-  diasOBJ.layers[5].data.filename = "eye/" + Number(String(diasID).slice(5, 6)) + ".png";
-  diasOBJ.layers[6].data.filename = "brows/" + Number(String(diasID).slice(6, 7)) + ".png";
-  diasOBJ.layers[7].data.filename = "bubble/" + Number(String(diasID).slice(7, 8)) + ".png";
-  diasOBJ.layers[8].data.filename = "ice/0.png";
-  diasOBJ.layers[9].data.filename = "fly/0.png";
+  diasOBJ.dias.layers[0].data.filename = "bg/" + bgNum + ".png";
+  diasOBJ.dias.layers[1].data.filename = "ws/" + Number(String(diasID).slice(1, 2)) + ".png";
+  diasOBJ.dias.layers[2].data.filename = "body/" + Number(String(diasID).slice(2, 3)) + ".png";
+  diasOBJ.dias.layers[3].data.filename = "mouth/" + Number(String(diasID).slice(3, 4)) + ".png";
+  diasOBJ.dias.layers[4].data.filename = "brows/" + Number(String(diasID).slice(4, 5)) + ".png";
+  diasOBJ.dias.layers[5].data.filename = "eye/" + Number(String(diasID).slice(5, 6)) + ".png";
+  diasOBJ.dias.layers[6].data.filename = "brows/" + Number(String(diasID).slice(6, 7)) + ".png";
+  diasOBJ.dias.layers[7].data.filename = "bubble/" + Number(String(diasID).slice(7, 8)) + ".png";
+  diasOBJ.dias.layers[8].data.filename = "ice/0.png";
+  diasOBJ.dias.layers[9].data.filename = "fly/0.png";
   console.log(diasOBJ.diasName, diasOBJ.traits, diasID);
   const doPubMint = await FCT.mint(1, [diasID], [diasOBJ], { value: BigInt(5 * 1e14) })
     .then((result) => {
