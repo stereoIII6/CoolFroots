@@ -129,29 +129,29 @@ const shutAll = () => {
 // CONTRACT IMPORT
 const GreenListData = async () => {
   let a;
-  if (Number(network) === 9000) a = 2;
-  else if (Number(network) === 9001) a = 2;
-  else if (Number(network) === 80001) a = 0;
+  if (Number(network) === 5000) a = 0;
+  else if (Number(network) === 5001) a = 0;
+  else if (Number(network) === 80001) a = 1;
   else if (Number(network) === 137) a = 1;
   const deploymentKey = await Object.keys(Greenlist.networks)[a];
-  // console.log(deploymentKey, a, network);
+  console.log(deploymentKey, a, network);
   return new ethers.Contract(Greenlist.networks[deploymentKey].address, Greenlist.abi, signer);
 };
 const FrootyCoolTingsData = async () => {
   let a;
-  if (Number(network) === 9000) a = 2;
-  else if (Number(network) === 9001) a = 2;
-  else if (Number(network) === 80001) a = 0;
+  if (Number(network) === 5000) a = 0;
+  else if (Number(network) === 5001) a = 0;
+  else if (Number(network) === 80001) a = 1;
   else if (Number(network) === 137) a = 1;
   const deploymentKey = await Object.keys(FrootyCoolTingz.networks)[a];
-  // console.log(deploymentKey, a, network);
+  console.log(deploymentKey, a, network);
   return new ethers.Contract(FrootyCoolTingz.networks[deploymentKey].address, FrootyCoolTingz.abi, signer);
 };
 const IceData = async () => {
   let a;
-  if (Number(network) === 9000) a = 2;
-  else if (Number(network) === 9001) a = 2;
-  else if (Number(network) === 80001) a = 0;
+  if (Number(network) === 5000) a = 0;
+  else if (Number(network) === 5001) a = 0;
+  else if (Number(network) === 80001) a = 1;
   else if (Number(network) === 137) a = 1;
   const deploymentKey = await Object.keys(Ice.networks)[a];
   // console.log(deploymentKey, a, network);
@@ -159,9 +159,9 @@ const IceData = async () => {
 };
 const MarketData = async () => {
   let a;
-  if (Number(network) === 9000) a = 2;
-  else if (Number(network) === 9001) a = 2;
-  else if (Number(network) === 80001) a = 0;
+  if (Number(network) === 5000) a = 0;
+  else if (Number(network) === 5001) a = 0;
+  else if (Number(network) === 80001) a = 1;
   else if (Number(network) === 137) a = 1;
   const deploymentKey = await Object.keys(Market.networks)[a];
   // console.log(deploymentKey, a, network);
@@ -444,6 +444,25 @@ const goEvmos = async () => {
   });
   netSwap();
 };
+const goMantle = async () => {
+  const change = await ethereum.request({
+    method: "wallet_addEthereumChain",
+    params: [
+      {
+        chainId: "0x1389",
+        chainName: "Mantle",
+        nativeCurrency: {
+          name: "Mantle Bit",
+          symbol: "BIT",
+          decimals: 18, //In number form
+        },
+        rpcUrls: ["https://rpc.testnet.mantle.xyz/"],
+        blockExplorerUrls: ["https://explorer.testnet.mantle.xyz"],
+      },
+    ],
+  });
+  netSwap();
+};
 const goGreenMint = async (e) => {
   e.preventDefault();
   const count = await FCT.minted()
@@ -557,9 +576,9 @@ const goPubMint = async (e) => {
 const goSetFCT = async () => {
   const GL = await GreenListData();
   let a;
-  if (Number(network) === 9000) a = 1;
-  if (Number(network) === 9001) a = 2;
-  if (Number(network) === 80001) a = 0;
+  if (Number(network) === 5000) a = 0;
+  if (Number(network) === 5001) a = 0;
+  if (Number(network) === 80001) a = 1;
   if (Number(network) === 137) a = 3;
   const deploymentKey = await Object.keys(FrootyCoolTingz.networks)[a];
   const setFCT = await GL.setFCT(FrootyCoolTingz.networks[deploymentKey].address)
@@ -586,9 +605,9 @@ const onClickConnect = async (e) => {
     network = await ethereum.request({ method: "net_version" });
     var networkTag = "Switch Network";
     // evaluate legal networks
-    if (Number(network) !== 137 && Number(network) !== 80001 && Number(network) !== 9001 && Number(network) !== 9000) {
+    if (Number(network) !== 137 && Number(network) !== 80001 && Number(network) !== 5001 && Number(network) !== 5000) {
       // prompt network switch to evmos main
-      goEvmos(e);
+      goMantle(e);
     } else {
       // console.log(networkTag);
       set.style.display = "block";
@@ -602,9 +621,9 @@ const onClickConnect = async (e) => {
       await getMarketVars();
       let a;
 
-      if (Number(network) === 80001) a = 0;
-      if (Number(network) === 9000) a = 1;
-      if (Number(network) === 9001) a = 2;
+      if (Number(network) === 80001) a = 1;
+      if (Number(network) === 5000) a = 0;
+      if (Number(network) === 5001) a = 0;
       if (Number(network) === 137) a = 3;
       const deploymentKey = await Object.keys(FrootyCoolTingz.networks)[a];
       console.log(Number(FrootyCoolTingz.networks[deploymentKey].address), Number(glFctAdr));

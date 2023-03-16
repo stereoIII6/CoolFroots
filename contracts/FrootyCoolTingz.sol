@@ -32,15 +32,19 @@ contract Greenlist {
         _;
     }
 
-    constructor() {
+    constructor(uint256 _t) {
         admin = msg.sender;
-        // isListed[msg.sender] = true; // OFF ON TESTNET
-        // users[0] = msg.sender;
+        if (_t == 1) {
+            isListed[msg.sender] = true; // OFF ON TESTNET
+            users[0] = msg.sender;
+            l = 1; // Mainnet
+            max = 1234; // Mainnet
+        }
+        if (_t == 0) {
+            l = 0; // Testnet
+            max = 1; // Testnet
+        }
         message = "BE FRESH MY FRUITY FRENZ !";
-        // l = 1; // Mainnet
-        // max = 1234; // Mainnet
-        l = 0; // Testnet
-        max = 1; // Testnet
     }
 
     function setFCT(address _fct) external returns (bool) {
@@ -188,16 +192,8 @@ contract FrootyCoolTingz is ERC721 {
         owner = msg.sender;
         nam = "Frooty Cool Tingz";
         sym = "FROOT";
-        // EVMOS
-        /*  *
-        ice = ICE(0x890b24d94075B743a89171E5b8A2d9B9049eBf36);
-        GLC = Greenlist(0xecE922B118eEd554Fb9d3318a81FecB8C8D1bD95);
-        // */
-        // TESTNET EVMOS
-        /* */
         ice = ICE(_ICE);
         GLC = Greenlist(_Greenlist);
-        // */
     }
 
     function isOwner(address _adr) external view returns (bool) {

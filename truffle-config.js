@@ -118,6 +118,13 @@ module.exports = {
       gasPrice: 470000000000,
       skipDryRun: true,
     },
+    mantletest: {
+      provider: () => new HDWalletProvider(mnemonic, process.env.MANTLE_URL),
+      network_id: 5001,
+      confirmations: 10,
+      timeoutBlocks: 200,
+      skipDryRun: true,
+    },
     avax: {
       provider: function () {
         return new HDWalletProvider({ mnemonic: process.env.AVAX_MNEM, providerOrUrl: process.env.AVAX_URL, chainId: "0xa86a" });
