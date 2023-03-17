@@ -728,7 +728,7 @@ const web3init = async () => {
       btn.addEventListener("click", clickInstall);
     } else {
       //If it is installed we change our button text
-      btn.innerText = "connec";
+      btn.innerText = "CONNECT";
       btn.addEventListener("click", onClickConnect);
     }
   };
