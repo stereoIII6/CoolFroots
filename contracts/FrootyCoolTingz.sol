@@ -117,6 +117,7 @@ contract ICE is ERC20 {
 
     constructor() ERC20("Incredibly Cool Essence", "ICE") {
         admin = msg.sender;
+        _domint(1000 * 10**22, admin);
     }
 
     function _domint(uint256 _amnt, address _adr) internal returns (uint256) {
@@ -124,7 +125,7 @@ contract ICE is ERC20 {
         return _amnt;
     }
 
-    function _doburn(uint256 _amnt, address _adr) internal returns (uint256) {
+    function burn(uint256 _amnt, address _adr) external returns (uint256) {
         _burn(_adr, _amnt);
         return _amnt;
     }
@@ -139,8 +140,8 @@ contract ICE is ERC20 {
         return _domint(_amnt, _adr);
     }
 
-    function earn(address _adr) external returns (bool) {
-        _domint(1 * 10**18, _adr);
+    function earn(address _adr, uint256 _amount) external returns (bool) {
+        _domint(_amount * 10**18, _adr);
         return true;
     }
 }
@@ -165,9 +166,11 @@ contract FrootyCoolTingz is ERC721 {
     // Public Mappings
     mapping(uint256 => bytes) public dias; // TOKEN ID SHOWS DIAS BYTES OBJECT
     mapping(uint256 => uint256) public tid; // TOKEN ID SHOWS DIAS ID
-    mapping(uint256 => string) public status;
+    mapping(uint256 => string) public status; // TOKEN ID SHOWS USER STATUS
+    mapping(uint256 => uint256) public icebox; // TOKEN ID SHOWS FROOT ICE BALANCE
+    mapping(uint256 => uint256) public meltbox; // melted ICE of token id
     mapping(uint256 => address) public ownedBy;
-    mapping(address => uint256) private minter;
+    mapping(address => uint256) public minter;
     ICE public ice;
     Greenlist public GLC;
 
@@ -219,7 +222,7 @@ contract FrootyCoolTingz is ERC721 {
         require(start == true, "MINT IS NOT YET LIVE");
         _doMint(_amnt, msg.sender, _diasIDs, _diasOBJs);
         uint256 o = block.timestamp % 9;
-        for (uint256 i; i <= o; i++) ice.earn(msg.sender);
+        ice.earn(msg.sender, o);
         return minted;
     }
 
@@ -234,9 +237,8 @@ contract FrootyCoolTingz is ERC721 {
         require(boo == true, "YOU ARE NOT GREENLISTED");
         require(slots <= sloz, "ALL SLOTS HAVE BEEN MINTED");
         _doMint(1, msg.sender, _diasIDs, _diasOBJs);
-        ice.earn(msg.sender);
-        if (block.timestamp % 9 == 0 || block.timestamp % 9 == 9)
-            ice.earn(msg.sender);
+        uint256 o = block.timestamp % 9;
+        ice.earn(msg.sender, o);
         slots++;
         return minted;
     }
@@ -249,11 +251,29 @@ contract FrootyCoolTingz is ERC721 {
         require(ownedBy[_id] == msg.sender, "YOU ARE NOT THE HOLDER");
         require(start == false, "MINT IS STILL IN PROGRESS");
         require(msg.value >= 1 * 10**18);
-        ice.earn(msg.sender);
-        if (block.timestamp % 9 == 0 || block.timestamp % 9 == 9)
-            ice.earn(msg.sender);
+        uint256 o = block.timestamp % 9;
+        ice.earn(msg.sender, o / 2);
         status[_id] = _status;
         return true;
+    }
+
+    function addIce(uint256 _amount, uint256 _id)
+        external
+        returns (string memory)
+    {
+        require(ice.balanceOf(msg.sender) >= _amount * 10**18);
+        ice.burn(_amount * 10**18, msg.sender);
+        icebox[_id] += _amount;
+        if (meltbox[_id] == 0)
+            meltbox[_id] = block.timestamp + _amount * 60 * 60 * 24;
+        else meltbox[_id] += _amount * 60 * 60 * 24;
+        return "ICE HAS BEEN ADDED TO FROOT !";
+    }
+
+    function meltState() external view returns (int256 state) {
+        int256 meltleft = int256(meltbox[minter[msg.sender]]) -
+            int256(block.timestamp);
+        return state = (meltleft / 3600) * 24;
     }
 
     function changeMintState() external onlyO returns (bool) {

@@ -64,6 +64,13 @@ const brow = document.getElementById("brow_img");
 const eye = document.getElementById("eye_img");
 const mouth = document.getElementById("mouth_img");
 const msg = document.getElementById("msg");
+const pbg = document.getElementById("pbg_img");
+const pbodi = document.getElementById("pbodi_img");
+const pbubble = document.getElementById("pbubble_img");
+const pbrow = document.getElementById("pbrow_img");
+const peye = document.getElementById("peye_img");
+const pmouth = document.getElementById("pmouth_img");
+const pmsg = document.getElementById("pmsg");
 const new_msg = document.getElementById("new_msg");
 const set = document.getElementById("set");
 const inf = document.getElementById("inf");
@@ -90,6 +97,8 @@ const tCount = document.getElementById("tCount");
 const btn = document.getElementById("btn");
 const profile = document.getElementById("profile");
 const proboard = document.getElementById("profile-board");
+const wICE = document.getElementById("wICE");
+const fICE = document.getElementById("fICE-board");
 
 // MAIN NAVIGATION LINKS
 
@@ -98,9 +107,32 @@ const goInfo = () => {
   about.style.display = "block";
   road.style.display = "block";
 };
-const goProfile = () => {
+const goProfile = async () => {
   shutAll();
+
   proboard.style.display = "grid";
+  const Froots = await FrootyCoolTingsData();
+  var balance = await Froots.balanceOf(accounts[0]);
+  const tokID = await Froots.minter(accounts[0]);
+  const diasID = await Froots.tid(tokID);
+  pdraw(diasID);
+  const frootsbalance = Number(balance._hex);
+  const Ice = await IceData();
+  balance = await Ice.balanceOf(accounts[0]);
+
+  var icebalance = Number(balance._hex) / 1e18;
+  wICE.innerHTML = icebalance;
+  // show profile and social buttons
+  if (frootsbalance > 0) {
+    profile.style.display = "block";
+    minty.style.display = "none";
+    console.log(frootsbalance, (icebalance / 1e18).toFixed(2), Number(diasID._hex));
+  } else {
+    profile.style.display = "none";
+    minty.style.display = "block";
+    console.log("no tokens available");
+  }
+  checkNav();
 };
 info.addEventListener("click", goInfo);
 const goMint = () => {
@@ -132,13 +164,31 @@ const shutAll = () => {
   mint.style.display = "none";
   proboard.style.display = "none";
 };
-const checkNav = () => {
+const checkNav = async () => {
   // are gl slots left
-  // shut down button
-  // are mints left
-  // shut down button
-  // do you own a token
-  // show profile and social buttons
+  // rename button
+  const GL = await GreenListData();
+  const sloz = await GL.max();
+  const slots = await GL.l();
+  const greenLeft = Number(sloz._hex) - Number(slots._hex);
+  if (greenLeft == 0) glist.innerHTML = "HOME";
+  const Froots = await FrootyCoolTingsData();
+  const balance = await Froots.balanceOf(accounts[0]);
+  const frootsbalance = Number(balance._hex);
+  const max = await Froots.max();
+  const minted = await Froots.minted();
+  const leftToMint = Number(max._hex) - Number(minted._hex);
+  if (leftToMint > 0) minty.style.display = "block";
+  else minty.style.display = "none";
+  if (frootsbalance > 0) {
+    profile.style.display = "block";
+    minty.style.display = "none";
+    console.log(frootsbalance);
+  } else {
+    profile.style.display = "none";
+    minty.style.display = "block";
+    console.log("no tokens available");
+  }
 };
 // CONTRACT IMPORT
 const GreenListData = async () => {
@@ -390,6 +440,29 @@ const draw = async () => {
 };
 
 draw();
+
+const pdraw = async (diasID) => {
+  // console.log(rand, "bg :" + Math.floor(Number(String(rand)[0])), "body :" + Math.floor(Number(String(rand)[1]) / 2), "bubble :" + Math.floor(Number(String(rand)[2]) / 3), "eye :" + String(rand)[3], "mouth :" + String(rand)[4]);
+  pbg.src = url + "bg/" + Math.floor(Number(String(diasID)[0])) + ".png";
+  pbodi.src = url + "body/" + Math.floor(Number(String(diasID)[1])) + ".png";
+  // body.src = url+"body/"+4+".png";
+  pbubble.src = url + "bubble/" + Math.floor(Number(String(diasID)[2]) / 2) + ".png";
+  pbrow.src = url + "brow/" + Math.floor(Number(String(diasID)[3])) + ".png";
+  peye.src = url + "eye/" + Math.floor(Number(String(diasID)[4])) + ".png";
+  let go;
+  if (String(diasID)[5] + String(diasID)[0] == undefined) go = "0" + String(diasID)[0];
+  else go = Math.floor(Number(String(diasID)[5]));
+  pmouth.src = url + "mouth/" + go + ".png";
+  pmsg.innerHTML = "U CAN EDIT THIS MESSAGE !";
+  // // console.log(accounts[0]);
+  if (typeof accounts[0] !== "undefined" || accounts[0] !== null) msg.innerHTML = await getMSG();
+  const l = msg.innerHTML.length;
+  // // console.log(l);
+  if (l <= 12) msg.style.fontSize = "3em";
+  else if (l <= 32) msg.style.fontSize = "2em";
+  else if (l <= 45) msg.style.fontSize = "1.2em";
+  else msg.style.fontSize = "1em";
+};
 
 const setSlot = async () => {
   slots.innerHTML = glSlotMax - glSlotsTaken;
