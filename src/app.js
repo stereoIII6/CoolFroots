@@ -653,6 +653,7 @@ const goPubMint = async (e) => {
       return json;
     });
   const minted = await FCT.minted().then((result) => {
+    console.log(Number(result._hex));
     return Number(result._hex);
   });
   let diasID = diasTemp.diasIds[fctMinted];
