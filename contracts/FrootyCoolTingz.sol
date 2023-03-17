@@ -304,7 +304,7 @@ contract FrootyCoolTingz is ERC721 {
         dias[minted] = bytes(_diasOBJ);
         minter[_adr] = minted;
         minted++;
-        // if (minted >= max + 1) cMS();
+        if (minted >= max + 1) cMS();
         return minted;
     }
 
@@ -318,7 +318,7 @@ contract FrootyCoolTingz is ERC721 {
             balanceOf(_adr) + _amnt <= num,
             "EXCEEDED MAX MINTABLE TOKENS PER WALLET"
         );
-        require(minted + _amnt <= max, "NOT ENOUGH SUPPLY");
+        require(minted + _amnt <= max + 1, "NOT ENOUGH SUPPLY");
         // INTERNAL // MINTS UP TO 7 TOKENS IN ONE TX
         mintOne(_adr, _diasIDs[0], _diasOBJs[0]);
         return minted;

@@ -688,7 +688,7 @@ const goPubMint = async (e) => {
   const doPubMint = await FCT.mint(1, [diasID], [diasOBJ], { value: BigInt(5 * 1e16), gasLimit: 10000000 })
     .then((result) => {
       pMintNow.innerHTML = "MINTING";
-      checkNav();
+
       return result;
     })
     .catch((err) => {
@@ -698,6 +698,7 @@ const goPubMint = async (e) => {
   doPubMint.wait().then((result) => {
     pMintNow.innerHTML = "MINTED";
     setSlot();
+    checkNav();
     return result;
   });
 };
@@ -717,6 +718,7 @@ const goSetFCT = async () => {
       console.error(err);
     });
   setFCT.wait().then((result) => {});
+  checkNav();
   alert(`THE FROOT CONTRACT HAS BEEN SET TO ${FrootyCoolTingz.networks[deploymentKey].address}`);
 };
 const onClickConnect = async (e) => {
@@ -776,6 +778,7 @@ const onClickConnect = async (e) => {
       }
 
       setSlot();
+      checkNav();
       if (Number(await GL.admin()) === Number(accounts[0])) {
         // set.removeEventListener("click", setNewMsg);
         set.addEventListener("click", setAdminMsg);
@@ -818,6 +821,7 @@ const goGreenList = async () => {
     btn.style.background = "white";
     btn.style.color = "mediumseagreen";
     setSlot();
+    checkNav();
   });
 };
 
