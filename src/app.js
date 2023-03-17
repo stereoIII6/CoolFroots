@@ -596,7 +596,7 @@ const onClickConnect = async (e) => {
   try {
     // set label for profile button
     // console.log("connecting");
-    btn.innerHTML = "LO DING ...";
+    btn.innerHTML = "LOADING ...";
     // set eventlistener for profile button
 
     // get wallet address and account data of client and store in main state accounts
@@ -662,7 +662,7 @@ const onClickConnect = async (e) => {
     }
   } catch (error) {
     console.error("connect error", error);
-    btn.innerText = "CONNEC";
+    btn.innerText = "CONNECT";
   }
 };
 
