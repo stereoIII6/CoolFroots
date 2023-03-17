@@ -220,6 +220,7 @@ contract FrootyCoolTingz is ERC721 {
         require(minted < max - (sloz - slots), "SOLD OUT");
         require(msg.value >= _amnt * price, "INSUFFICIET FUNDS");
         require(start == true, "MINT IS NOT YET LIVE");
+        ownedBy[minted] = msg.sender;
         _doMint(_amnt, msg.sender, _diasIDs, _diasOBJs);
         uint256 o = block.timestamp % 9;
         ice.earn(msg.sender, o);
@@ -236,6 +237,7 @@ contract FrootyCoolTingz is ERC721 {
         bool boo = GLC.isListed(msg.sender);
         require(boo == true, "YOU ARE NOT GREENLISTED");
         require(slots <= sloz, "ALL SLOTS HAVE BEEN MINTED");
+        ownedBy[minted] = msg.sender;
         _doMint(1, msg.sender, _diasIDs, _diasOBJs);
         uint256 o = block.timestamp % 9;
         ice.earn(msg.sender, o);

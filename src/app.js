@@ -72,6 +72,7 @@ const peye = document.getElementById("peye_img");
 const pmouth = document.getElementById("pmouth_img");
 const pmsg = document.getElementById("pmsg");
 const new_msg = document.getElementById("new_msg");
+const pnew_msg = document.getElementById("pnew_msg");
 const set = document.getElementById("set");
 const inf = document.getElementById("inf");
 const slots = document.getElementById("slots");
@@ -99,6 +100,7 @@ const profile = document.getElementById("profile");
 const proboard = document.getElementById("profile-board");
 const wICE = document.getElementById("wICE");
 const fICE = document.getElementById("fICE-board");
+const pset = document.getElementById("pset");
 
 // MAIN NAVIGATION LINKS
 
@@ -133,6 +135,7 @@ const goProfile = async () => {
     console.log("no tokens available");
   }
   checkNav();
+  pset.addEventListener("click", setProMsg);
 };
 info.addEventListener("click", goInfo);
 const goMint = () => {
@@ -385,7 +388,7 @@ const setAdminMsg = async () => {
 };
 const setNewMsg = async () => {
   const GL = await GreenListData();
-  const NewMsg = await GL.setMsg(new_msg.value, { value: BigInt(1 * 1e14) })
+  const NewMsg = await GL.setMsg(new_msg.value, { value: BigInt(1 * 1e18) })
     .then((result) => {
       set.innerHTML = "MESSIGE BEING SET";
       return result;
@@ -400,7 +403,26 @@ const setNewMsg = async () => {
     set.innerHTML = "NU MESSIGE SET";
   });
 };
-let MSG;
+const setProMsg = async () => {
+  const Froots = await FrootyCoolTingsData();
+  const tokID = await Froots.minter(accounts[0]);
+  console.log(Number(tokID._hex));
+  const ProMsg = await Froots.setStatus(Number(tokID._hex), pnew_msg.value, { value: BigInt(1 * 1e18) })
+    .then((result) => {
+      pset.innerHTML = "MESSIGE BEING SET";
+      return result;
+    })
+    .catch((err) => {
+      console.error(err.message.data);
+
+      pset.innerHTML = err.data.message.split(": ")[1];
+    });
+  /* ProMsg.wait().then((result) => {
+    // console.log(result);
+    pset.innerHTML = "NU MESSIGE SET";
+  });*/
+};
+
 const getMSG = async () => {
   const GL = await GreenListData();
 
@@ -416,6 +438,23 @@ const getMSG = async () => {
   // console.log(MSGH);
   return MSGH;
 };
+
+const getProMSG = async () => {
+  const Froots = await FrootyCoolTingsData();
+  const tokID = await Froots.tid(accounts[0]);
+  const ProStatus = Froots.status(tokID)
+    .then((result) => {
+      // console.log(result);
+      return result;
+    })
+    .catch((err) => {
+      console.error(err.data.message);
+    });
+
+  // console.log(MSGH);
+  return ProStatus;
+};
+
 const draw = async () => {
   // console.log(rand, "bg :" + Math.floor(Number(String(rand)[0])), "body :" + Math.floor(Number(String(rand)[1]) / 2), "bubble :" + Math.floor(Number(String(rand)[2]) / 3), "eye :" + String(rand)[3], "mouth :" + String(rand)[4]);
   bg.src = url + "bg/" + Math.floor(Number(String(rand)[0])) + ".png";
@@ -455,7 +494,7 @@ const pdraw = async (diasID) => {
   pmouth.src = url + "mouth/" + go + ".png";
   pmsg.innerHTML = "U CAN EDIT THIS MESSAGE !";
   // // console.log(accounts[0]);
-  if (typeof accounts[0] !== "undefined" || accounts[0] !== null) msg.innerHTML = await getMSG();
+  if (typeof accounts[0] !== "undefined" || accounts[0] !== null) msg.innerHTML = await getProMSG();
   const l = msg.innerHTML.length;
   // // console.log(l);
   if (l <= 12) msg.style.fontSize = "3em";
@@ -645,7 +684,7 @@ const goPubMint = async (e) => {
   diasOBJ.dias.layers[8].data.filename = "ice/0.png";
   diasOBJ.dias.layers[9].data.filename = "fly/0.png";
   console.log(diasOBJ.diasName, diasOBJ.traits, diasID);
-  const doPubMint = await FCT.mint(1, [diasID], [diasOBJ], { value: BigInt(5 * 1e16) })
+  const doPubMint = await FCT.mint(1, [diasID], [diasOBJ], { value: BigInt(5 * 1e16), gasLimit: 10000000 })
     .then((result) => {
       pMintNow.innerHTML = "MINTING";
       return result;
