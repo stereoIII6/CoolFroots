@@ -633,6 +633,7 @@ const goGreenMint = async (e) => {
   doGreenMint.wait().then((result) => {
     gMintNow.innerHTML = "MINTED";
     setSlot();
+    checkNav();
     return result;
   });
 };
@@ -687,6 +688,7 @@ const goPubMint = async (e) => {
   const doPubMint = await FCT.mint(1, [diasID], [diasOBJ], { value: BigInt(5 * 1e16), gasLimit: 10000000 })
     .then((result) => {
       pMintNow.innerHTML = "MINTING";
+      checkNav();
       return result;
     })
     .catch((err) => {
