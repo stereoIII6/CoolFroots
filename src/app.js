@@ -88,6 +88,8 @@ const pMint = document.getElementById("pubmnt");
 const pMintNow = document.getElementById("pMintNow");
 const tCount = document.getElementById("tCount");
 const btn = document.getElementById("btn");
+const profile = document.getElementById("profile");
+const proboard = document.getElementById("profile-board");
 
 // MAIN NAVIGATION LINKS
 
@@ -95,6 +97,10 @@ const goInfo = () => {
   shutAll();
   about.style.display = "block";
   road.style.display = "block";
+};
+const goProfile = () => {
+  shutAll();
+  proboard.style.display = "grid";
 };
 info.addEventListener("click", goInfo);
 const goMint = () => {
@@ -124,6 +130,7 @@ const shutAll = () => {
   about.style.display = "none";
   road.style.display = "none";
   mint.style.display = "none";
+  proboard.style.display = "none";
 };
 
 // CONTRACT IMPORT
@@ -614,6 +621,8 @@ const onClickConnect = async (e) => {
       btn.removeEventListener("click", onClickConnect);
       btn.innerHTML = "GRAB GREENLIST SLOTS NOW";
       btn.addEventListener("click", goGreenList);
+      profile.innerHTML = "PROFILE";
+      profile.addEventListener("click", goProfile);
 
       await getGreenVars();
       await getIceVars();
@@ -663,6 +672,7 @@ const onClickConnect = async (e) => {
   } catch (error) {
     console.error("connect error", error);
     btn.innerText = "CONNECT";
+    profile.innerText = "CONNECT";
   }
 };
 
@@ -726,10 +736,12 @@ const web3init = async () => {
       //If it isn't installed we ask the user to click to install it
       btn.innerText = "install metamask!";
       btn.addEventListener("click", clickInstall);
+      profile.addEventListener("click", clickInstall);
     } else {
       //If it is installed we change our button text
       btn.innerText = "CONNECT";
       btn.addEventListener("click", onClickConnect);
+      profile.addEventListener("click", onClickConnect);
     }
   };
   MetaMaskClientCheck();

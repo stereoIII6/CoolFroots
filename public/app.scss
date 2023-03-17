@@ -86,6 +86,16 @@ input {
   overflow: hidden;
   justify-self: end;
 }
+#pdias_canvas {
+  border: 0px solid black;
+  width: 500px;
+  height: 600px;
+  display: grid;
+  grid-template-rows: 500px 100px;
+  grid-template-columns: 500px;
+  overflow: hidden;
+  justify-self: end;
+}
 #minty,
 #swap,
 #community,
@@ -106,7 +116,8 @@ input {
 #uForm,
 #about,
 #road,
-#mint {
+#mint,
+#profile-board {
   text-align: center;
   width: 500px;
   position: relative;
@@ -121,7 +132,8 @@ input {
 #road,
 #mint,
 #social,
-#market {
+#market,
+#profile-board {
   display: none;
 }
 #minthead {
@@ -167,6 +179,20 @@ input {
 #social {
   grid-row: 2;
   grid-column: 1/-1;
+}
+#profile-board {
+  grid-row: 2;
+  grid-column: 1/-1;
+}
+#pdias_canvas {
+  grid-row: 1;
+  grid-column: 2;
+  min-width: 400px;
+}
+#pform {
+  grid-row: 1;
+  grid-column: 2;
+  min-width: 400px;
 }
 #share {
   height: 100px;

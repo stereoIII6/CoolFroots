@@ -3,14 +3,21 @@ const Greenlist = artifacts.require("Greenlist");
  * net function returns the networkID and logs the id to the console
  * @returns netID the network id
  */
+var n;
 const net = async () => {
   const netID = await web3.eth.net.getId();
   console.log(netID);
-  return netID;
+  n = netID;
+  return n;
 };
-module.exports = function (deployer) {
-  const n = net();
-  const t = 1;
-  if (n == 80001 || n == 5001) t = 0;
+net();
+module.exports = function (deployer, n) {
+  // var n = net();
+  var t;
+  console.log("netID :: ", n);
+  if (n == "mantletest" || n == "mumbai" || n == "tevmos") {
+    t = 0;
+  } else t = 1;
+  console.log("mode :: ", t);
   deployer.deploy(Greenlist, t);
 };

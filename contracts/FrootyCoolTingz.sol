@@ -44,7 +44,7 @@ contract Greenlist {
             l = 0; // Testnet
             max = 1; // Testnet
         }
-        message = "BE FRESH MY FRUITY FRENZ !";
+        message = "BE FRESH MY FROOTY FRENZ !";
     }
 
     function setFCT(address _fct) external returns (bool) {
@@ -147,18 +147,12 @@ contract ICE is ERC20 {
 
 contract FrootyCoolTingz is ERC721 {
     // Public Constants
-    uint256 public constant price = 5 * 10**14; // PRICE VAL Testnet
+    uint256 public price; // PRICE VAL Testnet
     // uint256 public constant price = 5 * 10**18; // PRICE VAL Mainnet
     uint256 public constant num = 1; // MAX MINTS / WALLET
-    // MAINNET
-    /* *
-    uint256 public constant max = 5555; // MAX TOTAL MINTS
-    uint256 public constant sloz = 1234; // MAX FREE MINTS
-    // */
-    // TESTNET
-    /* */
-    uint256 public constant max = 5; // MAX TOTAL MINTS
-    uint256 public constant sloz = 1; // MAX FREE MINTS
+
+    uint256 public max; // MAX TOTAL MINTS
+    uint256 public sloz; // MAX FREE MINTS
     // */
     // Public Variables
     address public owner; // CONTRACT OWNER
@@ -183,17 +177,29 @@ contract FrootyCoolTingz is ERC721 {
         _;
     }
 
-    constructor(address _ICE, address _Greenlist)
-        ERC721("Frooty Cool Tingz", "FROOT")
-    {
+    constructor(
+        address _ICE,
+        address _Greenlist,
+        uint256 _t
+    ) ERC721("Cool Froots", "FROOT") {
         // INIT CONTRACT SET PUB VARS
         minted = 1;
         slots = 0;
         owner = msg.sender;
-        nam = "Frooty Cool Tingz";
+        nam = "Cool Froots";
         sym = "FROOT";
         ice = ICE(_ICE);
         GLC = Greenlist(_Greenlist);
+        if (_t == 0) {
+            max = 5;
+            sloz = 1;
+            price = 5 * 10**16;
+        }
+        if (_t == 1) {
+            max = 5555;
+            sloz = 1234;
+            price = 500 * 10**16;
+        }
     }
 
     function isOwner(address _adr) external view returns (bool) {
