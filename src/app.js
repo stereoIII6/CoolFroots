@@ -132,7 +132,14 @@ const shutAll = () => {
   mint.style.display = "none";
   proboard.style.display = "none";
 };
-
+const checkNav = () => {
+  // are gl slots left
+  // shut down button
+  // are mints left
+  // shut down button
+  // do you own a token
+  // show profile and social buttons
+};
 // CONTRACT IMPORT
 const GreenListData = async () => {
   let a;
@@ -565,7 +572,7 @@ const goPubMint = async (e) => {
   diasOBJ.dias.layers[8].data.filename = "ice/0.png";
   diasOBJ.dias.layers[9].data.filename = "fly/0.png";
   console.log(diasOBJ.diasName, diasOBJ.traits, diasID);
-  const doPubMint = await FCT.mint(1, [diasID], [diasOBJ], { value: BigInt(5 * 1e14) })
+  const doPubMint = await FCT.mint(1, [diasID], [diasOBJ], { value: BigInt(5 * 1e16) })
     .then((result) => {
       pMintNow.innerHTML = "MINTING";
       return result;
