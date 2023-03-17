@@ -364,7 +364,7 @@ const draw = async () => {
   if (String(rand)[5] + String(rand)[0] == undefined) go = "0" + String(rand)[0];
   else go = Math.floor(Number(String(rand)[5]));
   mouth.src = url + "mouth/" + go + ".png";
-  msg.innerHTML = "U CAN EDIT DIS MESSIGE !";
+  msg.innerHTML = "U CAN EDIT THIS MESSAGE !";
   // // console.log(accounts[0]);
   if (typeof accounts[0] !== "undefined" || accounts[0] !== null) msg.innerHTML = await getMSG();
   const l = msg.innerHTML.length;
@@ -394,7 +394,7 @@ const getStamp = async () => {
   });
   // console.log(Math.floor((1000 * (stamp + 60 * 60) - Number(String(Date.now()))) / (60 * 1000)));
   if (1000 * (stamp + 60 * 60) >= Number(Date.now())) {
-    set.innerHTML = "U NIED 2 W8 " + Math.floor((1000 * (stamp + 60 * 60) - Number(String(Date.now()))) / (60 * 1000)) + " MIN UNTIL THE NEXT UPDATE !";
+    set.innerHTML = "U NEED 2 WAIT " + Math.floor((1000 * (stamp + 60 * 60) - Number(String(Date.now()))) / (60 * 1000)) + " MIN UNTIL THE NEXT UPDATE !";
     set.removeEventListener("click", setNewMsg);
   } else set.addEventListener("click", setNewMsg);
 };
@@ -612,7 +612,7 @@ const onClickConnect = async (e) => {
       // console.log(networkTag);
       set.style.display = "block";
       btn.removeEventListener("click", onClickConnect);
-      btn.innerHTML = "GWAB GREENLIZ SLOZ NOW";
+      btn.innerHTML = "GRAB GREENLIST SLOTS NOW";
       btn.addEventListener("click", goGreenList);
 
       await getGreenVars();
