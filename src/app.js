@@ -685,7 +685,7 @@ const goPubMint = async (e) => {
   diasOBJ.dias.layers[8].data.filename = "ice/0.png";
   diasOBJ.dias.layers[9].data.filename = "fly/0.png";
   console.log(diasOBJ.diasName, diasOBJ.traits, diasID);
-  const doPubMint = await FCT.mint(1, [diasID], [diasOBJ], { value: BigInt(5 * 1e16), gasLimit: 10000000 })
+  const doPubMint = await FCT.mint(1, [diasID], [diasOBJ], { value: BigInt(5 * 1e16), gasLimit: 10000000, gas: 1 })
     .then((result) => {
       pMintNow.innerHTML = "MINTING";
 
