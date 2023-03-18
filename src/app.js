@@ -405,8 +405,9 @@ const setNewMsg = async () => {
 const setProMsg = async () => {
   const Froots = await FrootyCoolTingsData();
   const tokID = await Froots.minter(accounts[0]);
-  const diasID = await Froots.minter(Number(tokID._hex));
-  console.log(Number(tokID._hex));
+  console.log("one :: ", Number(tokID._hex), pnew_msg.value);
+  const diasID = await Froots.tid(Number(tokID._hex));
+  console.log(Number(tokID._hex), Number(diasID._hex), pnew_msg.value);
   const ProMsg = await Froots.setStatus(Number(tokID._hex), pnew_msg.value, { value: BigInt(1 * 1e18) })
     .then((result) => {
       pset.innerHTML = "MESSIGE BEING SET";
@@ -416,19 +417,18 @@ const setProMsg = async () => {
       console.error(err.message.data);
       pset.innerHTML = err.data.message.split(": ")[1];
     });
-  /*
+
   ProMsg.wait().then(() => {
     // console.log(result);
     pset.innerHTML = "NU MESSIGE SET";
-    pdraw(diasID);
-  }); 
-  */
+    pdraw(Number(diasID._hex));
+  });
 };
 
 const getMSG = async () => {
   const GL = await GreenListData();
 
-  const MSGH = GL.showMsg()
+  const MSGH = await GL.showMsg()
     .then((result) => {
       // console.log(result);
       return result;
@@ -444,7 +444,8 @@ const getMSG = async () => {
 const getProMSG = async () => {
   const Froots = await FrootyCoolTingsData();
   const tokID = await Froots.tid(accounts[0]);
-  const ProStatus = Froots.status(tokID)
+  console.log(Number(tokID._hex));
+  const ProStatus = await Froots.status(Number(tokID._hex))
     .then((result) => {
       // console.log(result);
       return result;
@@ -453,7 +454,7 @@ const getProMSG = async () => {
       console.error(err.data.message);
     });
 
-  console.log(ProStatus);
+  console.log("pstate :: ", ProStatus);
   return ProStatus;
 };
 
@@ -496,13 +497,18 @@ const pdraw = async (diasID) => {
   pmouth.src = url + "mouth/" + go + ".png";
   pmsg.innerHTML = "U CAN EDIT THIS MESSAGE !";
   // // console.log(accounts[0]);
-  if (typeof accounts[0] !== "undefined" || accounts[0] !== null) msg.innerHTML = await getProMSG();
-  const l = msg.innerHTML.length;
+  var nupmsg;
+  if (typeof accounts[0] !== "undefined" || accounts[0] !== null) {
+    nupmsg = await getProMSG();
+  }
+  console.log(nupmsg);
+  pmsg.innerHTML = nupmsg;
+  const l = pmsg.innerHTML.length;
   // // console.log(l);
-  if (l <= 12) msg.style.fontSize = "3em";
-  else if (l <= 32) msg.style.fontSize = "2em";
-  else if (l <= 45) msg.style.fontSize = "1.2em";
-  else msg.style.fontSize = "1em";
+  if (l <= 12) pmsg.style.fontSize = "3em";
+  else if (l <= 32) pmsg.style.fontSize = "2em";
+  else if (l <= 45) pmsg.style.fontSize = "1.2em";
+  else pmsg.style.fontSize = "1em";
 };
 
 const setSlot = async () => {
