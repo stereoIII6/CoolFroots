@@ -395,7 +395,6 @@ const setNewMsg = async () => {
     })
     .catch((err) => {
       console.error(err.message.data);
-
       set.innerHTML = err.data.message.split(": ")[1];
     });
   NewMsg.wait().then((result) => {
@@ -406,6 +405,7 @@ const setNewMsg = async () => {
 const setProMsg = async () => {
   const Froots = await FrootyCoolTingsData();
   const tokID = await Froots.minter(accounts[0]);
+  const diasID = await Froots.minter(Number(tokID._hex));
   console.log(Number(tokID._hex));
   const ProMsg = await Froots.setStatus(Number(tokID._hex), pnew_msg.value, { value: BigInt(1 * 1e18) })
     .then((result) => {
@@ -414,13 +414,15 @@ const setProMsg = async () => {
     })
     .catch((err) => {
       console.error(err.message.data);
-
       pset.innerHTML = err.data.message.split(": ")[1];
     });
-  /* ProMsg.wait().then((result) => {
+  /*
+  ProMsg.wait().then(() => {
     // console.log(result);
     pset.innerHTML = "NU MESSIGE SET";
-  });*/
+    pdraw(diasID);
+  }); 
+  */
 };
 
 const getMSG = async () => {
@@ -435,7 +437,7 @@ const getMSG = async () => {
       console.error(err.data.message);
     });
 
-  // console.log(MSGH);
+  console.log(MSGH);
   return MSGH;
 };
 
@@ -451,7 +453,7 @@ const getProMSG = async () => {
       console.error(err.data.message);
     });
 
-  // console.log(MSGH);
+  console.log(ProStatus);
   return ProStatus;
 };
 
