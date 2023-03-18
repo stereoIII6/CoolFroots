@@ -447,7 +447,7 @@ const getProMSG = async () => {
   console.log(Number(tokID._hex));
   const ProStatus = await Froots.status(Number(tokID._hex))
     .then((result) => {
-      // console.log(result);
+      console.log(result);
       return result;
     })
     .catch((err) => {
