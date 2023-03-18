@@ -170,7 +170,7 @@ contract FrootyCoolTingz is ERC721 {
     mapping(uint256 => uint256) public icebox; // TOKEN ID SHOWS FROOT ICE BALANCE
     mapping(uint256 => uint256) public meltbox; // melted ICE of token id
     mapping(uint256 => address) public ownedBy;
-    mapping(address => uint256) public minter;
+    mapping(address => uint256) public minter; // Token ID by Address
     ICE public ice;
     Greenlist public GLC;
 
