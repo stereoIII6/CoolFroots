@@ -89,7 +89,7 @@ module.exports = {
       skipDryRun: true,
     },
     fuji: {
-      provider: () => new HDWalletProvider(process.env.AVAX_MNEM, process.env.FUJI_URL),
+      provider: () => new HDWalletProvider(mnemonic, process.env.FUJI_URL),
       network_id: 43113,
       confirmations: 10,
       timeoutBlocks: 2000,

@@ -15,7 +15,7 @@ module.exports = function (deployer, n) {
   // var n = net();
   var t;
   console.log("netID :: ", n);
-  if (n == "mantletest" || n == "mumbai" || n == "tevmos") {
+  if (n == "mantletest" || n == "mumbai" || n == "tevmos" || n == "fuji") {
     t = 0;
   } else t = 1;
   console.log("mode :: ", t);

@@ -217,7 +217,7 @@ contract FrootyCoolTingz is ERC721 {
         string[] memory _diasOBJs
     ) external payable returns (uint256) {
         // INITIATES THE MINT OF UP TO 7 TOKENS IF ALLOWED
-        require(minted < max - (sloz - slots), "SOLD OUT");
+        require(minted <= max + 1, "SOLD OUT");
         require(msg.value >= _amnt * price, "INSUFFICIET FUNDS");
         require(start == true, "MINT IS NOT YET LIVE");
         ownedBy[minted] = msg.sender;
@@ -232,7 +232,7 @@ contract FrootyCoolTingz is ERC721 {
         returns (uint256)
     {
         // INITIATES THE MINT OF UP TO 7 TOKENS IF ALLOWED
-        require(minted < max, "SOLD OUT");
+        require(minted <= max, "SOLD OUT");
         require(start == true, "MINT IS NOT YET LIVE");
         bool boo = GLC.isListed(msg.sender);
         require(boo == true, "YOU ARE NOT GREENLISTED");

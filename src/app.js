@@ -196,40 +196,40 @@ const checkNav = async () => {
 // CONTRACT IMPORT
 const GreenListData = async () => {
   let a;
-  if (Number(network) === 5000) a = 0;
+  if (Number(network) === 137) a = 1;
   else if (Number(network) === 5001) a = 0;
+  else if (Number(network) === 43113) a = 0;
   else if (Number(network) === 80001) a = 1;
-  else if (Number(network) === 137) a = 1;
   const deploymentKey = await Object.keys(Greenlist.networks)[a];
   console.log(deploymentKey, a, network);
   return new ethers.Contract(Greenlist.networks[deploymentKey].address, Greenlist.abi, signer);
 };
 const FrootyCoolTingsData = async () => {
   let a;
-  if (Number(network) === 5000) a = 0;
+  if (Number(network) === 137) a = 1;
   else if (Number(network) === 5001) a = 0;
+  else if (Number(network) === 43113) a = 0;
   else if (Number(network) === 80001) a = 1;
-  else if (Number(network) === 137) a = 1;
   const deploymentKey = await Object.keys(FrootyCoolTingz.networks)[a];
   console.log(deploymentKey, a, network);
   return new ethers.Contract(FrootyCoolTingz.networks[deploymentKey].address, FrootyCoolTingz.abi, signer);
 };
 const IceData = async () => {
   let a;
-  if (Number(network) === 5000) a = 0;
+  if (Number(network) === 137) a = 1;
   else if (Number(network) === 5001) a = 0;
   else if (Number(network) === 80001) a = 1;
-  else if (Number(network) === 137) a = 1;
+  else if (Number(network) === 43113) a = 0;
   const deploymentKey = await Object.keys(Ice.networks)[a];
   // console.log(deploymentKey, a, network);
   return new ethers.Contract(Ice.networks[deploymentKey].address, Ice.abi, signer);
 };
 const MarketData = async () => {
   let a;
-  if (Number(network) === 5000) a = 0;
+  if (Number(network) === 137) a = 1;
   else if (Number(network) === 5001) a = 0;
+  else if (Number(network) === 43113) a = 0;
   else if (Number(network) === 80001) a = 1;
-  else if (Number(network) === 137) a = 1;
   const deploymentKey = await Object.keys(Market.networks)[a];
   // console.log(deploymentKey, a, network);
   return new ethers.Contract(Market.networks[deploymentKey].address, Market.abi, signer);
@@ -551,6 +551,25 @@ const goPoly = async () => {
   });
   netSwap();
 };
+const goMumbai = async () => {
+  const change = await ethereum.request({
+    method: "wallet_addEthereumChain",
+    params: [
+      {
+        chainId: "0x13881",
+        chainName: "Polygon Mumbai",
+        nativeCurrency: {
+          name: "Polygon Matic",
+          symbol: "MATIC",
+          decimals: 18, //In number form
+        },
+        rpcUrls: ["https://polygon-mumbai.blockpi.network/v1/rpc/public"],
+        blockExplorerUrls: ["https://mumbai.polygonscan.com"],
+      },
+    ],
+  });
+  netSwap();
+};
 const goEvmos = async () => {
   const change = await ethereum.request({
     method: "wallet_addEthereumChain",
@@ -584,6 +603,25 @@ const goMantle = async () => {
         },
         rpcUrls: ["https://rpc.testnet.mantle.xyz/"],
         blockExplorerUrls: ["https://explorer.testnet.mantle.xyz"],
+      },
+    ],
+  });
+  netSwap();
+};
+const goFuji = async () => {
+  const change = await ethereum.request({
+    method: "wallet_addEthereumChain",
+    params: [
+      {
+        chainId: "0xA869",
+        chainName: "Avalanche Fuji",
+        nativeCurrency: {
+          name: "AVAX",
+          symbol: "AVAX",
+          decimals: 18, //In number form
+        },
+        rpcUrls: ["https://ava-testnet.public.blastapi.io/ext/bc/C/rpc"],
+        blockExplorerUrls: ["https://testnet.snowtrace.io/"],
       },
     ],
   });
@@ -706,10 +744,10 @@ const goPubMint = async (e) => {
 const goSetFCT = async () => {
   const GL = await GreenListData();
   let a;
-  if (Number(network) === 5000) a = 0;
-  if (Number(network) === 5001) a = 0;
-  if (Number(network) === 80001) a = 1;
-  if (Number(network) === 137) a = 3;
+  if (Number(network) === 137) a = 0;
+  else if (Number(network) === 5001) a = 0;
+  else if (Number(network) === 43113) a = 0;
+  else if (Number(network) === 80001) a = 1;
   const deploymentKey = await Object.keys(FrootyCoolTingz.networks)[a];
   const setFCT = await GL.setFCT(FrootyCoolTingz.networks[deploymentKey].address)
     .then((result) => {
@@ -736,7 +774,7 @@ const onClickConnect = async (e) => {
     network = await ethereum.request({ method: "net_version" });
     var networkTag = "Switch Network";
     // evaluate legal networks
-    if (Number(network) !== 137 && Number(network) !== 80001 && Number(network) !== 5001 && Number(network) !== 5000) {
+    if (Number(network) !== 137 && Number(network) !== 80001 && Number(network) !== 5001 && Number(network) !== 5000 && Number(network) !== 43113) {
       // prompt network switch to evmos main
       goMantle(e);
     } else {
@@ -826,23 +864,6 @@ const goGreenList = async () => {
   });
 };
 
-/* IMPORTANT FUNCTION WEB3INIT DO NOT EDIT  //
-//////////////////////////////////////////
-//                                      //
-//          Init Metamask               //
-//                                      //
-//////////////////////////////////////////
-
-
-Function initializes dapp for Defi interaction
-
-requirements :
-- a button with id:'profile_btn'
-- a button with id:'net_btn'
-- a button with id: 'wallet_btn' 
-- a div with class: 'stage' and id: 'profile_stage'
-
-*/
 const web3init = async () => {
   const isMetaMaskInstalled = () => {
     //Have to check the ethereum binding on the window object to see if it's installed
