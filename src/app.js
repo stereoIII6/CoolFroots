@@ -445,14 +445,7 @@ const getProMSG = async () => {
   const Froots = await FrootyCoolTingsData();
   const tokID = await Froots.tid(accounts[0]);
   console.log(Number(tokID._hex));
-  const ProStatus = await Froots.status(Number(tokID._hex))
-    .then((result) => {
-      console.log(result);
-      return result;
-    })
-    .catch((err) => {
-      console.error(err.data.message);
-    });
+  const ProStatus = await Froots.status(Number(tokID._hex));
 
   console.log("pstate :: ", ProStatus);
   return ProStatus;
