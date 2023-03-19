@@ -17,7 +17,13 @@ module.exports = function (deployer, n) {
   console.log("netID :: ", n);
   if (n == "mantletest" || n == "mumbai" || n == "tevmos" || n == "fuji") {
     t = 0;
-  } else t = 1;
+  } else {
+    if (n == "main") t = 1;
+    if (n == "polygon") t = 2;
+    if (n == "fevm") t = 3;
+    if (n == "avax") t = 4;
+    if (n == "celo") t = 5;
+  }
   console.log("mode :: ", t);
   deployer.deploy(Greenlist, t);
 };
