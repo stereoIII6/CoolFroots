@@ -103,6 +103,8 @@ const fICE = document.getElementById("fICE-board");
 const pset = document.getElementById("pset");
 const pricetag = document.getElementById("pricetag");
 const ppricetag = document.getElementById("ppricetag");
+const mpricetag = document.getElementById("mpricetag");
+const ipricetag = document.getElementById("ipricetag");
 
 // MAIN NAVIGATION LINKS
 
@@ -113,8 +115,8 @@ const goInfo = () => {
 };
 const goProfile = async () => {
   shutAll();
-
   proboard.style.display = "grid";
+  setPriceTags();
   const Froots = await FrootyCoolTingsData();
   var balance = await Froots.balanceOf(accounts[0]);
   const tokID = await Froots.minter(accounts[0]);
@@ -201,7 +203,7 @@ const GreenListData = async () => {
   if (Number(network) === 137) a = 1;
   else if (Number(network) === 5001) a = 0;
   else if (Number(network) === 43113) a = 0;
-  else if (Number(network) === 80001) a = 0;
+  else if (Number(network) === 80001) a = 1;
   const deploymentKey = await Object.keys(Greenlist.networks)[a];
   console.log(deploymentKey, a, network);
   return new ethers.Contract(Greenlist.networks[deploymentKey].address, Greenlist.abi, signer);
@@ -211,7 +213,7 @@ const FrootyCoolTingsData = async () => {
   if (Number(network) === 137) a = 1;
   else if (Number(network) === 5001) a = 0;
   else if (Number(network) === 43113) a = 0;
-  else if (Number(network) === 80001) a = 0;
+  else if (Number(network) === 80001) a = 1;
   const deploymentKey = await Object.keys(FrootyCoolTingz.networks)[a];
   console.log(deploymentKey, a, network);
   return new ethers.Contract(FrootyCoolTingz.networks[deploymentKey].address, FrootyCoolTingz.abi, signer);
@@ -221,7 +223,7 @@ const IceData = async () => {
   if (Number(network) === 137) a = 0;
   else if (Number(network) === 5001) a = 0;
   else if (Number(network) === 43113) a = 0;
-  else if (Number(network) === 80001) a = 0;
+  else if (Number(network) === 80001) a = 1;
   const deploymentKey = await Object.keys(Ice.networks)[a];
   // console.log(deploymentKey, a, network);
   return new ethers.Contract(Ice.networks[deploymentKey].address, Ice.abi, signer);
@@ -231,7 +233,7 @@ const MarketData = async () => {
   if (Number(network) === 137) a = 1;
   else if (Number(network) === 5001) a = 0;
   else if (Number(network) === 43113) a = 0;
-  else if (Number(network) === 80001) a = 0;
+  else if (Number(network) === 80001) a = 1;
   const deploymentKey = await Object.keys(Market.networks)[a];
   // console.log(deploymentKey, a, network);
   return new ethers.Contract(Market.networks[deploymentKey].address, Market.abi, signer);
@@ -242,6 +244,7 @@ let GL;
 let glSlotMax;
 let glSlotsTaken;
 let glMsg;
+let glMsgPrice;
 let glStamp;
 let glAdmin;
 let glFctAdr;
@@ -268,6 +271,13 @@ const getGreenVars = async () => {
     .catch((err) => {
       console.error(err);
     });
+  glMsgPrice = await GL.msgprice()
+    .then((result) => {
+      return Number(result._hex);
+    })
+    .catch((err) => {
+      console.error(err.message);
+    });
   glStamp = await GL.stamp()
     .then((result) => {
       return Number(result._hex);
@@ -277,7 +287,7 @@ const getGreenVars = async () => {
     });
   glAdmin = await GL.admin();
   glFctAdr = await GL.FCT();
-  return glSlotMax, glSlotsTaken, glMsg, glStamp;
+  return glSlotMax, glSlotsTaken, glMsg, glStamp, glMsgPrice;
 };
 
 // ICE
@@ -292,11 +302,13 @@ const getIceVars = async () => {
     .catch((err) => {
       console.error(err);
     });
+  return icePrice;
 };
 
 // Froots
 let FCT;
 let fctPrice;
+let fctStatusPrice;
 let fctMaxMints;
 let fctMax;
 let fctMinted;
@@ -306,6 +318,13 @@ let fctStart;
 const getFrootVars = async () => {
   FCT = await FrootyCoolTingsData();
   fctPrice = await FCT.price()
+    .then((result) => {
+      return Number(result._hex);
+    })
+    .catch((err) => {
+      console.error(err);
+    });
+  fctStatusPrice = await FCT.statusprice()
     .then((result) => {
       return Number(result._hex);
     })
@@ -355,9 +374,9 @@ const getFrootVars = async () => {
       console.error(err);
     });
   // fctAdr = await FCT().address;
-  return fctStart, fctMax, fctMinted;
+  return fctStart, fctMax, fctMinted, fctStatusPrice, fctPrice;
 };
-const setPriceTags = () => {};
+
 // Market
 let MRKT;
 let marketRoy;
@@ -757,7 +776,7 @@ const goSetFCT = async () => {
   if (Number(network) === 137) a = 0;
   else if (Number(network) === 5001) a = 0;
   else if (Number(network) === 43113) a = 0;
-  else if (Number(network) === 80001) a = 0;
+  else if (Number(network) === 80001) a = 1;
   const deploymentKey = await Object.keys(FrootyCoolTingz.networks)[a];
   const setFCT = await GL.setFCT(FrootyCoolTingz.networks[deploymentKey].address)
     .then((result) => {
@@ -786,7 +805,7 @@ const onClickConnect = async (e) => {
     // evaluate legal networks
     if (Number(network) !== 137 && Number(network) !== 80001 && Number(network) !== 5001 && Number(network) !== 5000 && Number(network) !== 43113) {
       // prompt network switch to evmos main
-      goMantle(e);
+      goMumbai();
     } else {
       // console.log(networkTag);
       set.style.display = "block";
@@ -801,13 +820,14 @@ const onClickConnect = async (e) => {
       await getFrootVars();
       await getMarketVars();
       let a;
-
+      console.log(icePrice);
       if (Number(network) === 137) a = 0;
       if (Number(network) === 5000) a = 0;
       if (Number(network) === 5001) a = 0;
-      if (Number(network) === 80001) a = 0;
+      if (Number(network) === 80001) a = 1;
+      console.log(glFctAdr);
       const deploymentKey = await Object.keys(FrootyCoolTingz.networks)[a];
-      console.log(Number(FrootyCoolTingz.networks[deploymentKey].address), Number(glFctAdr));
+      // console.log(Number(FrootyCoolTingz.networks[deploymentKey].address), Number(glFctAdr));
       if (Number(FrootyCoolTingz.networks[deploymentKey].address) !== Number(glFctAdr)) {
         // console.log(fctAdr);
         goSetFCT();
