@@ -266,6 +266,7 @@ contract FrootyCoolTingz is ERC721 {
             max = 5;
             sloz = 1;
             price = 5 * 10**16;
+            statusprice = (1 * digits) / 10000; // 0.0001???
         }
         if (_t > 0) {
             max = 5555;

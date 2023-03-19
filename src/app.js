@@ -819,13 +819,14 @@ const onClickConnect = async (e) => {
       await getIceVars();
       await getFrootVars();
       await getMarketVars();
+
       let a;
       console.log(icePrice);
       if (Number(network) === 137) a = 0;
       if (Number(network) === 5000) a = 0;
       if (Number(network) === 5001) a = 0;
       if (Number(network) === 80001) a = 1;
-      console.log(glFctAdr);
+      console.log("here we go :: ", glFctAdr, " price : ", fctPrice, " status : ", fctStatusPrice, " ice : ", icePrice, " gl price : ", glMsgPrice);
       const deploymentKey = await Object.keys(FrootyCoolTingz.networks)[a];
       // console.log(Number(FrootyCoolTingz.networks[deploymentKey].address), Number(glFctAdr));
       if (Number(FrootyCoolTingz.networks[deploymentKey].address) !== Number(glFctAdr)) {
