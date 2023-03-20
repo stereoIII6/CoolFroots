@@ -18,6 +18,7 @@ import { stripZeros } from "ethers/lib/utils";
 // globals
 let accounts;
 let network;
+let curr;
 let user;
 
 const client = require("ipfs-http-client");
@@ -99,7 +100,7 @@ const btn = document.getElementById("btn");
 const profile = document.getElementById("profile");
 const proboard = document.getElementById("profile-board");
 const wICE = document.getElementById("wICE");
-const fICE = document.getElementById("fICE");
+const fICE = document.getElementById("fICE-board");
 const pset = document.getElementById("pset");
 
 // MAIN NAVIGATION LINKS
@@ -111,12 +112,12 @@ const goInfo = () => {
 };
 const goProfile = async () => {
   shutAll();
+  console.log(FCT);
   proboard.style.display = "grid";
-  setPriceTags();
-  const Froots = await FrootyCoolTingsData();
-  var balance = await Froots.balanceOf(accounts[0]);
-  const tokID = await Froots.minter(accounts[0]);
-  const diasID = await Froots.tid(tokID);
+  // const Froots = await FrootyCoolTingsData();
+  var balance = await FCT.balanceOf(accounts[0]);
+  const tokID = await FCT.minter(accounts[0]);
+  const diasID = await FCT.tid(tokID);
   pdraw(diasID);
   const frootsbalance = Number(balance._hex);
   const Ice = await IceData();
@@ -169,15 +170,17 @@ const shutAll = () => {
 };
 const checkNav = async () => {
   // are gl slots left
+  // rename button
+  // const GL = await GreenListData();
   const sloz = await GL.max();
   const slots = await GL.l();
   const greenLeft = Number(sloz._hex) - Number(slots._hex);
   if (greenLeft == 0) glist.innerHTML = "HOME";
-  const Froots = await FrootyCoolTingsData();
-  const balance = await Froots.balanceOf(accounts[0]);
+  // const Froots = await FrootyCoolTingsData();
+  const balance = await FCT.balanceOf(accounts[0]);
   const frootsbalance = Number(balance._hex);
-  const max = await Froots.max();
-  const minted = await Froots.minted();
+  const max = await FCT.max();
+  const minted = await FCT.minted();
   const leftToMint = Number(max._hex) - Number(minted._hex);
   if (leftToMint > 0) minty.style.display = "block";
   else minty.style.display = "none";
@@ -238,10 +241,10 @@ let GL;
 let glSlotMax;
 let glSlotsTaken;
 let glMsg;
-let glMsgPrice;
 let glStamp;
 let glAdmin;
 let glFctAdr;
+let glPrice;
 const getGreenVars = async () => {
   GL = await GreenListData();
   glSlotMax = await GL.max()
@@ -265,13 +268,6 @@ const getGreenVars = async () => {
     .catch((err) => {
       console.error(err);
     });
-  glMsgPrice = await GL.msgprice()
-    .then((result) => {
-      return Number(result._hex);
-    })
-    .catch((err) => {
-      console.error(err.message);
-    });
   glStamp = await GL.stamp()
     .then((result) => {
       return Number(result._hex);
@@ -281,7 +277,7 @@ const getGreenVars = async () => {
     });
   glAdmin = await GL.admin();
   glFctAdr = await GL.FCT();
-  return glSlotMax, glSlotsTaken, glMsg, glStamp, glMsgPrice;
+  return glSlotMax, glSlotsTaken, glMsg, glStamp;
 };
 
 // ICE
@@ -296,7 +292,6 @@ const getIceVars = async () => {
     .catch((err) => {
       console.error(err);
     });
-  return icePrice;
 };
 
 // Froots
@@ -341,7 +336,7 @@ const getFrootVars = async () => {
     });
   fctMinted = await FCT.minted()
     .then((result) => {
-      return Number(result._hex);
+      return Number(result._hex) - 1;
     })
     .catch((err) => {
       console.error(err);
@@ -368,7 +363,7 @@ const getFrootVars = async () => {
       console.error(err);
     });
   // fctAdr = await FCT().address;
-  return fctStart, fctMax, fctMinted, fctStatusPrice, fctPrice;
+  return fctStart, fctMax, fctMinted, fctPrice, fctStatusPrice;
 };
 // Market
 let MRKT;
@@ -386,6 +381,7 @@ const getMarketVars = async () => {
 
 // GREENMINT DISPLAY
 const setAdminMsg = async () => {
+  // const GL = await GreenListData();
   const NewMsg = await GL.setMsgAdmin(new_msg.value)
     .then((result) => {
       set.innerHTML = "ADMIN MESSIGE RESET";
@@ -401,7 +397,8 @@ const setAdminMsg = async () => {
   });
 };
 const setNewMsg = async () => {
-  const NewMsg = await GL.setMsg(new_msg.value, { value: BigInt(1 * 1e18) })
+  // const GL = await GreenListData();
+  const NewMsg = await GL.setMsg(new_msg.value, { value: BigInt(1 * 1e15) })
     .then((result) => {
       set.innerHTML = "MESSIGE BEING SET";
       return result;
@@ -416,12 +413,13 @@ const setNewMsg = async () => {
   });
 };
 const setProMsg = async () => {
-  const Froots = await FrootyCoolTingsData();
-  const tokID = await Froots.minter(accounts[0]);
+  // const Froots = await FrootyCoolTingsData();
+  // await getGreenVars();
+  const tokID = await FCT.minter(accounts[0]);
   console.log("one :: ", Number(tokID._hex), pnew_msg.value);
-  const diasID = await Froots.tid(Number(tokID._hex));
-  console.log(Number(tokID._hex), Number(diasID._hex), pnew_msg.value);
-  const ProMsg = await Froots.setStatus(Number(tokID._hex), pnew_msg.value, { value: BigInt(1 * 1e18) })
+  const diasID = await FCT.tid(Number(tokID._hex));
+  console.log("two :: ", Number(tokID._hex), Number(diasID._hex), pnew_msg.value);
+  const ProMsg = await FCT.setStatus(Number(tokID._hex), pnew_msg.value, { value: BigInt(1 * 1e15) })
     .then((result) => {
       pset.innerHTML = "MESSIGE BEING SET";
       return result;
@@ -439,6 +437,8 @@ const setProMsg = async () => {
 };
 
 const getMSG = async () => {
+  // const GL = await GreenListData();
+
   const MSGH = await GL.showMsg()
     .then((result) => {
       // console.log(result);
@@ -453,10 +453,10 @@ const getMSG = async () => {
 };
 
 const getProMSG = async () => {
-  const Froots = await FrootyCoolTingsData();
-  const tokID = await Froots.minter(accounts[0]);
+  // const Froots = await FrootyCoolTingsData();
+  const tokID = await FCT.minter(accounts[0]);
   console.log("tokid :: ", Number(tokID._hex));
-  const ProStatus = await Froots.status(Number(tokID._hex))
+  const ProStatus = await FCT.status(Number(tokID._hex))
     .then((result) => {
       console.log(result);
       return result;
@@ -523,15 +523,16 @@ const pdraw = async (diasID) => {
 };
 
 const setSlot = async () => {
+  await getGreenVars();
+  await getFrootVars();
+  console.log("set slots :: ", "gl max " + glSlotMax, "gl minted " + glSlotsTaken, "f max " + fctMax, "f minted " + fctMinted, "fg minted " + fctSlotsMinted);
   slots.innerHTML = glSlotMax - glSlotsTaken;
-
   gCount.innerHTML = fctSlotMax - fctSlotsMinted; // Testnet
-  // gCount.innerHTML = slozMax - slozNum; // Mainnet
-  pCount.innerHTML = fctMax - fctMinted + fctSlotsMinted; // Testnet
-  // pCount.innerHTML = 4321 - minted; // mainnet
-  tCount.innerHTML = fctMax - fctMinted + fctSlotsMinted;
+  pCount.innerHTML = fctMax - fctSlotMax - (fctMinted - fctSlotsMinted); // Testnet
+  tCount.innerHTML = fctMax - fctMinted;
 };
 const getStamp = async () => {
+  // const GL = await GreenListData();
   const stamp = await GL.stamp().then((result) => {
     // console.log(result);
     return Number(result._hex);
@@ -760,6 +761,7 @@ const goPubMint = async (e) => {
   });
 };
 const goSetFCT = async () => {
+  // const GL = await GreenListData();
   let a;
   if (Number(network) === 137) a = 0;
   else if (Number(network) === 5001) a = 0;
@@ -793,33 +795,46 @@ const onClickConnect = async (e) => {
     // evaluate legal networks
     if (Number(network) !== 137 && Number(network) !== 80001 && Number(network) !== 5001 && Number(network) !== 5000 && Number(network) !== 43113) {
       // prompt network switch to evmos main
-      goMumbai();
+      goMantle(e);
     } else {
       // console.log(networkTag);
-      set.style.display = "block";
-      btn.innerHTML = "GREENLIST";
-      btn.removeEventListener("click", onClickConnect);
-      btn.addEventListener("click", goGreenList);
-      profile.innerHTML = "PROFILE";
-      profile.removeEventListener("click", onClickConnect);
-      profile.addEventListener("click", goProfile);
 
       await getGreenVars();
       await getIceVars();
       await getFrootVars();
       await getMarketVars();
 
-      if (Number(network) === 80001) a = 1;
-      if (Number(network) === 5000) a = 0;
-      if (Number(network) === 5001) a = 0;
-      if (Number(network) === 137) a = 3;
+      set.style.display = "block";
+      btn.removeEventListener("click", onClickConnect);
+      btn.innerHTML = "GRAB GREENLIST SLOTS NOW";
+      btn.addEventListener("click", goGreenList);
+      profile.innerHTML = "PROFILE";
+      profile.addEventListener("click", goProfile);
+      let a;
+
+      if (Number(network) === 5000) {
+        a = 0;
+        curr = "MANTLE";
+      }
+      if (Number(network) === 5001) {
+        a = 0;
+        curr = "MANTLE";
+      }
+      if (Number(network) === 137) {
+        a = 3;
+        curr = "MATIC";
+      }
+      if (Number(network) === 80001) {
+        a = 1;
+        curr = "MATIC";
+      }
       const deploymentKey = await Object.keys(FrootyCoolTingz.networks)[a];
-      // console.log(Number(FrootyCoolTingz.networks[deploymentKey].address), Number(glFctAdr));
+      console.log(Number(FrootyCoolTingz.networks[deploymentKey].address), Number(glFctAdr));
       if (Number(FrootyCoolTingz.networks[deploymentKey].address) !== Number(glFctAdr)) {
         // console.log(fctAdr);
         goSetFCT();
       }
-      // console.log(fctStart);
+      console.log(fctStart);
       if (fctMax > 0) {
         mintHead.innerHTML = "<h2>MINT IS LIVE NOW !</h2>";
         gMint.addEventListener("click", goGreenMint);
@@ -855,34 +870,27 @@ const onClickConnect = async (e) => {
     profile.innerText = "CONNECT";
   }
 };
-const setPriceTags = () => {
-  console.log("here we go :: ", glFctAdr, " price : ", fctPrice, " status : ", fctStatusPrice, " ice : ", icePrice, " gl price : ", glMsgPrice);
-  let curr;
-  if (Number(network) == 137 || Number(network) == 80001) curr = "MATIC";
-  if (Number(network) == 5000 || Number(network) == 5001) curr = "MANTLE";
-  if (Number(network) == 1 || Number(network) == 9) curr = "ETH";
-  mpricetag.innerHTML = fctPrice / 1e18 + " " + curr;
-  ipricetag.innerHTML = icePrice / 1e18 + " " + curr;
-  ppricetag.innerHTML = fctStatusPrice / 1e18 + " " + curr;
-  pricetag.innerHTML = glMsgPrice / 1e18 + " " + curr;
-};
+
 const goGreenList = async () => {
-  const doList = await GL.getListed({ gasLimit: 11760600 })
+  // const GL = await GreenListData();
+
+  const GLme = await GL.getListed()
     .then((result) => {
-      console.log(result);
+      // console.log(result);
+      btn.removeEventListener("click", goGreenList);
       btn.innerHTML = "PLEAZ WAIT 4 TX 2 FINNISH";
       return result;
     })
     .catch((err) => {
       console.error(err.message);
       btn.innerHTML = err.data.message.split(": ")[1];
+      btn.removeEventListener("click", goGreenList);
     });
-  doList.wait().then((load) => {
-    console.log(load);
+  GLme.wait().then((load) => {
+    // console.log(load);
     btn.innerHTML = "WOWZERS ... UR ON DA GREENLIZ NOW";
     btn.style.background = "white";
     btn.style.color = "mediumseagreen";
-    btn.removeEventListener("click", goGreenList);
     setSlot();
     checkNav();
   });
