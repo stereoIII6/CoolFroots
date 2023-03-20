@@ -258,7 +258,7 @@ contract FrootyCoolTingz is ERC721 {
     {
         require(ownedBy[_id] == msg.sender, "YOU ARE NOT THE HOLDER");
         require(start == false, "MINT IS STILL IN PROGRESS");
-        require(msg.value >= 1 * 10**18);
+        require(msg.value >= 1 * 10**15);
         uint256 o = 1 + (block.timestamp % 9);
         ice.earn(msg.sender, o / 2);
         status[_id] = _status;
