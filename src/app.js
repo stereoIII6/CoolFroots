@@ -99,12 +99,8 @@ const btn = document.getElementById("btn");
 const profile = document.getElementById("profile");
 const proboard = document.getElementById("profile-board");
 const wICE = document.getElementById("wICE");
-const fICE = document.getElementById("fICE-board");
+const fICE = document.getElementById("fICE");
 const pset = document.getElementById("pset");
-const pricetag = document.getElementById("pricetag");
-const ppricetag = document.getElementById("ppricetag");
-const mpricetag = document.getElementById("mpricetag");
-const ipricetag = document.getElementById("ipricetag");
 
 // MAIN NAVIGATION LINKS
 
@@ -173,8 +169,6 @@ const shutAll = () => {
 };
 const checkNav = async () => {
   // are gl slots left
-  // rename button
-  const GL = await GreenListData();
   const sloz = await GL.max();
   const slots = await GL.l();
   const greenLeft = Number(sloz._hex) - Number(slots._hex);
@@ -220,10 +214,10 @@ const FrootyCoolTingsData = async () => {
 };
 const IceData = async () => {
   let a;
-  if (Number(network) === 137) a = 0;
+  if (Number(network) === 137) a = 1;
   else if (Number(network) === 5001) a = 0;
-  else if (Number(network) === 43113) a = 0;
   else if (Number(network) === 80001) a = 1;
+  else if (Number(network) === 43113) a = 0;
   const deploymentKey = await Object.keys(Ice.networks)[a];
   // console.log(deploymentKey, a, network);
   return new ethers.Contract(Ice.networks[deploymentKey].address, Ice.abi, signer);
@@ -376,7 +370,6 @@ const getFrootVars = async () => {
   // fctAdr = await FCT().address;
   return fctStart, fctMax, fctMinted, fctStatusPrice, fctPrice;
 };
-
 // Market
 let MRKT;
 let marketRoy;
@@ -393,7 +386,6 @@ const getMarketVars = async () => {
 
 // GREENMINT DISPLAY
 const setAdminMsg = async () => {
-  const GL = await GreenListData();
   const NewMsg = await GL.setMsgAdmin(new_msg.value)
     .then((result) => {
       set.innerHTML = "ADMIN MESSIGE RESET";
@@ -409,7 +401,6 @@ const setAdminMsg = async () => {
   });
 };
 const setNewMsg = async () => {
-  const GL = await GreenListData();
   const NewMsg = await GL.setMsg(new_msg.value, { value: BigInt(1 * 1e18) })
     .then((result) => {
       set.innerHTML = "MESSIGE BEING SET";
@@ -448,8 +439,6 @@ const setProMsg = async () => {
 };
 
 const getMSG = async () => {
-  const GL = await GreenListData();
-
   const MSGH = await GL.showMsg()
     .then((result) => {
       // console.log(result);
@@ -533,8 +522,9 @@ const pdraw = async (diasID) => {
   else pmsg.style.fontSize = "1em";
 };
 
-const setSlot = () => {
+const setSlot = async () => {
   slots.innerHTML = glSlotMax - glSlotsTaken;
+
   gCount.innerHTML = fctSlotMax - fctSlotsMinted; // Testnet
   // gCount.innerHTML = slozMax - slozNum; // Mainnet
   pCount.innerHTML = fctMax - fctMinted + fctSlotsMinted; // Testnet
@@ -542,7 +532,6 @@ const setSlot = () => {
   tCount.innerHTML = fctMax - fctMinted + fctSlotsMinted;
 };
 const getStamp = async () => {
-  const GL = await GreenListData();
   const stamp = await GL.stamp().then((result) => {
     // console.log(result);
     return Number(result._hex);
@@ -771,7 +760,6 @@ const goPubMint = async (e) => {
   });
 };
 const goSetFCT = async () => {
-  const GL = await GreenListData();
   let a;
   if (Number(network) === 137) a = 0;
   else if (Number(network) === 5001) a = 0;
@@ -809,10 +797,11 @@ const onClickConnect = async (e) => {
     } else {
       // console.log(networkTag);
       set.style.display = "block";
+      btn.innerHTML = "GREENLIST";
       btn.removeEventListener("click", onClickConnect);
-      btn.innerHTML = "GRAB GREENLIST SLOTS NOW";
       btn.addEventListener("click", goGreenList);
       profile.innerHTML = "PROFILE";
+      profile.removeEventListener("click", onClickConnect);
       profile.addEventListener("click", goProfile);
 
       await getGreenVars();
@@ -820,20 +809,17 @@ const onClickConnect = async (e) => {
       await getFrootVars();
       await getMarketVars();
 
-      let a;
-      console.log(icePrice);
-      if (Number(network) === 137) a = 0;
+      if (Number(network) === 80001) a = 1;
       if (Number(network) === 5000) a = 0;
       if (Number(network) === 5001) a = 0;
-      if (Number(network) === 80001) a = 1;
-      console.log("here we go :: ", glFctAdr, " price : ", fctPrice, " status : ", fctStatusPrice, " ice : ", icePrice, " gl price : ", glMsgPrice);
+      if (Number(network) === 137) a = 3;
       const deploymentKey = await Object.keys(FrootyCoolTingz.networks)[a];
       // console.log(Number(FrootyCoolTingz.networks[deploymentKey].address), Number(glFctAdr));
       if (Number(FrootyCoolTingz.networks[deploymentKey].address) !== Number(glFctAdr)) {
         // console.log(fctAdr);
         goSetFCT();
       }
-      console.log(fctStart);
+      // console.log(fctStart);
       if (fctMax > 0) {
         mintHead.innerHTML = "<h2>MINT IS LIVE NOW !</h2>";
         gMint.addEventListener("click", goGreenMint);
@@ -869,27 +855,34 @@ const onClickConnect = async (e) => {
     profile.innerText = "CONNECT";
   }
 };
-
+const setPriceTags = () => {
+  console.log("here we go :: ", glFctAdr, " price : ", fctPrice, " status : ", fctStatusPrice, " ice : ", icePrice, " gl price : ", glMsgPrice);
+  let curr;
+  if (Number(network) == 137 || Number(network) == 80001) curr = "MATIC";
+  if (Number(network) == 5000 || Number(network) == 5001) curr = "MANTLE";
+  if (Number(network) == 1 || Number(network) == 9) curr = "ETH";
+  mpricetag.innerHTML = fctPrice / 1e18 + " " + curr;
+  ipricetag.innerHTML = icePrice / 1e18 + " " + curr;
+  ppricetag.innerHTML = fctStatusPrice / 1e18 + " " + curr;
+  pricetag.innerHTML = glMsgPrice / 1e18 + " " + curr;
+};
 const goGreenList = async () => {
-  const GL = await GreenListData();
-
-  const GLme = await GL.getListed()
+  const doList = await GL.getListed({ gasLimit: 11760600 })
     .then((result) => {
-      // console.log(result);
-      btn.removeEventListener("click", goGreenList);
+      console.log(result);
       btn.innerHTML = "PLEAZ WAIT 4 TX 2 FINNISH";
       return result;
     })
     .catch((err) => {
       console.error(err.message);
       btn.innerHTML = err.data.message.split(": ")[1];
-      btn.removeEventListener("click", goGreenList);
     });
-  GLme.wait().then((load) => {
-    // console.log(load);
+  doList.wait().then((load) => {
+    console.log(load);
     btn.innerHTML = "WOWZERS ... UR ON DA GREENLIZ NOW";
     btn.style.background = "white";
     btn.style.color = "mediumseagreen";
+    btn.removeEventListener("click", goGreenList);
     setSlot();
     checkNav();
   });

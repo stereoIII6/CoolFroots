@@ -1,4 +1,5 @@
 const ICE = artifacts.require("ICE");
+
 var n;
 const net = async () => {
   const netID = await web3.eth.net.getId();
@@ -18,6 +19,7 @@ module.exports = function (deployer, n) {
     if (n == "fevm") t = 3;
     if (n == "avax") t = 4;
     if (n == "celo") t = 5;
+    if (n == "mantle") t = 6;
   }
   console.log("mode :: ", t);
   deployer.deploy(ICE, t);

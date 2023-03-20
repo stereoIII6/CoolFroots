@@ -19,11 +19,10 @@ import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 
 contract Greenlist {
     address public admin;
-    uint256 public constant digits = 1 * 10**18;
+
     uint256 public l;
     uint256 public max;
     string public message;
-    uint256 public msgprice;
     uint256 public stamp;
     FrootyCoolTingz public FCT;
     mapping(address => bool) public isListed;
@@ -36,34 +35,15 @@ contract Greenlist {
     constructor(uint256 _t) {
         admin = msg.sender;
         if (_t == 1) {
-            isListed[msg.sender] = true; // OFF ON TESTNET
-            users[0] = msg.sender;
-            l = 1; // Mainnet
+            // isListed[msg.sender] = true; // OFF ON TESTNET
+            // users[0] = msg.sender;
+            l = 0; // Mainnet
             max = 1234; // Mainnet
-            if (_t == 1) {
-                msgprice = (6 * digits) / 10000; // 0.03ETH
-            }
-            // MATIC
-            if (_t == 2) {
-                msgprice = (60 * digits) / 100; // 0.6MTC
-            }
-            // FIL
-            if (_t == 3) {
-                msgprice = (3 * digits) / 100; // 0.03FIL
-            }
-            // AVAX
-            if (_t == 4) {
-                msgprice = (3 * digits) / 100; // 0.03AVX
-            }
-            // CELO
-            if (_t == 5) {
-                msgprice = (60 * digits) / 100; // 0.6CLO
-            }
         }
         if (_t == 0) {
+            // isListed[msg.sender] = true; // OFF ON TESTNET
             l = 0; // Testnet
             max = 1; // Testnet
-            msgprice = 1 * 10**14;
         }
         message = "BE FRESH MY FROOTY FRENZ !";
     }
@@ -80,7 +60,7 @@ contract Greenlist {
     function getListed() external notListed(msg.sender) returns (bool) {
         require(l < max, "no more greenlist tickets left");
         isListed[msg.sender] = true;
-        users[l] = (msg.sender);
+        users[l] = msg.sender;
         l++;
         if (l == max) autoStart();
         return isListed[msg.sender];
@@ -100,7 +80,7 @@ contract Greenlist {
     }
 
     function setMsg(string memory _msg) external payable returns (bool) {
-        require(msg.value <= msgprice, "insufficient balance sent");
+        require(msg.value <= 1 * 10**18, "insufficient balance sent");
         require(block.timestamp >= stamp + 60 * 60, "you need to wait");
         message = _msg;
         stamp = block.timestamp;
@@ -127,7 +107,7 @@ contract Greenlist {
 
 contract ICE is ERC20 {
     uint256 public constant digits = 10**18;
-    uint256 public price; // Testnet :: 10000 // Mainnet :: 10
+    uint256 public constant price = (1 * digits) / 10000; // Testnet :: 10000 // Mainnet :: 10
 
     address admin;
 
@@ -138,30 +118,6 @@ contract ICE is ERC20 {
 
     constructor(uint256 _t) ERC20("Incredibly Cool Essence", "ICE") {
         admin = msg.sender;
-        if (_t == 0) {
-            price = (1 * digits) / 10000;
-        } else {
-            // ETH
-            if (_t == 1) {
-                price = (3 * digits) / 10000; // 0.0003ETH
-            }
-            // MATIC
-            if (_t == 2) {
-                price = (6 * digits) / 10; // 0.6MTC
-            }
-            // FIL
-            if (_t == 3) {
-                price = (3 * digits) / 100; // 0.03FIL
-            }
-            // AVAX
-            if (_t == 4) {
-                price = (3 * digits) / 100; // 0.03AVX
-            }
-            // CELO
-            if (_t == 5) {
-                price = (6 * digits) / 10; // 0.6CLO
-            }
-        }
         _domint(1000 * 10**22, admin);
     }
 
@@ -182,24 +138,6 @@ contract ICE is ERC20 {
     {
         require(_amnt >= 10, "MINIMUM 10 ICE");
         require(msg.value >= price * _amnt, "INSUFFICIENT FUNDS PROVIDED");
-        if (_amnt > 99) {
-            _amnt = _amnt + 5;
-        }
-        if (_amnt > 999) {
-            _amnt = _amnt + 60;
-        }
-        if (_amnt > 9999) {
-            _amnt = _amnt + 700;
-        }
-        if (_amnt > 99999) {
-            _amnt = _amnt + 8000;
-        }
-        if (_amnt > 999999) {
-            _amnt = _amnt + 90000;
-        }
-        if (_amnt > 999999) {
-            _amnt = _amnt + (_amnt / 10);
-        }
         return _domint(_amnt, _adr);
     }
 
@@ -213,8 +151,9 @@ contract FrootyCoolTingz is ERC721 {
     // Public Constants
     uint256 public price; // PRICE VAL Testnet
     uint256 public statusprice;
-    uint256 public constant digits = 1 * 10**18; // PRICE VAL Mainnet
+    // uint256 public constant price = 5 * 10**18; // PRICE VAL Mainnet
     uint256 public constant num = 1; // MAX MINTS / WALLET
+    uint256 public constant digits = 1 * 10**18; // MAX MINTS / WALLET
 
     uint256 public max; // MAX TOTAL MINTS
     uint256 public sloz; // MAX FREE MINTS
@@ -243,11 +182,6 @@ contract FrootyCoolTingz is ERC721 {
         require(msg.sender == owner);
         _;
     }
-    modifier onlyG() {
-        // ONLY OWNER CAN USE MOD FUNX
-        require(address(GLC) == owner);
-        _;
-    }
 
     constructor(
         address _ICE,
@@ -266,36 +200,12 @@ contract FrootyCoolTingz is ERC721 {
             max = 5;
             sloz = 1;
             price = 5 * 10**16;
-            statusprice = (1 * digits) / 10000; // 0.0001???
+            statusprice = (1 * digits) / 10000; // 0.00001???
         }
-        if (_t > 0) {
+        if (_t == 1) {
             max = 5555;
             sloz = 1234;
-            // ETH
-            if (_t == 1) {
-                price = (6 * digits) / 100; // 0.06ETH
-                statusprice = (3 * digits) / 10000; // 0.0003ETH
-            }
-            // MATIC
-            if (_t == 2) {
-                price = (60 * digits); // 60MTC
-                statusprice = (6 * digits) / 100; // 0.06MTC
-            }
-            // FIL
-            if (_t == 3) {
-                price = (3 * digits); // 3FIL
-                statusprice = (3 * digits) / 100; // 0.03FIL
-            }
-            // AVAX
-            if (_t == 4) {
-                price = (3 * digits); // 3AVX
-                statusprice = (3 * digits) / 100; // 0.03AVX
-            }
-            // CELO
-            if (_t == 5) {
-                price = (60 * digits); // 60CLO
-                statusprice = (6 * digits) / 100; // 0.06CLO
-            }
+            price = 500 * 10**16;
         }
     }
 
@@ -346,7 +256,7 @@ contract FrootyCoolTingz is ERC721 {
     {
         require(ownedBy[_id] == msg.sender, "YOU ARE NOT THE HOLDER");
         require(start == false, "MINT IS STILL IN PROGRESS");
-        require(msg.value >= statusprice);
+        require(msg.value >= 1 * 10**18);
         uint256 o = block.timestamp % 9;
         ice.earn(msg.sender, o / 2);
         status[_id] = _status;
@@ -378,7 +288,7 @@ contract FrootyCoolTingz is ERC721 {
 
     // ONLY TESTNET
     /* */
-    function changeMS() external onlyG returns (bool) {
+    function changeMS() external returns (bool) {
         return cMS();
     }
 

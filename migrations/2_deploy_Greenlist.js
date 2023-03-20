@@ -23,6 +23,7 @@ module.exports = function (deployer, n) {
     if (n == "fevm") t = 3;
     if (n == "avax") t = 4;
     if (n == "celo") t = 5;
+    if (n == "mantle") t = 6;
   }
   console.log("mode :: ", t);
   deployer.deploy(Greenlist, t);
