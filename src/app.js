@@ -18,6 +18,7 @@ import { stripZeros } from "ethers/lib/utils";
 // globals
 let accounts;
 let network;
+let curr;
 let user;
 
 const client = require("ipfs-http-client");
@@ -111,12 +112,12 @@ const goInfo = () => {
 };
 const goProfile = async () => {
   shutAll();
-
+  console.log(FCT);
   proboard.style.display = "grid";
-  const Froots = await FrootyCoolTingsData();
-  var balance = await Froots.balanceOf(accounts[0]);
-  const tokID = await Froots.minter(accounts[0]);
-  const diasID = await Froots.tid(tokID);
+  // const Froots = await FrootyCoolTingsData();
+  var balance = await FCT.balanceOf(accounts[0]);
+  const tokID = await FCT.minter(accounts[0]);
+  const diasID = await FCT.tid(tokID);
   pdraw(diasID);
   const frootsbalance = Number(balance._hex);
   const Ice = await IceData();
@@ -170,16 +171,16 @@ const shutAll = () => {
 const checkNav = async () => {
   // are gl slots left
   // rename button
-  const GL = await GreenListData();
+  // const GL = await GreenListData();
   const sloz = await GL.max();
   const slots = await GL.l();
   const greenLeft = Number(sloz._hex) - Number(slots._hex);
   if (greenLeft == 0) glist.innerHTML = "HOME";
-  const Froots = await FrootyCoolTingsData();
-  const balance = await Froots.balanceOf(accounts[0]);
+  // const Froots = await FrootyCoolTingsData();
+  const balance = await FCT.balanceOf(accounts[0]);
   const frootsbalance = Number(balance._hex);
-  const max = await Froots.max();
-  const minted = await Froots.minted();
+  const max = await FCT.max();
+  const minted = await FCT.minted();
   const leftToMint = Number(max._hex) - Number(minted._hex);
   if (leftToMint > 0) minty.style.display = "block";
   else minty.style.display = "none";
@@ -243,6 +244,7 @@ let glMsg;
 let glStamp;
 let glAdmin;
 let glFctAdr;
+let glPrice;
 const getGreenVars = async () => {
   GL = await GreenListData();
   glSlotMax = await GL.max()
@@ -295,6 +297,7 @@ const getIceVars = async () => {
 // Froots
 let FCT;
 let fctPrice;
+let fctStatusPrice;
 let fctMaxMints;
 let fctMax;
 let fctMinted;
@@ -304,6 +307,13 @@ let fctStart;
 const getFrootVars = async () => {
   FCT = await FrootyCoolTingsData();
   fctPrice = await FCT.price()
+    .then((result) => {
+      return Number(result._hex);
+    })
+    .catch((err) => {
+      console.error(err);
+    });
+  fctStatusPrice = await FCT.statusprice()
     .then((result) => {
       return Number(result._hex);
     })
@@ -326,7 +336,7 @@ const getFrootVars = async () => {
     });
   fctMinted = await FCT.minted()
     .then((result) => {
-      return Number(result._hex);
+      return Number(result._hex) - 1;
     })
     .catch((err) => {
       console.error(err);
@@ -353,7 +363,7 @@ const getFrootVars = async () => {
       console.error(err);
     });
   // fctAdr = await FCT().address;
-  return fctStart, fctMax, fctMinted;
+  return fctStart, fctMax, fctMinted, fctPrice, fctStatusPrice;
 };
 // Market
 let MRKT;
@@ -371,7 +381,7 @@ const getMarketVars = async () => {
 
 // GREENMINT DISPLAY
 const setAdminMsg = async () => {
-  const GL = await GreenListData();
+  // const GL = await GreenListData();
   const NewMsg = await GL.setMsgAdmin(new_msg.value)
     .then((result) => {
       set.innerHTML = "ADMIN MESSIGE RESET";
@@ -387,8 +397,8 @@ const setAdminMsg = async () => {
   });
 };
 const setNewMsg = async () => {
-  const GL = await GreenListData();
-  const NewMsg = await GL.setMsg(new_msg.value, { value: BigInt(1 * 1e18) })
+  // const GL = await GreenListData();
+  const NewMsg = await GL.setMsg(new_msg.value, { value: BigInt(1 * 1e15) })
     .then((result) => {
       set.innerHTML = "MESSIGE BEING SET";
       return result;
@@ -403,12 +413,13 @@ const setNewMsg = async () => {
   });
 };
 const setProMsg = async () => {
-  const Froots = await FrootyCoolTingsData();
-  const tokID = await Froots.minter(accounts[0]);
+  // const Froots = await FrootyCoolTingsData();
+  // await getGreenVars();
+  const tokID = await FCT.minter(accounts[0]);
   console.log("one :: ", Number(tokID._hex), pnew_msg.value);
-  const diasID = await Froots.tid(Number(tokID._hex));
-  console.log(Number(tokID._hex), Number(diasID._hex), pnew_msg.value);
-  const ProMsg = await Froots.setStatus(Number(tokID._hex), pnew_msg.value, { value: BigInt(1 * 1e18) })
+  const diasID = await FCT.tid(Number(tokID._hex));
+  console.log("two :: ", Number(tokID._hex), Number(diasID._hex), pnew_msg.value);
+  const ProMsg = await FCT.setStatus(Number(tokID._hex), pnew_msg.value, { value: BigInt(1 * 1e15) })
     .then((result) => {
       pset.innerHTML = "MESSIGE BEING SET";
       return result;
@@ -426,7 +437,7 @@ const setProMsg = async () => {
 };
 
 const getMSG = async () => {
-  const GL = await GreenListData();
+  // const GL = await GreenListData();
 
   const MSGH = await GL.showMsg()
     .then((result) => {
@@ -442,10 +453,10 @@ const getMSG = async () => {
 };
 
 const getProMSG = async () => {
-  const Froots = await FrootyCoolTingsData();
-  const tokID = await Froots.minter(accounts[0]);
+  // const Froots = await FrootyCoolTingsData();
+  const tokID = await FCT.minter(accounts[0]);
   console.log("tokid :: ", Number(tokID._hex));
-  const ProStatus = await Froots.status(Number(tokID._hex))
+  const ProStatus = await FCT.status(Number(tokID._hex))
     .then((result) => {
       console.log(result);
       return result;
@@ -512,16 +523,16 @@ const pdraw = async (diasID) => {
 };
 
 const setSlot = async () => {
+  await getGreenVars();
+  await getFrootVars();
+  console.log("set slots :: ", "gl max " + glSlotMax, "gl minted " + glSlotsTaken, "f max " + fctMax, "f minted " + fctMinted, "fg minted " + fctSlotsMinted);
   slots.innerHTML = glSlotMax - glSlotsTaken;
-
   gCount.innerHTML = fctSlotMax - fctSlotsMinted; // Testnet
-  // gCount.innerHTML = slozMax - slozNum; // Mainnet
-  pCount.innerHTML = fctMax - fctMinted + fctSlotsMinted; // Testnet
-  // pCount.innerHTML = 4321 - minted; // mainnet
-  tCount.innerHTML = fctMax - fctMinted + fctSlotsMinted;
+  pCount.innerHTML = fctMax - fctSlotMax - (fctMinted - fctSlotsMinted); // Testnet
+  tCount.innerHTML = fctMax - fctMinted;
 };
 const getStamp = async () => {
-  const GL = await GreenListData();
+  // const GL = await GreenListData();
   const stamp = await GL.stamp().then((result) => {
     // console.log(result);
     return Number(result._hex);
@@ -750,7 +761,7 @@ const goPubMint = async (e) => {
   });
 };
 const goSetFCT = async () => {
-  const GL = await GreenListData();
+  // const GL = await GreenListData();
   let a;
   if (Number(network) === 137) a = 0;
   else if (Number(network) === 5001) a = 0;
@@ -787,23 +798,36 @@ const onClickConnect = async (e) => {
       goMantle(e);
     } else {
       // console.log(networkTag);
+
+      await getGreenVars();
+      await getIceVars();
+      await getFrootVars();
+      await getMarketVars();
+
       set.style.display = "block";
       btn.removeEventListener("click", onClickConnect);
       btn.innerHTML = "GRAB GREENLIST SLOTS NOW";
       btn.addEventListener("click", goGreenList);
       profile.innerHTML = "PROFILE";
       profile.addEventListener("click", goProfile);
-
-      await getGreenVars();
-      await getIceVars();
-      await getFrootVars();
-      await getMarketVars();
       let a;
 
-      if (Number(network) === 80001) a = 1;
-      if (Number(network) === 5000) a = 0;
-      if (Number(network) === 5001) a = 0;
-      if (Number(network) === 137) a = 3;
+      if (Number(network) === 5000) {
+        a = 0;
+        curr = "MANTLE";
+      }
+      if (Number(network) === 5001) {
+        a = 0;
+        curr = "MANTLE";
+      }
+      if (Number(network) === 137) {
+        a = 3;
+        curr = "MATIC";
+      }
+      if (Number(network) === 80001) {
+        a = 1;
+        curr = "MATIC";
+      }
       const deploymentKey = await Object.keys(FrootyCoolTingz.networks)[a];
       console.log(Number(FrootyCoolTingz.networks[deploymentKey].address), Number(glFctAdr));
       if (Number(FrootyCoolTingz.networks[deploymentKey].address) !== Number(glFctAdr)) {
@@ -848,7 +872,7 @@ const onClickConnect = async (e) => {
 };
 
 const goGreenList = async () => {
-  const GL = await GreenListData();
+  // const GL = await GreenListData();
 
   const GLme = await GL.getListed()
     .then((result) => {
