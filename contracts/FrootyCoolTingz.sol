@@ -24,6 +24,7 @@ contract Greenlist {
     uint256 public max;
     string public message;
     uint256 public stamp;
+    uint256 public price;
     FrootyCoolTingz public FCT;
     mapping(address => bool) public isListed;
     address[1234] public users;
@@ -35,15 +36,16 @@ contract Greenlist {
     constructor(uint256 _t) {
         admin = msg.sender;
         if (_t == 1) {
-            // isListed[msg.sender] = true; // OFF ON TESTNET
-            // users[0] = msg.sender;
+            isListed[msg.sender] = true; // OFF ON TESTNET
+            users[0] = msg.sender;
             l = 0; // Mainnet
             max = 1234; // Mainnet
+            price = (1 * 10**18) / 1000;
         }
         if (_t == 0) {
-            // isListed[msg.sender] = true; // OFF ON TESTNET
             l = 0; // Testnet
             max = 1; // Testnet
+            price = (1 * 10**18) / 1000;
         }
         message = "BE FRESH MY FROOTY FRENZ !";
     }
@@ -60,7 +62,7 @@ contract Greenlist {
     function getListed() external notListed(msg.sender) returns (bool) {
         require(l < max, "no more greenlist tickets left");
         isListed[msg.sender] = true;
-        users[l] = msg.sender;
+        users[l] = (msg.sender);
         l++;
         if (l == max) autoStart();
         return isListed[msg.sender];
@@ -80,7 +82,7 @@ contract Greenlist {
     }
 
     function setMsg(string memory _msg) external payable returns (bool) {
-        require(msg.value <= 1 * 10**18, "insufficient balance sent");
+        require(msg.value >= price, "insufficient balance sent");
         require(block.timestamp >= stamp + 60 * 60, "you need to wait");
         message = _msg;
         stamp = block.timestamp;
@@ -153,7 +155,6 @@ contract FrootyCoolTingz is ERC721 {
     uint256 public statusprice;
     // uint256 public constant price = 5 * 10**18; // PRICE VAL Mainnet
     uint256 public constant num = 1; // MAX MINTS / WALLET
-    uint256 public constant digits = 1 * 10**18; // MAX MINTS / WALLET
 
     uint256 public max; // MAX TOTAL MINTS
     uint256 public sloz; // MAX FREE MINTS
@@ -200,12 +201,13 @@ contract FrootyCoolTingz is ERC721 {
             max = 5;
             sloz = 1;
             price = 5 * 10**16;
-            statusprice = (1 * digits) / 10000; // 0.00001???
+            statusprice = 1 * 10**15;
         }
         if (_t == 1) {
             max = 5555;
             sloz = 1234;
             price = 500 * 10**16;
+            statusprice = 1 * 10**15;
         }
     }
 
@@ -226,7 +228,7 @@ contract FrootyCoolTingz is ERC721 {
         require(start == true, "MINT IS NOT YET LIVE");
         ownedBy[minted] = msg.sender;
         _doMint(_amnt, msg.sender, _diasIDs, _diasOBJs);
-        uint256 o = block.timestamp % 9;
+        uint256 o = 1 + (block.timestamp % 9);
         ice.earn(msg.sender, o);
         return minted;
     }
@@ -243,7 +245,7 @@ contract FrootyCoolTingz is ERC721 {
         require(slots <= sloz, "ALL SLOTS HAVE BEEN MINTED");
         ownedBy[minted] = msg.sender;
         _doMint(1, msg.sender, _diasIDs, _diasOBJs);
-        uint256 o = block.timestamp % 9;
+        uint256 o = 1 + (block.timestamp % 9);
         ice.earn(msg.sender, o);
         slots++;
         return minted;
@@ -257,7 +259,7 @@ contract FrootyCoolTingz is ERC721 {
         require(ownedBy[_id] == msg.sender, "YOU ARE NOT THE HOLDER");
         require(start == false, "MINT IS STILL IN PROGRESS");
         require(msg.value >= 1 * 10**18);
-        uint256 o = block.timestamp % 9;
+        uint256 o = 1 + (block.timestamp % 9);
         ice.earn(msg.sender, o / 2);
         status[_id] = _status;
         return true;
