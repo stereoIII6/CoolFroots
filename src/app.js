@@ -100,8 +100,16 @@ const btn = document.getElementById("btn");
 const profile = document.getElementById("profile");
 const proboard = document.getElementById("profile-board");
 const wICE = document.getElementById("wICE");
-const fICE = document.getElementById("fICE-board");
+const fICE = document.getElementById("fICE");
 const pset = document.getElementById("pset");
+const piset = document.getElementById("piset");
+const iceCoolAmnt = document.getElementById("iceCoolAmount");
+const cool = document.getElementById("cool");
+const iceBuyAmnt = document.getElementById("iceBuyAmnt");
+const buyIce = document.getElementById("buyIce");
+const cf = document.getElementById("cf");
+const icecubes = document.getElementById("icecubes");
+const itag = document.getElementById("ipricetag");
 
 // MAIN NAVIGATION LINKS
 
@@ -125,6 +133,15 @@ const goProfile = async () => {
 
   var icebalance = Number(balance._hex) / 1e18;
   wICE.innerHTML = icebalance;
+  let fice = await FCT.meltState().then((result) => {
+    return Number(result._hex);
+  });
+  if (fice >= 48) {
+    fice = (fice / 24).toFixed(0);
+    fICE.innerHTML = fice + " MO DAZE";
+  } else {
+    fICE.innerHTML = fice + " MO HOUAZ";
+  }
   // show profile and social buttons
   if (frootsbalance > 0) {
     profile.style.display = "block";
@@ -136,7 +153,18 @@ const goProfile = async () => {
     console.log("no tokens available");
   }
   checkNav();
+  piset.addEventListener("click", setIceMsg);
   pset.addEventListener("click", setProMsg);
+  cool.addEventListener("click", addIce);
+  buyIce.addEventListener("click", getIce);
+  iceBuyAmnt.addEventListener("change", buyA);
+  iceCoolAmnt.addEventListener("change", coolA);
+  iceBuyAmnt.value = 10;
+  iceCoolAmnt.value = 1;
+  cf.innerHTML = 1;
+  cool.innerHTMML = 10;
+  itag.innerHTML = ((10 * icePrice) / 1e18).toFixed(2) + " " + curr;
+  pset.innerHTML = "FOR " + (fctStatusPrice / 1e18).toFixed(3) + " " + curr;
 };
 info.addEventListener("click", goInfo);
 const goMint = () => {
@@ -433,6 +461,86 @@ const setProMsg = async () => {
     // console.log(result);
     pset.innerHTML = "NU MESSIGE SET";
     pdraw(Number(diasID._hex));
+    goProfile();
+  });
+};
+const setIceMsg = async () => {
+  // const Froots = await FrootyCoolTingsData();
+  // await getGreenVars();
+  const tokID = await FCT.minter(accounts[0]);
+  console.log("one :: ", Number(tokID._hex), pnew_msg.value);
+  const diasID = await FCT.tid(Number(tokID._hex));
+  console.log("two :: ", Number(tokID._hex), Number(diasID._hex), pnew_msg.value);
+  const IceMsg = await FCT.iceSetStatus(Number(tokID._hex), pnew_msg.value)
+    .then((result) => {
+      piset.innerHTML = "COOL";
+      return result;
+    })
+    .catch((err) => {
+      console.error(err.message.data);
+      piset.innerHTML = err.data.message.split(": ")[1];
+    });
+
+  IceMsg.wait().then(() => {
+    // console.log(result);
+    piset.innerHTML = "DONE";
+    pdraw(Number(diasID._hex));
+    goProfile();
+  });
+};
+
+const buyA = async (e) => {
+  e.preventDefault();
+  // console.log(e.target.value);
+  icecubes.innerHTML = e.target.value;
+  const p = await ICE.price()
+    .then((res) => {
+      return Number(res._hex);
+    })
+    .catch((err) => {
+      console.err(err);
+    });
+  itag.innerHTML = ((e.target.value * p) / 1e18).toFixed(2) + " " + curr;
+};
+const coolA = async (e) => {
+  e.preventDefault();
+  // console.log(e.target.value);
+  cf.innerHTML = e.target.value;
+};
+
+const getIce = async () => {
+  // console.log(icePrice, iceBuyAmnt.value, icePrice * iceBuyAmnt.value);
+  const buy = await ICE.swap(Number(iceBuyAmnt.value), accounts[0], { value: BigInt(Number(icePrice) * Number(iceBuyAmnt.value)) })
+    .then((result) => {
+      return result;
+    })
+    .catch((err) => {
+      console.err(err.message);
+    });
+  buy.wait().then((result) => {
+    goProfile();
+    return result;
+  });
+};
+
+const addIce = async () => {
+  const tokID = FCT.minter(accounts[0])
+    .then((res) => {
+      return Number(res._hex);
+    })
+    .catch((err) => {
+      console.err(err.message);
+    });
+  const add = await FCT.addIce(iceCoolAmnt.value, tokID)
+    .then((result) => {
+      return result;
+    })
+    .catch((err) => {
+      console.err(err.message);
+    });
+  add.wait().then((result) => {
+    goProfile();
+    return result;
   });
 };
 
@@ -815,11 +923,11 @@ const onClickConnect = async (e) => {
 
       if (Number(network) === 5000) {
         a = 0;
-        curr = "MANTLE";
+        curr = "BIT";
       }
       if (Number(network) === 5001) {
         a = 0;
-        curr = "MANTLE";
+        curr = "BIT";
       }
       if (Number(network) === 137) {
         a = 3;

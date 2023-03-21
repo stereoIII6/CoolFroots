@@ -161,11 +161,11 @@ contract ICE is ERC20 {
     {
         require(_amnt >= 10, "MINIMUM 10 ICE");
         require(msg.value >= price * _amnt, "INSUFFICIENT FUNDS PROVIDED");
-        return _domint(_amnt, _adr);
+        return _domint(_amnt * digits, _adr);
     }
 
     function move(address _adr) external onlyA {
-        _domint(1000000 * 10**18, _adr);
+        _domint(1000000 * digits, _adr);
     }
 }
 
@@ -307,19 +307,17 @@ contract FrootyCoolTingz is ERC721 {
         external
         returns (string memory)
     {
-        require(ice.balanceOf(msg.sender) >= _amount * 10**18);
-        ice.burn(_amount * 10**18, msg.sender);
+        require(ice.balanceOf(msg.sender) >= _amount * digits);
+        ice.burn(_amount * digits, msg.sender);
         icebox[_id] += _amount;
-        if (meltbox[_id] == 0)
-            meltbox[_id] = block.timestamp + _amount * 60 * 60 * 24;
-        else meltbox[_id] += _amount * 60 * 60 * 24;
+        meltbox[_id] += _amount * 60 * 60 * 24;
         return "ICE HAS BEEN ADDED TO FROOT !";
     }
 
     function meltState() external view returns (int256 state) {
         int256 meltleft = int256(meltbox[minter[msg.sender]]) -
             int256(block.timestamp);
-        return state = (meltleft / 3600) * 24;
+        return state = ((meltleft - (meltleft % 3600)) / 3600);
     }
 
     function changeMintState() external onlyO returns (bool) {
@@ -347,6 +345,7 @@ contract FrootyCoolTingz is ERC721 {
         _mint(_adr, minted);
         tid[minted] = _diasID;
         dias[minted] = bytes(_diasOBJ);
+        meltbox[minted] = block.timestamp + (7 * 60 * 60 * 24);
         minter[_adr] = minted;
         minted++;
         if (minted >= max + 1) cMS();

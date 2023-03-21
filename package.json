@@ -35,7 +35,7 @@
     "@babel/core": "^7.16.7",
     "@chainlink/contracts": "^0.4.0",
     "@metamask/detect-provider": "^1.2.0",
-    "@openzeppelin/contracts": "^4.4.1",
+    "@openzeppelin/contracts": "^4.7.1",
     "@openzeppelin/test-helpers": "^0.5.15",
     "@truffle/hdwallet-provider": "^2.0.0",
     "@uauth/js": "^1.1.0",
