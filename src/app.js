@@ -84,7 +84,7 @@ const about = document.getElementById("about");
 const road = document.getElementById("road");
 const mint = document.getElementById("mint");
 const info = document.getElementById("info");
-const community = document.getElementById("community");
+const soshill = document.getElementById("soshill");
 const swap = document.getElementById("swap");
 const social = document.getElementById("social");
 const minty = document.getElementById("minty");
@@ -99,7 +99,8 @@ const pMintNow = document.getElementById("pMintNow");
 const tCount = document.getElementById("tCount");
 const btn = document.getElementById("btn");
 const profile = document.getElementById("profile");
-const proboard = document.getElementById("profile-board");
+const pform = document.getElementById("pform");
+const procanvas = document.getElementById("pdias_canvas");
 const wICE = document.getElementById("wICE");
 const fICE = document.getElementById("fICE");
 const pset = document.getElementById("pset");
@@ -139,7 +140,8 @@ const goInfo = () => {
 const goProfile = async () => {
   shutAll();
   console.log(FCT);
-  proboard.style.display = "grid";
+  pform.style.display = "grid";
+  procanvas.style.display = "grid";
   // const Froots = await FrootyCoolTingsData();
   var balance = await FCT.balanceOf(accounts[0]);
   const tokID = await FCT.minter(accounts[0]);
@@ -200,7 +202,7 @@ const goS0x = () => {
   shutAll();
   social.style.display = "grid";
 };
-community.addEventListener("click", goS0x);
+soshill.addEventListener("click", goS0x);
 const goSwap = () => {
   shutAll();
   market.style.display = "grid";
@@ -212,7 +214,8 @@ const shutAll = () => {
   about.style.display = "none";
   road.style.display = "none";
   mint.style.display = "none";
-  proboard.style.display = "none";
+  pform.style.display = "none";
+  procanvas.style.display = "none";
 };
 const checkNav = async () => {
   // are gl slots left

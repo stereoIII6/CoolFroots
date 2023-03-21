@@ -14,15 +14,15 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   </head>
   <body>
-    <h2 id="fruity">
+    <div id="fruity">
       <img src="https://ipfs.io/ipfs/QmQ6qgFqZkgUiGZKY2yL9iz7dkTVd3m9oY868Vm1XzNDsN" id="logoimg" />
-      <button id="swap" disabled>MARKET</button>
-      <button id="community" disabled>SOCIAL</button>
-      <button id="profile">CONNECT</button>
-      <button id="info">INFO</button>
-      <button id="minty">MINT</button>
-      <button id="glist">GREENLIST</button>
-    </h2>
+      <button id="swap" disabled>MARKYT</button>
+      <button id="soshill" disabled>SOSHILL</button>
+      <button id="profile">KONNEC</button>
+      <button id="info">INVO</button>
+      <button id="minty">MYNT</button>
+      <button id="glist">GRINLYZ</button>
+    </div>
 
     <div id="body">
       <div id="dias_canvas">
@@ -51,15 +51,11 @@
       </div>
       <div id="uForm">
         <h2 id="title">ONLY <b id="slots">1234</b> <i id="slotstate">SLOTS LEFT</i></h2>
-        <h3>GRAB YOUR GREENLIZ SLOT NOW !</h3>
-
-        <div id="form">
-          <button id="btn">PROFILE</button>
-          <p id="inf">U CEN EDYT DA PAIG MESSIG FO <b id="pricetag">1 MATIC</b> IT WILL DISSPLEH 4 AT LIIST 1 HOUR 2 SPRED UR WORD</p>
-          <input type="text" id="new_msg" placeholder="YOUR MESSAGE GOES HERE !" />
-
-          <button id="set">EDYT MESSIGE</button>
-        </div>
+        <h3 class="full">GRAB YOUR GREENLIZ SLOT NOW !</h3>
+        <button id="btn" class="full">PROFILE</button>
+        <p id="inf" class="full">U CEN EDYT DA PAIG MESSIG FO <b id="pricetag">1 MATIC</b> IT WILL DISSPLEH 4 AT LIIST 1 HOUR 2 SPRED UR WORD</p>
+        <input type="text" id="new_msg" placeholder="YOUR MESSAGE GOES HERE !" class="full" />
+        <button id="set" class="full">EDYT MESSIGE</button>
       </div>
       <div id="about">
         <h2>WUT R DEEZ FROOTS UP 2 ?</h2>
@@ -92,50 +88,48 @@
           </ul>
         </div>
       </div>
-      <div id="profile-board">
-        <div id="pdias_canvas">
-          <div id="bg" class="layer">
-            <img id="pbg_img" class="ly_img" src="" />
-          </div>
-          <div id="bodi" class="layer">
-            <img id="pbodi_img" class="ly_img" src="" />
-          </div>
-          <div id="bubble" class="layer">
-            <img id="pbubble_img" class="ly_img" src="" />
-          </div>
-          <div id="brow" class="layer">
-            <img id="pbrow_img" class="ly_img" src="" />
-          </div>
-          <div id="eye" class="layer">
-            <img id="peye_img" class="ly_img" src="" />
-          </div>
-          <div id="mouth" class="layer">
-            <img id="pmouth_img" class="ly_img" src="" />
-          </div>
-          <div id="pmsg" class="layer"></div>
-          <a id="share" target="_blank" href="https://twitter.com/share?text=Check+out+the+%23CoolFroots+...+Grab+a+%23GREENLIST+SLOT+for+the+%23FREEMINT+and+always+remember+to+stay+cool%21+Like%2C+Tag%2C+RT+%26+Follow+@stereoIII6%2C+@bamasfo+%26+@go_vrl+%26+@iam_sirheeb to make sure you won't miss out!+%26+pic.twitter.com/6xadzQEnvA">
-            <img src="https://vessio.com/wp-content/uploads/2021/03/7645432.png" srcset="https://vessio.com/wp-content/uploads/2021/03/7645432.png" alt="Twitter-share-button Logo Icon" width="500px" />
-          </a>
-        </div>
-        <div id="pForm">
-          <div id="pform">
-            <h2>Profile</h2>
-            <p id="pinf">U CAN EDIT YOUR FROOT MESSAGE</p>
-            <input type="text" id="pnew_msg" placeholder="YOUR MESSAGE GOES HERE !" />
-            <button id="pset">SET MSG 1 ETH</button><button id="piset">SET MSG 1&nbsp;<img src="https://www.freepnglogos.com/uploads/ice-png/ice-cube-transparent-vector-graphic-pixabay-36.png" style="height: 24px; width: 24px" /></button>
-            <p id="pinf">
-              U GOT <b id="wICE">0</b>&nbsp;<img src="https://www.freepnglogos.com/uploads/ice-png/ice-cube-transparent-vector-graphic-pixabay-36.png" style="height: 24px; width: 24px" /> N UR WOLLIT !<br />
-              <b id="fICE">0</b> TIL UR MOLTN !<br />
-              U BEDDA STEAH COOL ?
-            </p>
-            <input type="range" id="iceCoolAmount" min="1" max="10" value="1" />
-            <button id="cool">COOL DOWN x<b id="cf">1</b>&nbsp;<img src="https://www.freepnglogos.com/uploads/ice-png/ice-cube-transparent-vector-graphic-pixabay-36.png" style="height: 24px; width: 24px" /></button>
 
-            <input type="range" id="iceBuyAmnt" min="10" max="500" value="10" step="10" />
-            <button id="buyIce"><b id="icecubes">10</b>&nbsp;<img src="https://www.freepnglogos.com/uploads/ice-png/ice-cube-transparent-vector-graphic-pixabay-36.png" style="height: 24px; width: 24px" /> FOR <b id="ipricetag">6 ETH</b></button>
-          </div>
+      <div id="pdias_canvas">
+        <div id="bg" class="layer">
+          <img id="pbg_img" class="ly_img" src="" />
         </div>
+        <div id="bodi" class="layer">
+          <img id="pbodi_img" class="ly_img" src="" />
+        </div>
+        <div id="bubble" class="layer">
+          <img id="pbubble_img" class="ly_img" src="" />
+        </div>
+        <div id="brow" class="layer">
+          <img id="pbrow_img" class="ly_img" src="" />
+        </div>
+        <div id="eye" class="layer">
+          <img id="peye_img" class="ly_img" src="" />
+        </div>
+        <div id="mouth" class="layer">
+          <img id="pmouth_img" class="ly_img" src="" />
+        </div>
+        <div id="pmsg" class="layer"></div>
+        <a id="share" target="_blank" href="https://twitter.com/share?text=Check+out+the+%23CoolFroots+...+Grab+a+%23GREENLIST+SLOT+for+the+%23FREEMINT+and+always+remember+to+stay+cool%21+Like%2C+Tag%2C+RT+%26+Follow+@stereoIII6%2C+@bamasfo+%26+@go_vrl+%26+@iam_sirheeb to make sure you won't miss out!+%26+pic.twitter.com/6xadzQEnvA">
+          <img src="https://vessio.com/wp-content/uploads/2021/03/7645432.png" srcset="https://vessio.com/wp-content/uploads/2021/03/7645432.png" alt="Twitter-share-button Logo Icon" width="500px" />
+        </a>
       </div>
+      <div id="pform">
+        <h2 class="full">Profile</h2>
+        <p id="pinf" class="full">U CAN EDIT YOUR FROOT MESSAGE</p>
+        <input type="text" id="pnew_msg" placeholder="YOUR MESSAGE GOES HERE !" class="full" />
+        <button id="pset">SET MSG 1 ETH</button><button id="piset">SET MSG 1&nbsp;<img src="https://www.freepnglogos.com/uploads/ice-png/ice-cube-transparent-vector-graphic-pixabay-36.png" style="height: 24px; width: 24px" /></button>
+        <p id="pinf" class="full">
+          U GOT <b id="wICE">0</b>&nbsp;<img src="https://www.freepnglogos.com/uploads/ice-png/ice-cube-transparent-vector-graphic-pixabay-36.png" style="height: 24px; width: 24px" /> N UR WOLLIT !<br />
+          <b id="fICE">0</b> TIL UR MOLTN !<br />
+          U BEDDA STEAH COOL ?
+        </p>
+        <input type="range" id="iceCoolAmount" min="1" max="10" value="1" />
+        <button id="cool">COOL DOWN x<b id="cf">1</b>&nbsp;<img src="https://www.freepnglogos.com/uploads/ice-png/ice-cube-transparent-vector-graphic-pixabay-36.png" style="height: 24px; width: 24px" /></button>
+
+        <input type="range" id="iceBuyAmnt" min="10" max="500" value="10" step="10" />
+        <button id="buyIce"><b id="icecubes">10</b>&nbsp;<img src="https://www.freepnglogos.com/uploads/ice-png/ice-cube-transparent-vector-graphic-pixabay-36.png" style="height: 24px; width: 24px" /> FOR <b id="ipricetag">6 ETH</b></button>
+      </div>
+
       <div id="road">
         <h2>WEN COOL FROOTS MINT ?</h2>
         <p>TINGZ MINT GOS LIVE 24h AFTA 1234 GREENLIZT SLOZ R TAKN ! U NEED TO SPRED OFFISHILL LINKS IN UR CRU.</p>
