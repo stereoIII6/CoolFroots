@@ -18,6 +18,7 @@ import { stripZeros } from "ethers/lib/utils";
 // globals
 let accounts;
 let network;
+let networkTag;
 let curr;
 let user;
 
@@ -112,13 +113,28 @@ const icecubes = document.getElementById("icecubes");
 const itag = document.getElementById("ipricetag");
 const mtag = document.getElementById("mpricetag");
 const gtag = document.getElementById("pricetag");
+const nt = document.getElementById("nt");
+const total = document.getElementById("total");
+const green = document.getElementById("green");
+const publix = document.getElementById("publix");
+const mintmax = document.getElementById("mintmax");
+const glp = document.getElementById("glp");
+const pp = document.getElementById("pp");
 
 // MAIN NAVIGATION LINKS
 
 const goInfo = () => {
   shutAll();
+  setCurr();
   about.style.display = "block";
   road.style.display = "block";
+  nt.innerHTML = curr + " " + networkTag + " " + network;
+  total.innerHTML = fctMax;
+  green.innerHTML = fctSlotMax;
+  publix.innerHTML = fctMax - fctSlotMax;
+  mintmax.innerHTML = fctMaxMints;
+  glp.innerHTML = 0 + " " + curr;
+  pp.innerHTML = (fctPrice / 1e18).toFixed(3) + " " + curr;
 };
 const goProfile = async () => {
   shutAll();
@@ -931,23 +947,8 @@ const onClickConnect = async (e) => {
       profile.innerHTML = "PROFILE";
       profile.addEventListener("click", goProfile);
       let a;
+      a = setCurr();
 
-      if (Number(network) === 5000) {
-        a = 0;
-        curr = "<img id='cur' src='https://token-list.mantle.xyz/data/BitDAO/logo.svg' style='height:24px;width:24px;'/>";
-      }
-      if (Number(network) === 5001) {
-        a = 0;
-        curr = "<img id='cur' src='https://token-list.mantle.xyz/data/BitDAO/logo.svg' style='height24px;width:24px;'/>";
-      }
-      if (Number(network) === 137) {
-        a = 3;
-        curr = "MATIC";
-      }
-      if (Number(network) === 80001) {
-        a = 1;
-        curr = "MATIC";
-      }
       const deploymentKey = await Object.keys(FrootyCoolTingz.networks)[a];
       console.log(Number(FrootyCoolTingz.networks[deploymentKey].address), Number(glFctAdr));
       if (Number(FrootyCoolTingz.networks[deploymentKey].address) !== Number(glFctAdr)) {
@@ -993,7 +994,30 @@ const onClickConnect = async (e) => {
     profile.innerText = "CONNECT";
   }
 };
-
+const setCurr = () => {
+  let a;
+  if (Number(network) === 5000) {
+    a = 0;
+    curr = "<img id='cur' src='https://token-list.mantle.xyz/data/BitDAO/logo.svg' style='height:24px;width:24px;'/>";
+    networkTag = "MANTLE";
+  }
+  if (Number(network) === 5001) {
+    a = 0;
+    curr = "<img id='cur' src='https://token-list.mantle.xyz/data/BitDAO/logo.svg' style='height24px;width:24px;'/>";
+    networkTag = "MANTLE TESTNET";
+  }
+  if (Number(network) === 137) {
+    a = 3;
+    curr = "MATIC";
+    networkTag = "POLYGON";
+  }
+  if (Number(network) === 80001) {
+    a = 1;
+    curr = "MATIC";
+    networkTag = "POLYGON MUMBAI";
+  }
+  return a;
+};
 const goGreenList = async () => {
   // const GL = await GreenListData();
 
