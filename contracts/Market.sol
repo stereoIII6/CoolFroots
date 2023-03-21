@@ -16,6 +16,7 @@ contract Market {
     ICE public ice;
     Greenlist public gl;
     uint256 public roy;
+    uint256 public fee;
 
     struct Listing {
         // STRUCT FOR SALES LISTINGS
@@ -67,13 +68,50 @@ contract Market {
     constructor(
         address _FCT,
         address _ICE,
-        address _GL
+        address _GL,
+        uint256 _t
     ) {
         admin = msg.sender;
         fct = FrootyCoolTingz(_FCT);
         ice = ICE(_ICE);
         gl = Greenlist(_GL);
-        roy = 5;
+        if (_t == 0) {
+            roy = 5;
+            fee = 0;
+        } else {
+            if (_t == 1) {
+                roy = 5;
+                fee = 1;
+            }
+            if (_t == 2) {
+                roy = 5;
+                fee = 1;
+            }
+            if (_t == 3) {
+                roy = 5;
+                fee = 1;
+            }
+            if (_t == 4) {
+                roy = 5;
+                fee = 1;
+            }
+            if (_t == 5) {
+                roy = 5;
+                fee = 1;
+            }
+            if (_t == 6) {
+                roy = 5;
+                fee = 1;
+            }
+            if (_t == 7) {
+                roy = 5;
+                fee = 1;
+            }
+            if (_t == 8) {
+                roy = 5;
+                fee = 1;
+            }
+        }
     }
 
     function makeListing(

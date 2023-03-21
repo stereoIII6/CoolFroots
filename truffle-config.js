@@ -25,6 +25,20 @@ module.exports = {
       timeoutBlocks: 900,
       skipDryRun: true,
     },
+    fevm: {
+      provider: () => new HDWalletProvider(mnemonic, process.env.POLY_URL),
+      network_id: 314,
+      confirmations: 10,
+      timeoutBlocks: 200,
+      skipDryRun: true,
+    },
+    fevmt: {
+      provider: () => new HDWalletProvider(mnemonic, process.env.MUMB_URL),
+      network_id: 3141,
+      confirmations: 10,
+      timeoutBlocks: 900,
+      skipDryRun: true,
+    },
     arbitrum: {
       provider: () => new HDWalletProvider(mnemonic, process.env.ARBI_URL),
       network_id: 200,

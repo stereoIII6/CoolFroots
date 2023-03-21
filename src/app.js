@@ -681,10 +681,11 @@ const goGreenMint = async (e) => {
   const doGreenMint = await FCT.greenMint([diasID], [diasOBJ])
     .then((result) => {
       gMintNow.innerHTML = "MINTING";
+      console.log("earn :: ", result);
       return result;
     })
     .catch((err) => {
-      console.error(err);
+      console.error(err.data.message);
       gMintNow.innerHTML = err.data.message.split(": ")[1];
     });
   doGreenMint.wait().then((result) => {
@@ -746,7 +747,7 @@ const goPubMint = async (e) => {
   const doPubMint = await FCT.mint(1, [diasID], [diasOBJ], { value: BigInt(5 * 1e16), gasLimit: 1000000 })
     .then((result) => {
       pMintNow.innerHTML = "MINTING";
-
+      console.log("earn :: ", Number(result.data));
       return result;
     })
     .catch((err) => {
@@ -832,7 +833,10 @@ const onClickConnect = async (e) => {
       console.log(Number(FrootyCoolTingz.networks[deploymentKey].address), Number(glFctAdr));
       if (Number(FrootyCoolTingz.networks[deploymentKey].address) !== Number(glFctAdr)) {
         // console.log(fctAdr);
-        goSetFCT();
+        await goSetFCT();
+        const deploymentKey2 = await Object.keys(Ice.networks)[a];
+        await ICE.setFroots(Ice.networks[deploymentKey2].address);
+        await ICE.move(FrootyCoolTingz.networks[deploymentKey].address);
       }
       console.log(fctStart);
       if (fctMax > 0) {
@@ -894,6 +898,10 @@ const goGreenList = async () => {
     setSlot();
     checkNav();
   });
+};
+
+const goMove = async () => {
+  await FCT.move();
 };
 
 const web3init = async () => {

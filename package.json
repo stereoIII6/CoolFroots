@@ -11,6 +11,8 @@
     "migrate:dev": "npx truffle migrate --network develop",
     "migrate:evmos": "npx truffle migrate --network evmos",
     "migrate:tevmos": "npx truffle migrate --network tevmos",
+    "migrate:fevm": "npx truffle migrate --network fevm",
+    "migrate:fevmt": "npx truffle migrate --network fevmt",
     "migrate:mumbai": "npx truffle migrate --network mumbai",
     "migrate:polygon": "npx truffle migrate --network polygon",
     "migrate:mantletest": "npx truffle migrate --network mantletest",
