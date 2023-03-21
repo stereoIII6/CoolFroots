@@ -110,6 +110,8 @@ const buyIce = document.getElementById("buyIce");
 const cf = document.getElementById("cf");
 const icecubes = document.getElementById("icecubes");
 const itag = document.getElementById("ipricetag");
+const mtag = document.getElementById("mpricetag");
+const gtag = document.getElementById("pricetag");
 
 // MAIN NAVIGATION LINKS
 
@@ -164,7 +166,7 @@ const goProfile = async () => {
   cf.innerHTML = 1;
   cool.innerHTMML = 10;
   itag.innerHTML = ((10 * icePrice) / 1e18).toFixed(2) + " " + curr;
-  pset.innerHTML = "FOR " + (fctStatusPrice / 1e18).toFixed(3) + " " + curr;
+  pset.innerHTML = "SET MSG " + (fctStatusPrice / 1e18).toFixed(3) + " " + curr;
 };
 info.addEventListener("click", goInfo);
 const goMint = () => {
@@ -303,9 +305,16 @@ const getGreenVars = async () => {
     .catch((err) => {
       console.error(err);
     });
+  glPrice = await GL.msgprice()
+    .then((result) => {
+      return Number(result._hex);
+    })
+    .catch((err) => {
+      console.error(err);
+    });
   glAdmin = await GL.admin();
   glFctAdr = await GL.FCT();
-  return glSlotMax, glSlotsTaken, glMsg, glStamp;
+  return glSlotMax, glSlotsTaken, glMsg, glStamp, glPrice;
 };
 
 // ICE
@@ -638,6 +647,8 @@ const setSlot = async () => {
   gCount.innerHTML = fctSlotMax - fctSlotsMinted; // Testnet
   pCount.innerHTML = fctMax - fctSlotMax - (fctMinted - fctSlotsMinted); // Testnet
   tCount.innerHTML = fctMax - fctMinted;
+  mtag.innerHTML = (fctPrice / 1e18).toFixed(3) + " " + curr;
+  gtag.innerHTML = (glPrice / 1e18).toFixed(3) + " " + curr;
 };
 const getStamp = async () => {
   // const GL = await GreenListData();
@@ -923,11 +934,11 @@ const onClickConnect = async (e) => {
 
       if (Number(network) === 5000) {
         a = 0;
-        curr = "BIT";
+        curr = "<img id='cur' src='https://token-list.mantle.xyz/data/BitDAO/logo.svg' style='height:24px;width:24px;'/>";
       }
       if (Number(network) === 5001) {
         a = 0;
-        curr = "BIT";
+        curr = "<img id='cur' src='https://token-list.mantle.xyz/data/BitDAO/logo.svg' style='height24px;width:24px;'/>";
       }
       if (Number(network) === 137) {
         a = 3;
