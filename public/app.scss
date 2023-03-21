@@ -49,8 +49,8 @@ h2 {
   border-radius: 0px !important;
   position: absolute;
   top: 0;
-  left: 0;
-  width: 100%;
+  left: 2em;
+  width: calc(100% - 4em);
   height: 44px;
   z-index: 100;
   display: grid;
@@ -61,8 +61,8 @@ h2 {
   border-radius: 0px !important;
   position: absolute;
   top: calc(100% - 2em);
-  left: 0;
-  width: 100%;
+  left: 2em;
+  width: calc(100% - 4em);
   height: 1em;
   z-index: 100;
   display: grid;
