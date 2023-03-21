@@ -121,6 +121,7 @@ const publix = document.getElementById("publix");
 const mintmax = document.getElementById("mintmax");
 const glp = document.getElementById("glp");
 const pp = document.getElementById("pp");
+const ip = document.getElementById("ip");
 
 // MAIN NAVIGATION LINKS
 
@@ -136,6 +137,7 @@ const goInfo = () => {
   mintmax.innerHTML = fctMaxMints;
   glp.innerHTML = 0 + " " + curr;
   pp.innerHTML = (fctPrice / 1e18).toFixed(3) + " " + curr;
+  ip.innerHTML = (icePrice / 1e18).toFixed(3) + " <img src='https://www.freepnglogos.com/uploads/ice-png/ice-cube-transparent-vector-graphic-pixabay-36.png' style='height: 24px; width: 24px' />";
 };
 const goProfile = async () => {
   shutAll();
