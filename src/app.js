@@ -29,7 +29,7 @@ const ipfs = client.create({
   protocol: "https",
 });
 const Greenlist = require("../dist/contracts/Greenlist.json");
-const FrootyCoolTingz = require("../dist/contracts/FrootyCoolTingz.json");
+const COOLFROOT = require("../dist/contracts/COOLFROOT.json");
 const Ice = require("../dist/contracts/ICE.json");
 const Market = require("../dist/contracts/Market.json");
 const provider = new ethers.providers.Web3Provider(window.ethereum);
@@ -247,41 +247,25 @@ const checkNav = async () => {
 };
 // CONTRACT IMPORT
 const GreenListData = async () => {
-  let a;
-  if (Number(network) === 137) a = 1;
-  else if (Number(network) === 5001) a = 0;
-  else if (Number(network) === 43113) a = 0;
-  else if (Number(network) === 80001) a = 1;
+  let a = setNet();
   const deploymentKey = await Object.keys(Greenlist.networks)[a];
   console.log(deploymentKey, a, network);
   return new ethers.Contract(Greenlist.networks[deploymentKey].address, Greenlist.abi, signer);
 };
 const FrootyCoolTingsData = async () => {
-  let a;
-  if (Number(network) === 137) a = 1;
-  else if (Number(network) === 5001) a = 0;
-  else if (Number(network) === 43113) a = 0;
-  else if (Number(network) === 80001) a = 1;
-  const deploymentKey = await Object.keys(FrootyCoolTingz.networks)[a];
+  let a = setNet();
+  const deploymentKey = await Object.keys(COOLFROOT.networks)[a];
   console.log(deploymentKey, a, network);
-  return new ethers.Contract(FrootyCoolTingz.networks[deploymentKey].address, FrootyCoolTingz.abi, signer);
+  return new ethers.Contract(COOLFROOT.networks[deploymentKey].address, COOLFROOT.abi, signer);
 };
 const IceData = async () => {
-  let a;
-  if (Number(network) === 137) a = 1;
-  else if (Number(network) === 5001) a = 0;
-  else if (Number(network) === 80001) a = 1;
-  else if (Number(network) === 43113) a = 0;
+  let a = setNet();
   const deploymentKey = await Object.keys(Ice.networks)[a];
   // console.log(deploymentKey, a, network);
   return new ethers.Contract(Ice.networks[deploymentKey].address, Ice.abi, signer);
 };
 const MarketData = async () => {
-  let a;
-  if (Number(network) === 137) a = 1;
-  else if (Number(network) === 5001) a = 0;
-  else if (Number(network) === 43113) a = 0;
-  else if (Number(network) === 80001) a = 1;
+  let a = setNet();
   const deploymentKey = await Object.keys(Market.networks)[a];
   // console.log(deploymentKey, a, network);
   return new ethers.Contract(Market.networks[deploymentKey].address, Market.abi, signer);
@@ -691,6 +675,44 @@ const netSwap = async () => {
   network = await ethereum.request({ method: "net_version" });
   window.location.reload();
 };
+const goArbig = async () => {
+  const change = await ethereum.request({
+    method: "wallet_addEthereumChain",
+    params: [
+      {
+        chainId: "0x66EED",
+        chainName: "Arbitrum Rinkeby",
+        nativeCurrency: {
+          name: "Arbitrum ETH",
+          symbol: "aETH",
+          decimals: 18, //In number form
+        },
+        rpcUrls: ["https://goerli-rollup.arbitrum.io/rpc"],
+        blockExplorerUrls: ["https://goerli.arbiscan.io/"],
+      },
+    ],
+  });
+  netSwap();
+};
+const goArbi = async () => {
+  const change = await ethereum.request({
+    method: "wallet_addEthereumChain",
+    params: [
+      {
+        chainId: "0xA4B1",
+        chainName: "Arbitrum One",
+        nativeCurrency: {
+          name: "Arbitrum ETH",
+          symbol: "aETH",
+          decimals: 18, //In number form
+        },
+        rpcUrls: ["https://arb1.arbitrum.io/rpc"],
+        blockExplorerUrls: ["https://arbiscan.io"],
+      },
+    ],
+  });
+  netSwap();
+};
 const goPoly = async () => {
   const change = await ethereum.request({
     method: "wallet_addEthereumChain",
@@ -724,6 +746,44 @@ const goMumbai = async () => {
         },
         rpcUrls: ["https://polygon-mumbai.blockpi.network/v1/rpc/public"],
         blockExplorerUrls: ["https://mumbai.polygonscan.com"],
+      },
+    ],
+  });
+  netSwap();
+};
+const goEvmosTest = async () => {
+  const change = await ethereum.request({
+    method: "wallet_addEthereumChain",
+    params: [
+      {
+        chainId: "0x2328",
+        chainName: "EVMOS",
+        nativeCurrency: {
+          name: "EVMOS",
+          symbol: "EVMOS",
+          decimals: 18, //In number form
+        },
+        rpcUrls: ["https://eth.bd.evmos.dev:8545"],
+        blockExplorerUrls: ["https://evm.evmos.dev/"],
+      },
+    ],
+  });
+  netSwap();
+};
+const goMantleTest = async () => {
+  const change = await ethereum.request({
+    method: "wallet_addEthereumChain",
+    params: [
+      {
+        chainId: "0x1389",
+        chainName: "Mantle",
+        nativeCurrency: {
+          name: "Mantle Bit",
+          symbol: "BIT",
+          decimals: 18, //In number form
+        },
+        rpcUrls: ["https://rpc.testnet.mantle.xyz/"],
+        blockExplorerUrls: ["https://explorer.testnet.mantle.xyz"],
       },
     ],
   });
@@ -901,15 +961,23 @@ const goPubMint = async (e) => {
     return result;
   });
 };
-const goSetFCT = async () => {
-  // const GL = await GreenListData();
+const setNet = () => {
   let a;
   if (Number(network) === 137) a = 0;
   else if (Number(network) === 5001) a = 0;
+  else if (Number(network) === 42161) a = 0;
   else if (Number(network) === 43113) a = 0;
-  else if (Number(network) === 80001) a = 1;
-  const deploymentKey = await Object.keys(FrootyCoolTingz.networks)[a];
-  const setFCT = await GL.setFCT(FrootyCoolTingz.networks[deploymentKey].address)
+  else if (Number(network) === 421613) a = 0;
+  else if (Number(network) === 80001) a = 0;
+  return a;
+};
+const goSetFCT = async () => {
+  // const GL = await GreenListData();
+
+  let a = setNet();
+
+  const deploymentKey = await Object.keys(COOLFROOT.networks)[a];
+  const setFCT = await GL.setFCT(COOLFROOT.networks[deploymentKey].address)
     .then((result) => {
       return result;
     })
@@ -918,7 +986,7 @@ const goSetFCT = async () => {
     });
   setFCT.wait().then((result) => {});
   checkNav();
-  alert(`THE FROOT CONTRACT HAS BEEN SET TO ${FrootyCoolTingz.networks[deploymentKey].address}`);
+  alert(`THE FROOT CONTRACT HAS BEEN SET TO ${COOLFROOT.networks[deploymentKey].address}`);
 };
 const onClickConnect = async (e) => {
   e.preventDefault();
@@ -934,9 +1002,10 @@ const onClickConnect = async (e) => {
     network = await ethereum.request({ method: "net_version" });
     var networkTag = "Switch Network";
     // evaluate legal networks
-    if (Number(network) !== 137 && Number(network) !== 80001 && Number(network) !== 5001 && Number(network) !== 5000 && Number(network) !== 43113) {
+    //if (Number(network) !== 137 && Number(network) !== 80001 && Number(network) !== 5001 && Number(network) !== 5000 && Number(network) !== 43113) {
+    if (Number(network) !== 42161 && Number(network) !== 421613) {
       // prompt network switch to evmos main
-      goMantle(e);
+      goArbig();
     } else {
       // console.log(networkTag);
 
@@ -953,15 +1022,14 @@ const onClickConnect = async (e) => {
       profile.addEventListener("click", goProfile);
       let a;
       a = setCurr();
-
-      const deploymentKey = await Object.keys(FrootyCoolTingz.networks)[a];
-      console.log(Number(FrootyCoolTingz.networks[deploymentKey].address), Number(glFctAdr));
-      if (Number(FrootyCoolTingz.networks[deploymentKey].address) !== Number(glFctAdr)) {
+      const deploymentKey = await Object.keys(COOLFROOT.networks)[a];
+      // console.log(Number(COOLFROOT.networks[deploymentKey].address), Number(glFctAdr));
+      if (Number(COOLFROOT.networks[deploymentKey].address) !== Number(glFctAdr)) {
         // console.log(fctAdr);
         await goSetFCT();
         const deploymentKey2 = await Object.keys(Ice.networks)[a];
         await ICE.setFroots(Ice.networks[deploymentKey2].address);
-        await ICE.move(FrootyCoolTingz.networks[deploymentKey].address);
+        await ICE.move(COOLFROOT.networks[deploymentKey].address);
       }
       console.log(fctStart);
       if (fctMax > 0) {
@@ -1020,6 +1088,18 @@ const setCurr = () => {
     a = 1;
     curr = "MATIC";
     networkTag = "POLYGON MUMBAI";
+  }
+  if (Number(network) === 421613) {
+    a = 0;
+    curr =
+      "<img id='cur' src='data:image/png;base64,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' style='height24px;width:24px;'/>";
+    networkTag = "ARBITRUM GOERLI";
+  }
+  if (Number(network) === 42161) {
+    a = 0;
+    curr =
+      "<img id='cur' src='data:image/png;base64,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' style='height24px;width:24px;'/>";
+    networkTag = "ARBITRUM";
   }
   return a;
 };

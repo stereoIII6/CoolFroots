@@ -15,7 +15,7 @@ module.exports = function (deployer, n) {
   // var n = net();
   var t;
   console.log("netID :: ", n);
-  if (n == "mantletest" || n == "mumbai" || n == "tevmos" || n == "fuji" || n == "fevmt" || n == "alfajores" || n == "fantomtest" || n == "goerli") {
+  if (n == "mantletest" || n == "mumbai" || n == "tevmos" || n == "fuji" || n == "fevmt" || n == "alfajores" || n == "fantomtest" || n == "goerli" || n == "arbig") {
     t = 0;
   } else {
     if (n == "main") t = 1;
@@ -26,6 +26,7 @@ module.exports = function (deployer, n) {
     if (n == "mantle") t = 6;
     if (n == "evmos") t = 7;
     if (n == "fantom") t = 8;
+    if (n == "arbitrum") t = 9;
   }
   console.log("mode :: ", t);
   deployer.deploy(Greenlist, t);

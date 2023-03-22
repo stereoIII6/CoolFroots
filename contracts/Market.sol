@@ -12,7 +12,7 @@ contract Market {
     mapping(uint256 => uint256) public tid2lc; // TAKES Token Id and returns ListCount
     mapping(address => mapping(uint256 => Listing)) public myListings; // LISTINGS OF USER
     uint256 l; // NUMBER OF LISTINGS
-    FrootyCoolTingz public fct; // FROOT ADDRESS
+    COOLFROOT public fct; // FROOT ADDRESS
     ICE public ice;
     Greenlist public gl;
     uint256 public roy;
@@ -72,7 +72,7 @@ contract Market {
         uint256 _t
     ) {
         admin = msg.sender;
-        fct = FrootyCoolTingz(_FCT);
+        fct = COOLFROOT(_FCT);
         ice = ICE(_ICE);
         gl = Greenlist(_GL);
         if (_t == 0) {

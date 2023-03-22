@@ -46,9 +46,9 @@ module.exports = {
       timeoutBlocks: 200,
       skipDryRun: true,
     },
-    arbitrinkeby: {
-      provider: () => new HDWalletProvider(mnemonic, process.env.ARBIRINK_URL),
-      network_id: 421611,
+    arbig: {
+      provider: () => new HDWalletProvider(mnemonic, process.env.ARBIG_URL),
+      network_id: 421613,
       confirmations: 10,
       timeoutBlocks: 200,
       skipDryRun: true,
