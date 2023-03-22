@@ -51,6 +51,8 @@ module.exports = {
       network_id: 421613,
       confirmations: 10,
       timeoutBlocks: 200,
+      gas: 1000000,
+      gasPrice: 1,
       skipDryRun: true,
     },
     optimism: {

@@ -681,13 +681,13 @@ const goArbig = async () => {
     params: [
       {
         chainId: "0x66EED",
-        chainName: "Arbitrum Rinkeby",
+        chainName: "Arbitrum Goerli",
         nativeCurrency: {
           name: "Arbitrum ETH",
           symbol: "aETH",
           decimals: 18, //In number form
         },
-        rpcUrls: ["https://goerli-rollup.arbitrum.io/rpc"],
+        rpcUrls: ["https://arbitrum-goerli.public.blastapi.io"],
         blockExplorerUrls: ["https://goerli.arbiscan.io/"],
       },
     ],
@@ -1002,11 +1002,19 @@ const onClickConnect = async (e) => {
     network = await ethereum.request({ method: "net_version" });
     var networkTag = "Switch Network";
     // evaluate legal networks
-    //if (Number(network) !== 137 && Number(network) !== 80001 && Number(network) !== 5001 && Number(network) !== 5000 && Number(network) !== 43113) {
+    /* // 
+    if (Number(network) !== 43113 && Number(network) !== 43113) {
+      goMumbai();
+    } // */
+    if (Number(network) !== 5001 && Number(network) !== 5000) {
+      goMantleTest();
+    } /*/ /
+    if (Number(network) !== 137 && Number(network) !== 80001) {
+      goPoly();
+    } // /
     if (Number(network) !== 42161 && Number(network) !== 421613) {
-      // prompt network switch to evmos main
-      goArbig();
-    } else {
+        goArbig();
+    } // */ else {
       // console.log(networkTag);
 
       await getGreenVars();

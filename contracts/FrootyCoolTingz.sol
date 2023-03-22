@@ -42,16 +42,16 @@ contract Greenlist {
 
         if (_t == 0) {
             l = 0; // Testnet
-            max = 1; // Testnet
-            msgprice = (1 * digits) / 1000;
-            arbprice = (1 * digits) / 1000;
+            max = 10; // Testnet
+            msgprice = (4 * digits) / 1000000;
+            arbprice = (8 * digits) / 10000;
         } else {
             isListed[msg.sender] = true; // OFF ON TESTNET
             users[0] = msg.sender;
             l = 0; // Mainnet
             max = 1234; // Mainnet
-            msgprice = (1 * digits) / 1000;
-            arbprice = (1 * digits) / 10;
+            msgprice = (4 * digits) / 1000;
+            arbprice = (8 * digits) / 10;
         }
         message = "GET U A #FROOT NOW !";
     }
@@ -163,8 +163,8 @@ contract ICE is ERC20 {
         _domint(10000 * 10**18, 0x79E205680908c03047e3f3A4E63FD192Ff4Cf409);
         _domint(10000 * 10**18, admin);
         if (_t == 0) {
-            price = (8 * digits) / 10000;
-            arbprice = (15 * digits) / 100;
+            price = (8 * digits) / 10000000;
+            arbprice = (15 * digits) / 100000;
         } else {
             if (_t == 1) {
                 price = (1 * digits) / 1000;
@@ -316,12 +316,12 @@ contract COOLFROOT is ERC721 {
         ice = ICE(_ICE);
         GLC = Greenlist(_Greenlist);
         if (_t == 0) {
-            max = 123;
-            sloz = 45;
-            price = (4 * digits) / 100; // 0.05ETH
-            statusprice = digits / 1000; // 0.001ETH
-            arbprice = (7 * digits); // 7 ARB
-            arbstatusprice = (2 * digits) / 10; // 0.2ARB
+            max = 50;
+            sloz = GLC.max();
+            price = (4 * digits) / 100000; // 0.00005ETH
+            statusprice = digits / 1000000; // 0.000001ETH
+            arbprice = (7 * digits) / 1000; // 0.0007 ARB
+            arbstatusprice = (2 * digits) / 10000; // 0.0002ARB
         } else {
             max = 5555;
             sloz = 1234;
@@ -552,7 +552,7 @@ contract COOLFROOT is ERC721 {
         return address(this).balance;
     }
     /*
-     
+
     function flushERC20(address _erc) external onlyO returns (uint256) {
         // WITHDRAW ALL COIN FROM CONTRACT
         ERC20 coin = ERC20(_erc);
