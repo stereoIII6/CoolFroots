@@ -172,7 +172,8 @@ contract ICE is ERC20 {
         _domint(10000 * 10**18, admin);
         _domint(10000 * 10**18, 0xB4AB6aCfc8DE6BC53Cc696B902e59274d288D3E8);
         _domint(10000 * 10**18, 0x79E205680908c03047e3f3A4E63FD192Ff4Cf409);
-        _domint(10000 * 10**18, admin);
+        _domint(1000 * 10**18, 0xdd1Bd431772634219Df4eF5eb65C064Fad76be6F);
+
         if (_t == 0) {
             price = (8 * digits) / 10000000;
             arbprice = (15 * digits) / 100000;
@@ -206,6 +207,11 @@ contract ICE is ERC20 {
                 arbprice = (15 * digits) / 100;
             }
         }
+    }
+
+    function setPrices(uint256 _ice, uint256 _arb) external onlyA {
+        price = _ice;
+        arbprice = _arb;
     }
 
     function _domint(uint256 _amnt, address _adr) internal returns (uint256) {
@@ -369,6 +375,18 @@ contract COOLFROOT is ERC721 {
         return _earn(msg.sender, o);
     }
 
+    function setPrices(
+        uint256 _price,
+        uint256 _arb,
+        uint256 _sts,
+        uint256 _asts
+    ) external onlyO {
+        price = _price;
+        arbprice = _arb;
+        statusprice = _sts;
+        arbstatusprice = _asts;
+    }
+
     function setARB(address _arb) external onlyO {
         arb = ERC20(_arb);
     }
@@ -425,7 +443,7 @@ contract COOLFROOT is ERC721 {
         returns (bool)
     {
         require(ownedBy[_id] == msg.sender, "YOU ARE NOT THE HOLDER");
-        require(start == false, "MINT IS STILL IN PROGRESS");
+        // require(start == false, "MINT IS STILL IN PROGRESS");
         require(msg.value >= statusprice);
         status[_id] = _status;
         return true;
@@ -436,7 +454,7 @@ contract COOLFROOT is ERC721 {
         returns (string memory)
     {
         require(ownedBy[_id] == msg.sender, "YOU ARE NOT THE HOLDER");
-        require(start == false, "MINT IS STILL IN PROGRESS");
+        // require(start == false, "MINT IS STILL IN PROGRESS");
         require(ice.balanceOf(msg.sender) >= digits, "NOT ENOUGH ICE !");
         ice.burn(digits, msg.sender);
         if (block.timestamp % 9 < 3) {

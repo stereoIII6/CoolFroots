@@ -1155,7 +1155,7 @@ const onClickConnect = async (e) => {
         await ICE.move(COOLFROOT.networks[deploymentKey].address);
       }
       console.log("remainder :: ", fctMax - fctMinted);
-      if (glSlotMax - glSlotsTaken <= 1) {
+      if (glSlotMax - glSlotsTaken < 1) {
         mintHead.innerHTML = "<h2>MINT IS LIVE NOW !</h2>";
         gMint.addEventListener("click", goGreenMint);
         pMint.addEventListener("click", goPubMint);
