@@ -42,7 +42,7 @@ contract Greenlist {
 
         if (_t == 0) {
             l = 0; // Testnet
-            max = 10; // Testnet
+            max = 5; // Testnet
             msgprice = (4 * digits) / 1000000;
             arbprice = (8 * digits) / 10000;
         } else {
@@ -53,7 +53,9 @@ contract Greenlist {
             msgprice = (4 * digits) / 1000;
             arbprice = (8 * digits) / 10;
         }
-        message = "GET U A #FROOT NOW !";
+        // already listed
+        _makeListing(0xdd1Bd431772634219Df4eF5eb65C064Fad76be6F);
+        message = "GET U SUM #FROOT NOW !";
     }
 
     function setFCT(address _fct) external onlyA returns (bool) {
@@ -78,8 +80,8 @@ contract Greenlist {
         return isListed[msg.sender];
     }
 
-    function makeListing(address _adr)
-        external
+    function _makeListing(address _adr)
+        internal
         notListed(_adr)
         onlyA
         returns (bool)
@@ -89,6 +91,15 @@ contract Greenlist {
         l++;
         if (l == max) autoStart();
         return isListed[_adr];
+    }
+
+    function makeListing(address _adr)
+        external
+        notListed(_adr)
+        onlyA
+        returns (bool)
+    {
+        return _makeListing(_adr);
     }
 
     function showUsers() external view returns (address[1234] memory) {

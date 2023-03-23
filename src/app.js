@@ -618,8 +618,8 @@ const paralax = (e) => {
   for (let i = 0; i < avt_group.length; i++) {
     avt_group[i].style.width = `${100 + mid}%`;
     avt_group[i].style.height = `${100 + mid}%`;
-    avt_group[i].style.left = `${mid + -x / 4}%`;
-    avt_group[i].style.top = `${mid + -y / 6}%`;
+    avt_group[i].style.left = `${mid + x / 4}%`;
+    avt_group[i].style.top = `${mid + y / 6}%`;
   }
   for (let i = 0; i < bub_group.length; i++) {
     bub_group[i].style.width = `${100 + close}%`;
