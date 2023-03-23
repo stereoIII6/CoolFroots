@@ -44877,10 +44877,16 @@
       "links": {},
       "address": "0x112B1F34Cf7b511A60c85f7D37e47a7De039aa0E",
       "transactionHash": "0x2fb7b9bcc0235961de18b7df7c2590c41bb3809e444ca91ca1e87f10bd91a3c5"
+    },
+    "5777": {
+      "events": {},
+      "links": {},
+      "address": "0xb3e1686C879554Fe82c551E4bC5A71F52bE8C2dA",
+      "transactionHash": "0xe92ad3c9ea48cc0752421fe16751108211207d343910b0a66cc560ea24e0a17a"
     }
   },
   "schemaVersion": "3.4.8",
-  "updatedAt": "2023-03-22T04:27:43.997Z",
+  "updatedAt": "2023-03-22T21:22:18.424Z",
   "networkType": "ethereum",
   "devdoc": {
     "kind": "dev",

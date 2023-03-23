@@ -60,12 +60,14 @@ console.log("dias shuffle", JSON.stringify(ids));
 setInterval(goRand, 25000);
 
 const bg = document.getElementById("bg_img");
+const ice = document.getElementById("ice_img");
 const bodi = document.getElementById("bodi_img");
 const bubble = document.getElementById("bubble_img");
 const brow = document.getElementById("brow_img");
 const eye = document.getElementById("eye_img");
 const mouth = document.getElementById("mouth_img");
 const msg = document.getElementById("msg");
+
 const pbg = document.getElementById("pbg_img");
 const pbodi = document.getElementById("pbodi_img");
 const pbubble = document.getElementById("pbubble_img");
@@ -590,7 +592,84 @@ const getProMSG = async () => {
   console.log("pstate :: ", ProStatus);
   return ProStatus;
 };
-
+const paralax = (e) => {
+  e.preventDefault();
+  const bg_group = document.getElementsByName("bg_group");
+  const avt_group = document.getElementsByName("avt_group");
+  const bub_group = document.getElementsByName("bub_group");
+  const bubm_group = document.getElementsByName("bubm_group");
+  const far = 6;
+  const mid = 5;
+  const close = 4;
+  let rect = dias.getBoundingClientRect();
+  let prect = procanvas.getBoundingClientRect();
+  let x = (e.clientX - (rect.left + 250)) / 20;
+  let y = (e.clientY - (rect.top + 250)) / 20;
+  let px = (e.clientX - (prect.left + 250)) / 20;
+  let py = (e.clientY - (prect.top + 250)) / 20;
+  console.log("Cursor position: " + (x / 50).toFixed(0) + "," + (y / 50).toFixed(0) + "," + (px / 50).toFixed(0) + "," + (py / 50).toFixed(0));
+  // console.log("dias mode", bg_group);
+  for (let i = 0; i < bg_group.length; i++) {
+    bg_group[i].style.width = `${100 + far}%`;
+    bg_group[i].style.height = `${100 + far}%`;
+    bg_group[i].style.left = `calc(-3% + ${far + x / 2}px)`;
+    bg_group[i].style.top = `calc(-3% + ${far + x / 2}px)`;
+  }
+  for (let i = 0; i < avt_group.length; i++) {
+    avt_group[i].style.width = `${100 + mid}%`;
+    avt_group[i].style.height = `${100 + mid}%`;
+    avt_group[i].style.left = `${mid + -x / 4}%`;
+    avt_group[i].style.top = `${mid + -y / 6}%`;
+  }
+  for (let i = 0; i < bub_group.length; i++) {
+    bub_group[i].style.width = `${100 + close}%`;
+    bub_group[i].style.height = `${100 + close}%`;
+    bub_group[i].style.left = `${close + -x / 2}px`;
+    bub_group[i].style.top = `${close + -y / 2}px`;
+  }
+  for (let i = 0; i < bubm_group.length; i++) {
+    bubm_group[i].style.left = `${260 + close + -x / 2}px`;
+    bubm_group[i].style.top = `${50 + close + -y / 2}px`;
+  }
+};
+const unlax = (e) => {
+  e.preventDefault();
+  const bg_group = document.getElementsByName("bg_group");
+  const avt_group = document.getElementsByName("avt_group");
+  const bub_group = document.getElementsByName("bub_group");
+  const bubm_group = document.getElementsByName("bubm_group");
+  const far = 0;
+  const mid = 0;
+  const close = 0;
+  let rect = dias.getBoundingClientRect();
+  let prect = procanvas.getBoundingClientRect();
+  let x = e.clientX - (rect.left + 250);
+  let y = e.clientY - (rect.top + 250);
+  let px = e.clientX - (prect.left + 250);
+  let py = e.clientY - (prect.top + 250);
+  for (let i = 0; i < bg_group.length; i++) {
+    bg_group[i].style.width = `${100 + far}%`;
+    bg_group[i].style.height = `${100 + far}%`;
+    bg_group[i].style.left = `${far / -2}%`;
+    bg_group[i].style.top = `${far / -2}%`;
+  }
+  for (let i = 0; i < avt_group.length; i++) {
+    avt_group[i].style.width = `${100 + mid}%`;
+    avt_group[i].style.height = `${100 + mid}%`;
+    avt_group[i].style.left = `${mid / -2}%`;
+    avt_group[i].style.top = `${mid / -2}%`;
+  }
+  for (let i = 0; i < bub_group.length; i++) {
+    bub_group[i].style.width = `${100 + close}%`;
+    bub_group[i].style.height = `${100 + close}%`;
+    bub_group[i].style.left = `${close / -2}%`;
+    bub_group[i].style.top = `${close / -2}%`;
+  }
+  for (let i = 0; i < bubm_group.length; i++) {
+    bubm_group[i].style.left = `${240 + close / 2}px`;
+    bubm_group[i].style.top = `${40 + close / 2}px`;
+  }
+};
 const draw = async () => {
   // console.log(rand, "bg :" + Math.floor(Number(String(rand)[0])), "body :" + Math.floor(Number(String(rand)[1]) / 2), "bubble :" + Math.floor(Number(String(rand)[2]) / 3), "eye :" + String(rand)[3], "mouth :" + String(rand)[4]);
   bg.src = url + "bg/" + Math.floor(Number(String(rand)[0])) + ".png";
@@ -599,6 +678,9 @@ const draw = async () => {
   bubble.src = url + "bubble/" + Math.floor(Number(String(rand)[2]) / 2) + ".png";
   brow.src = url + "brow/" + Math.floor(Number(String(rand)[3])) + ".png";
   eye.src = url + "eye/" + Math.floor(Number(String(rand)[4])) + ".png";
+  dias.addEventListener("mouseover", paralax);
+  dias.addEventListener("mousemove", paralax);
+  dias.addEventListener("mouseout", unlax);
   let go;
   if (String(rand)[5] + String(rand)[0] == undefined) go = "0" + String(rand)[0];
   else go = Math.floor(Number(String(rand)[5]));
@@ -624,6 +706,9 @@ const pdraw = async (diasID) => {
   pbubble.src = url + "bubble/" + Math.floor(Number(String(diasID)[2]) / 2) + ".png";
   pbrow.src = url + "brow/" + Math.floor(Number(String(diasID)[3])) + ".png";
   peye.src = url + "eye/" + Math.floor(Number(String(diasID)[4])) + ".png";
+  procanvas.addEventListener("mouseover", paralax);
+  procanvas.addEventListener("mousemove", paralax);
+  procanvas.addEventListener("mouseout", unlax);
   let go;
   if (String(diasID)[5] + String(diasID)[0] == undefined) go = "0" + String(diasID)[0];
   else go = Math.floor(Number(String(diasID)[5]));
@@ -1039,15 +1124,16 @@ const onClickConnect = async (e) => {
         await ICE.setFroots(Ice.networks[deploymentKey2].address);
         await ICE.move(COOLFROOT.networks[deploymentKey].address);
       }
-      console.log(fctStart);
-      if (fctMax > 0) {
+      console.log("remainder :: ", fctMax - fctMinted);
+      if (glSlotMax - glSlotsTaken <= 0) {
         mintHead.innerHTML = "<h2>MINT IS LIVE NOW !</h2>";
         gMint.addEventListener("click", goGreenMint);
         pMint.addEventListener("click", goPubMint);
       } else {
-        mintHead.innerHTML = `<h2>MINT GO'S LIVE AFTER<br/> ${fctMax - fctMinted} MORE GREENLIST !</h2>`; // Testnet
+        mintHead.innerHTML = `<h2>MYNT GO'S LYVE AFTA<br/> ${glSlotMax - glSlotsTaken} MO GRIINLIZ GIT SWOOPD !</h2>`; // Testnet
         // else mintHead.innerHTML = `<h2>MINT GO'S LIVE AFTER<br/> ${1234 - mintState} MORE GREENLIST !</h2>`; // Mainnet
-
+        gMint.innerHTML = "GRIIN<h2>MOON</h2>";
+        pMint.innerHTML = "PUBLICK<h2>SOON</h2>";
         gMint.removeEventListener("click", goGreenMint);
         pMint.removeEventListener("click", goPubMint);
         // minty.disabled = true;

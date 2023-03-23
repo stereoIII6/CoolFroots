@@ -15,7 +15,7 @@ module.exports = function (deployer, n) {
   // var n = net();
   var t;
   console.log("netID :: ", n);
-  if (n == "mantletest" || n == "mumbai" || n == "tevmos" || n == "fuji" || n == "fevmt" || n == "alfajores" || n == "fantomtest" || n == "goerli" || n == "arbig") {
+  if (n == "mantletest" || n == "mumbai" || n == "tevmos" || n == "fuji" || n == "fevmt" || n == "alfajores" || n == "fantomtest" || n == "goerli" || n == "arbig" || n == "develop") {
     deployer.deploy(ARB);
   }
 };
