@@ -598,38 +598,56 @@ const paralax = (e) => {
   const avt_group = document.getElementsByName("avt_group");
   const bub_group = document.getElementsByName("bub_group");
   const bubm_group = document.getElementsByName("bubm_group");
+  const pbg_group = document.getElementsByName("pbg_group");
+  const pavt_group = document.getElementsByName("pavt_group");
+  const pbub_group = document.getElementsByName("pbub_group");
+  const pbubm_group = document.getElementsByName("pbubm_group");
   const far = 6;
   const mid = 5;
   const close = 4;
   let rect = dias.getBoundingClientRect();
   let prect = procanvas.getBoundingClientRect();
-  let x = (e.clientX - (rect.left + 250)) / 20;
-  let y = (e.clientY - (rect.top + 250)) / 20;
-  let px = (e.clientX - (prect.left + 250)) / 20;
-  let py = (e.clientY - (prect.top + 250)) / 20;
+  let x = (e.clientX - (rect.left + 250)) / 30;
+  let y = (e.clientY - (rect.top + 250)) / 30;
+  let px = (e.clientX - (prect.left + 250)) / 30;
+  let py = (e.clientY - (prect.top + 250)) / 30;
   console.log("Cursor position: " + (x / 50).toFixed(0) + "," + (y / 50).toFixed(0) + "," + (px / 50).toFixed(0) + "," + (py / 50).toFixed(0));
   // console.log("dias mode", bg_group);
   for (let i = 0; i < bg_group.length; i++) {
     bg_group[i].style.width = `${100 + far}%`;
     bg_group[i].style.height = `${100 + far}%`;
-    bg_group[i].style.left = `calc(-3% + ${far + x / 2}px)`;
-    bg_group[i].style.top = `calc(-3% + ${far + x / 2}px)`;
+    bg_group[i].style.left = `calc(-${far}% + ${far + x / 2}px)`;
+    bg_group[i].style.top = `calc(-${far}% + ${far + x / 2}px)`;
+    pbg_group[i].style.width = `${100 + far}%`;
+    pbg_group[i].style.height = `${100 + far}%`;
+    pbg_group[i].style.left = `calc(-${far}% + ${far + px / 2}px)`;
+    pbg_group[i].style.top = `calc(-${far}% + ${far + px / 2}px)`;
   }
   for (let i = 0; i < avt_group.length; i++) {
     avt_group[i].style.width = `${100 + mid}%`;
     avt_group[i].style.height = `${100 + mid}%`;
-    avt_group[i].style.left = `${mid + x / 4}%`;
-    avt_group[i].style.top = `${mid + y / 6}%`;
+    avt_group[i].style.left = `-${mid + x / 4}%`;
+    avt_group[i].style.top = `${mid + y / 4}%`;
+    pavt_group[i].style.width = `${100 + mid}%`;
+    pavt_group[i].style.height = `${100 + mid}%`;
+    pavt_group[i].style.left = `-${mid + px / 4}%`;
+    pavt_group[i].style.top = `${mid + py / 4}%`;
   }
   for (let i = 0; i < bub_group.length; i++) {
     bub_group[i].style.width = `${100 + close}%`;
     bub_group[i].style.height = `${100 + close}%`;
     bub_group[i].style.left = `${close + -x / 2}px`;
     bub_group[i].style.top = `${close + -y / 2}px`;
+    pbub_group[i].style.width = `${100 + close}%`;
+    pbub_group[i].style.height = `${100 + close}%`;
+    pbub_group[i].style.left = `${close + -px / 2}px`;
+    pbub_group[i].style.top = `${close + -py / 2}px`;
   }
   for (let i = 0; i < bubm_group.length; i++) {
     bubm_group[i].style.left = `${260 + close + -x / 2}px`;
     bubm_group[i].style.top = `${50 + close + -y / 2}px`;
+    pbubm_group[i].style.left = `${260 + close + -px / 2}px`;
+    pbubm_group[i].style.top = `${50 + close + -py / 2}px`;
   }
 };
 const unlax = (e) => {
@@ -638,36 +656,48 @@ const unlax = (e) => {
   const avt_group = document.getElementsByName("avt_group");
   const bub_group = document.getElementsByName("bub_group");
   const bubm_group = document.getElementsByName("bubm_group");
-  const far = 0;
-  const mid = 0;
-  const close = 0;
-  let rect = dias.getBoundingClientRect();
-  let prect = procanvas.getBoundingClientRect();
-  let x = e.clientX - (rect.left + 250);
-  let y = e.clientY - (rect.top + 250);
-  let px = e.clientX - (prect.left + 250);
-  let py = e.clientY - (prect.top + 250);
+  const pbg_group = document.getElementsByName("pbg_group");
+  const pavt_group = document.getElementsByName("pavt_group");
+  const pbub_group = document.getElementsByName("pbub_group");
+  const pbubm_group = document.getElementsByName("pbubm_group");
+  const far = 1;
+  const mid = 1;
+  const close = 1;
   for (let i = 0; i < bg_group.length; i++) {
     bg_group[i].style.width = `${100 + far}%`;
     bg_group[i].style.height = `${100 + far}%`;
     bg_group[i].style.left = `${far / -2}%`;
     bg_group[i].style.top = `${far / -2}%`;
+    pbg_group[i].style.width = `${100 + far}%`;
+    pbg_group[i].style.height = `${100 + far}%`;
+    pbg_group[i].style.left = `${far / -2}%`;
+    pbg_group[i].style.top = `${far / -2}%`;
   }
   for (let i = 0; i < avt_group.length; i++) {
     avt_group[i].style.width = `${100 + mid}%`;
     avt_group[i].style.height = `${100 + mid}%`;
     avt_group[i].style.left = `${mid / -2}%`;
     avt_group[i].style.top = `${mid / -2}%`;
+    pavt_group[i].style.width = `${100 + mid}%`;
+    pavt_group[i].style.height = `${100 + mid}%`;
+    pavt_group[i].style.left = `${mid / -2}%`;
+    pavt_group[i].style.top = `${mid / -2}%`;
   }
   for (let i = 0; i < bub_group.length; i++) {
     bub_group[i].style.width = `${100 + close}%`;
     bub_group[i].style.height = `${100 + close}%`;
     bub_group[i].style.left = `${close / -2}%`;
     bub_group[i].style.top = `${close / -2}%`;
+    pbub_group[i].style.width = `${100 + close}%`;
+    pbub_group[i].style.height = `${100 + close}%`;
+    pbub_group[i].style.left = `${close / -2}%`;
+    pbub_group[i].style.top = `${close / -2}%`;
   }
   for (let i = 0; i < bubm_group.length; i++) {
     bubm_group[i].style.left = `${240 + close / 2}px`;
     bubm_group[i].style.top = `${40 + close / 2}px`;
+    pbubm_group[i].style.left = `${240 + close / 2}px`;
+    pbubm_group[i].style.top = `${40 + close / 2}px`;
   }
 };
 const draw = async () => {
@@ -1125,7 +1155,7 @@ const onClickConnect = async (e) => {
         await ICE.move(COOLFROOT.networks[deploymentKey].address);
       }
       console.log("remainder :: ", fctMax - fctMinted);
-      if (glSlotMax - glSlotsTaken <= 0) {
+      if (glSlotMax - glSlotsTaken <= 1) {
         mintHead.innerHTML = "<h2>MINT IS LIVE NOW !</h2>";
         gMint.addEventListener("click", goGreenMint);
         pMint.addEventListener("click", goPubMint);
