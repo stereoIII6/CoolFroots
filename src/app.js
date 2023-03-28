@@ -22,6 +22,16 @@ let networkTag;
 let curr;
 let user;
 
+let bg_arr = ["mynt", "medo", "yello", "oca", "wood", "rose", "pynk", "vilet", "skay", "ceean"];
+let pat_arr = ["", "", "", "", "", "", "", "", "", ""];
+let bdy_arr = ["appl", "oranj", "huny", "pyn", "beri", "keewy", "lime", "coco", "melo", "piich"];
+let eye_arr = ["hypd", "boord", "stokd", "tyrd", "punchd", "dizzl", "droop", "wyne", "dout", "strez"];
+let brw_arr = ["", "", "", "", "", "", "", "", "", ""];
+let mth_arr = ["", "", "", "", "", "", "", "", "", ""];
+let bub_arr = ["", "", "", "", ""];
+let fly_arr = ["", "", "", "", ""];
+let ice_arr = ["", "", "", "", ""];
+
 const client = require("ipfs-http-client");
 const ipfs = client.create({
   host: "ipfs.infura.io",
@@ -75,21 +85,24 @@ const pbrow = document.getElementById("pbrow_img");
 const peye = document.getElementById("peye_img");
 const pmouth = document.getElementById("pmouth_img");
 const pmsg = document.getElementById("pmsg");
+
 const new_msg = document.getElementById("new_msg");
+const new_url = document.getElementById("new_url");
 const pnew_msg = document.getElementById("pnew_msg");
+const pnew_url = document.getElementById("pnew_url");
 const set = document.getElementById("set");
 const inf = document.getElementById("inf");
 const slots = document.getElementById("slots");
-const dias = document.getElementById("dias_canvas");
-const uform = document.getElementById("uForm");
-const about = document.getElementById("about");
-const road = document.getElementById("road");
-const mint = document.getElementById("mint");
+
 const info = document.getElementById("info");
 const soshill = document.getElementById("soshill");
 const swap = document.getElementById("swap");
 const social = document.getElementById("social");
 const minty = document.getElementById("minty");
+const adm = document.getElementById("adm");
+const rrrena = document.getElementById("rrrena");
+const arb = document.getElementById("arb");
+
 const glist = document.getElementById("glist");
 const mintHead = document.getElementById("minthead");
 const gCount = document.getElementById("gCount");
@@ -100,27 +113,42 @@ const pMint = document.getElementById("pubmnt");
 const pMintNow = document.getElementById("pMintNow");
 const tCount = document.getElementById("tCount");
 const btn = document.getElementById("btn");
+
 const profile = document.getElementById("profile");
 const pform = document.getElementById("pform");
+const dias = document.getElementById("dias_canvas");
 const procanvas = document.getElementById("pdias_canvas");
+const xdias = document.getElementById("xsdias");
+const uform = document.getElementById("uForm");
+const about = document.getElementById("about");
+const road = document.getElementById("road");
+const mint = document.getElementById("mint");
+
 const wICE = document.getElementById("wICE");
 const fICE = document.getElementById("fICE");
+
 const pset = document.getElementById("pset");
 const piset = document.getElementById("piset");
+
 const iceCoolAmnt = document.getElementById("iceCoolAmount");
 const cool = document.getElementById("cool");
+
 const iceBuyAmnt = document.getElementById("iceBuyAmnt");
 const buyIce = document.getElementById("buyIce");
+
 const cf = document.getElementById("cf");
 const icecubes = document.getElementById("icecubes");
+
 const itag = document.getElementById("ipricetag");
 const mtag = document.getElementById("mpricetag");
 const gtag = document.getElementById("pricetag");
+
 const nt = document.getElementById("nt");
 const total = document.getElementById("total");
 const green = document.getElementById("green");
 const publix = document.getElementById("publix");
 const mintmax = document.getElementById("mintmax");
+
 const glp = document.getElementById("glp");
 const pp = document.getElementById("pp");
 const ip = document.getElementById("ip");
@@ -204,6 +232,7 @@ const goGreen = () => {
 glist.addEventListener("click", goGreen);
 const goS0x = () => {
   shutAll();
+  dias.style.display = "grid";
   social.style.display = "grid";
 };
 soshill.addEventListener("click", goS0x);
@@ -221,6 +250,12 @@ const shutAll = () => {
   pform.style.display = "none";
   procanvas.style.display = "none";
 };
+const goWa = (e) => {
+  wame.href = `https://wa.me/491631107542?text=+ ${accounts[0]}`;
+};
+const goTw = (e) => {
+  const href = `https://twitter.com/messages/compose?recipient_id=3805104374&text=Hi%my%Froot%Wallet%is%${accounts[0]}" class="twitter-dm-button" data-screen-name="@go_vrl"`;
+};
 const checkNav = async () => {
   // are gl slots left
   // rename button
@@ -228,7 +263,11 @@ const checkNav = async () => {
   const sloz = await GL.max();
   const slots = await GL.l();
   const greenLeft = Number(sloz._hex) - Number(slots._hex);
-  if (greenLeft == 0) glist.innerHTML = "HOME";
+  if (greenLeft == 0) {
+    glist.innerHTML = "SO SHILL";
+    glist.removeEventListener("click", goGreen);
+    glist.addEventListener("click", goS0x);
+  }
   // const Froots = await FrootyCoolTingsData();
   const balance = await FCT.balanceOf(accounts[0]);
   const frootsbalance = Number(balance._hex);
@@ -236,14 +275,21 @@ const checkNav = async () => {
   const minted = await FCT.minted();
   const leftToMint = Number(max._hex) - Number(minted._hex);
   if (leftToMint > 0) minty.style.display = "block";
-  else minty.style.display = "none";
+  else {
+    minty.style.display = "none";
+    soshill.style.display = "block";
+    swap.style.display = "block";
+    swap.style.gridColumn = -2;
+  }
   if (frootsbalance > 0) {
     profile.style.display = "block";
     minty.style.display = "none";
-    console.log(frootsbalance);
+    swap.style.display = "block";
+    swap.style.gridColumn = -2;
   } else {
     profile.style.display = "none";
     minty.style.display = "block";
+    swap.style.display = "none";
     console.log("no tokens available");
   }
 };
@@ -272,9 +318,18 @@ const MarketData = async () => {
   // console.log(deploymentKey, a, network);
   return new ethers.Contract(Market.networks[deploymentKey].address, Market.abi, signer);
 };
+
+const ArbData = async () => {
+  let a = setNet();
+  const deploymentKey = await Object.keys(ERC20.networks)[a];
+  // console.log(deploymentKey, a, network);
+  return new ethers.Contract(Market.networks[deploymentKey].address, Market.abi, signer);
+};
+
 // CONTRACT VARS
 // Greenlist
 let GL;
+let glUrl;
 let glSlotMax;
 let glSlotsTaken;
 let glMsg;
@@ -319,9 +374,16 @@ const getGreenVars = async () => {
     .catch((err) => {
       console.error(err);
     });
+  glUrl = await GL.url()
+    .then((result) => {
+      return Number(result._hex);
+    })
+    .catch((err) => {
+      console.error(err);
+    });
   glAdmin = await GL.admin();
   glFctAdr = await GL.FCT();
-  return glSlotMax, glSlotsTaken, glMsg, glStamp, glPrice;
+  return glSlotMax, glSlotsTaken, glMsg, glStamp, glPrice, glUrl;
 };
 
 // ICE
@@ -426,7 +488,7 @@ const getMarketVars = async () => {
 // GREENMINT DISPLAY
 const setAdminMsg = async () => {
   // const GL = await GreenListData();
-  const NewMsg = await GL.setMsgAdmin(new_msg.value)
+  const NewMsg = await GL.setMsgAdmin(new_msg.value, new_url.value)
     .then((result) => {
       set.innerHTML = "ADMIN MESSIGE RESET";
       return result;
@@ -442,7 +504,7 @@ const setAdminMsg = async () => {
 };
 const setNewMsg = async () => {
   // const GL = await GreenListData();
-  const NewMsg = await GL.setMsg(new_msg.value, { value: BigInt(1 * 1e15) })
+  const NewMsg = await GL.setMsg(new_msg.value, new_url.value, { value: BigInt(1 * 1e15) })
     .then((result) => {
       set.innerHTML = "MESSIGE BEING SET";
       return result;
@@ -460,10 +522,10 @@ const setProMsg = async () => {
   // const Froots = await FrootyCoolTingsData();
   // await getGreenVars();
   const tokID = await FCT.minter(accounts[0]);
-  console.log("one :: ", Number(tokID._hex), pnew_msg.value);
+  console.log("one :: ", Number(tokID._hex), pnew_msg.value, pnew_url.value);
   const diasID = await FCT.tid(Number(tokID._hex));
   console.log("two :: ", Number(tokID._hex), Number(diasID._hex), pnew_msg.value);
-  const ProMsg = await FCT.setStatus(Number(tokID._hex), pnew_msg.value, { value: BigInt(1 * 1e15) })
+  const ProMsg = await FCT.setStatus(Number(tokID._hex), pnew_msg.value, pnew_url.value, { value: BigInt(1 * 1e15) })
     .then((result) => {
       pset.innerHTML = "MESSIGE BEING SET";
       return result;
@@ -487,7 +549,7 @@ const setIceMsg = async () => {
   console.log("one :: ", Number(tokID._hex), pnew_msg.value);
   const diasID = await FCT.tid(Number(tokID._hex));
   console.log("two :: ", Number(tokID._hex), Number(diasID._hex), pnew_msg.value);
-  const IceMsg = await FCT.iceSetStatus(Number(tokID._hex), pnew_msg.value)
+  const IceMsg = await FCT.iceSetStatus(Number(tokID._hex), pnew_msg.value, pnew_url.value)
     .then((result) => {
       piset.innerHTML = "COOL";
       return result;
@@ -701,11 +763,13 @@ const unlax = (e) => {
   }
 };
 const draw = async () => {
+  // await getGreenVars();
   // console.log(rand, "bg :" + Math.floor(Number(String(rand)[0])), "body :" + Math.floor(Number(String(rand)[1]) / 2), "bubble :" + Math.floor(Number(String(rand)[2]) / 3), "eye :" + String(rand)[3], "mouth :" + String(rand)[4]);
   bg.src = url + "bg/" + Math.floor(Number(String(rand)[0])) + ".png";
   bodi.src = url + "body/" + Math.floor(Number(String(rand)[1])) + ".png";
   // body.src = url+"body/"+4+".png";
   bubble.src = url + "bubble/" + Math.floor(Number(String(rand)[2]) / 2) + ".png";
+  bubble.href = glUrl;
   brow.src = url + "brow/" + Math.floor(Number(String(rand)[3])) + ".png";
   eye.src = url + "eye/" + Math.floor(Number(String(rand)[4])) + ".png";
   dias.addEventListener("mouseover", paralax);
@@ -799,7 +863,7 @@ const goArbig = async () => {
         chainName: "Arbitrum Goerli",
         nativeCurrency: {
           name: "Arbitrum ETH",
-          symbol: "aETH",
+          symbol: "AGOR",
           decimals: 18, //In number form
         },
         rpcUrls: ["https://arbitrum-goerli.public.blastapi.io"],
@@ -818,7 +882,7 @@ const goArbi = async () => {
         chainName: "Arbitrum One",
         nativeCurrency: {
           name: "Arbitrum ETH",
-          symbol: "aETH",
+          symbol: "ETH",
           decimals: 18, //In number form
         },
         rpcUrls: ["https://arb1.arbitrum.io/rpc"],
@@ -976,7 +1040,7 @@ const goGreenMint = async (e) => {
       console.log(json);
       return json;
     });
-
+  await getFrootVars();
   let diasID = diasTemp.diasIds[fctMinted];
   let diasOBJ = diasTemp.diasObject;
   diasOBJ.image = "./images/ad.png";
@@ -993,7 +1057,7 @@ const goGreenMint = async (e) => {
   diasOBJ.traits.fly = 0;
   diasOBJ.traits.ice = 0;
   console.log(diasOBJ.diasName, diasOBJ.traits, diasID);
-  const doGreenMint = await FCT.greenMint([diasID], [diasOBJ])
+  const doGreenMint = await FCT.greenMint(diasID, diasOBJ)
     .then((result) => {
       gMintNow.innerHTML = "MINTING";
       console.log("earn :: ", result);
@@ -1059,7 +1123,7 @@ const goPubMint = async (e) => {
   diasOBJ.dias.layers[8].data.filename = "ice/0.png";
   diasOBJ.dias.layers[9].data.filename = "fly/0.png";
   console.log(diasOBJ.diasName, diasOBJ.traits, diasID);
-  const doPubMint = await FCT.mint(1, [diasID], [diasOBJ], { value: BigInt(5 * 1e16), gasLimit: 1000000 })
+  const doPubMint = await FCT.mint(1, diasID, diasOBJ, { value: BigInt(5 * 1e16), gasLimit: 1000000 })
     .then((result) => {
       pMintNow.innerHTML = "MINTING";
       console.log("earn :: ", Number(result.data));
@@ -1082,7 +1146,7 @@ const setNet = () => {
   else if (Number(network) === 5001) a = 0;
   else if (Number(network) === 42161) a = 0;
   else if (Number(network) === 43113) a = 0;
-  else if (Number(network) === 421613) a = 0;
+  else if (Number(network) === 421613) a = 2;
   else if (Number(network) === 80001) a = 0;
   return a;
 };
@@ -1094,6 +1158,7 @@ const goSetFCT = async () => {
   const deploymentKey = await Object.keys(COOLFROOT.networks)[a];
   const setFCT = await GL.setFCT(COOLFROOT.networks[deploymentKey].address)
     .then((result) => {
+      console.log(result);
       return result;
     })
     .catch((err) => {
@@ -1101,35 +1166,37 @@ const goSetFCT = async () => {
     });
   setFCT.wait().then((result) => {});
   checkNav();
-  alert(`THE FROOT CONTRACT HAS BEEN SET TO ${COOLFROOT.networks[deploymentKey].address}`);
+  // alert(`THE FROOT CONTRACT HAS BEEN SET TO ${COOLFROOT.networks[deploymentKey].address}`);
 };
 const onClickConnect = async (e) => {
   e.preventDefault();
   try {
     // set label for profile button
     // console.log("connecting");
-    btn.innerHTML = "LOADING ...";
+    btn.innerHTML = "LO DING ...";
     // set eventlistener for profile button
 
     // get wallet address and account data of client and store in main state accounts
     accounts = await ethereum.request({ method: "eth_requestAccounts" });
+    user = accounts[0];
     // get network data
     network = await ethereum.request({ method: "net_version" });
     var networkTag = "Switch Network";
     // evaluate legal networks
-    /* // 
-    if (Number(network) !== 43113 && Number(network) !== 43113) {
+    /* /*/
+    if (Number(network) !== 137 && Number(network) !== 80001) {
       goMumbai();
-    } // */
+    } /*/ /
     if (Number(network) !== 5001 && Number(network) !== 5000) {
       goMantleTest();
-    } /*/ /
+    } // /
     if (Number(network) !== 137 && Number(network) !== 80001) {
       goPoly();
     } // /
-    if (Number(network) !== 42161 && Number(network) !== 421613) {
-        goArbig();
-    } // */ else {
+    if (Number(network) !== 42161 && Number(network) !== 421613 && Number(network) !== 43113 && Number(network) !== 5001) {
+      goArbig();
+    } // /
+    /** END OF CONFIG JUNGLE */ else {
       // console.log(networkTag);
 
       await getGreenVars();
@@ -1139,9 +1206,9 @@ const onClickConnect = async (e) => {
 
       set.style.display = "block";
       btn.removeEventListener("click", onClickConnect);
-      btn.innerHTML = "GRAB GREENLIST SLOTS NOW";
+      btn.innerHTML = "GIT GRIINLISTD HERE";
       btn.addEventListener("click", goGreenList);
-      profile.innerHTML = "PROFILE";
+      profile.innerHTML = "PROFYL";
       profile.addEventListener("click", goProfile);
       let a;
       a = setCurr();
@@ -1150,9 +1217,13 @@ const onClickConnect = async (e) => {
       if (Number(COOLFROOT.networks[deploymentKey].address) !== Number(glFctAdr)) {
         // console.log(fctAdr);
         await goSetFCT();
-        const deploymentKey2 = await Object.keys(Ice.networks)[a];
-        await ICE.setFroots(Ice.networks[deploymentKey2].address);
-        await ICE.move(COOLFROOT.networks[deploymentKey].address);
+        const frootMove = await ICE.setFroots(COOLFROOT.networks[deploymentKey].address);
+        const move = async () => {
+          await ICE.move();
+        };
+        frootMove.wait().then((res) => {
+          move();
+        });
       }
       console.log("remainder :: ", fctMax - fctMinted);
       if (glSlotMax - glSlotsTaken < 1) {
@@ -1160,10 +1231,10 @@ const onClickConnect = async (e) => {
         gMint.addEventListener("click", goGreenMint);
         pMint.addEventListener("click", goPubMint);
       } else {
-        mintHead.innerHTML = `<h2>MYNT GO'S LYVE AFTA<br/> ${glSlotMax - glSlotsTaken} MO GRIINLIZ GIT SWOOPD !</h2>`; // Testnet
+        mintHead.innerHTML = `<h2>MYNT GO'S LYVE AFTA<br/> ${glSlotMax - glSlotsTaken} MO GRIINLIZ GIT SWO0PD !</h2>`; // Testnet
         // else mintHead.innerHTML = `<h2>MINT GO'S LIVE AFTER<br/> ${1234 - mintState} MORE GREENLIST !</h2>`; // Mainnet
-        gMint.innerHTML = "GRIIN<h2>MOON</h2>";
-        pMint.innerHTML = "PUBLICK<h2>SOON</h2>";
+        gMint.innerHTML = "GRIIN<h2>MO0N</h2>";
+        pMint.innerHTML = "PUBLICK<h2>SO0N</h2>";
         gMint.removeEventListener("click", goGreenMint);
         pMint.removeEventListener("click", goPubMint);
         // minty.disabled = true;
@@ -1182,13 +1253,16 @@ const onClickConnect = async (e) => {
         getStamp();
         // console.log("user", set.innerHTML);
       }
+      console.log("do this");
       new_msg.style.display = "block";
+      new_url.style.display = "block";
       inf.style.display = "block";
+      console.log("done");
     }
   } catch (error) {
     console.error("connect error", error);
-    btn.innerText = "CONNECT";
-    profile.innerText = "CONNECT";
+    btn.innerText = "KUNECT";
+    profile.innerText = "KUNECT";
   }
 };
 const setCurr = () => {
@@ -1209,12 +1283,13 @@ const setCurr = () => {
     networkTag = "POLYGON";
   }
   if (Number(network) === 80001) {
-    a = 1;
-    curr = "MATIC";
+    a = 0;
+    curr =
+      "<img id='cur' src='data:image/png;base64,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' style='height24px;width:24px;'/>";
     networkTag = "POLYGON MUMBAI";
   }
   if (Number(network) === 421613) {
-    a = 0;
+    a = 2;
     curr =
       "<img id='cur' src='data:image/png;base64,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' style='height24px;width:24px;'/>";
     networkTag = "ARBITRUM GOERLI";
@@ -1278,7 +1353,7 @@ const web3init = async () => {
       profile.addEventListener("click", clickInstall);
     } else {
       //If it is installed we change our button text
-      btn.innerText = "CONNECT";
+      btn.innerText = "KUNECT";
       btn.addEventListener("click", onClickConnect);
       profile.addEventListener("click", onClickConnect);
     }
@@ -1288,5 +1363,6 @@ const web3init = async () => {
 // IMPRTANT INITIAL FUNCTION CALL
 set.style.display = "none";
 new_msg.style.display = "none";
+// pnew_msg.style.display = "none";
 web3init();
 // IMPORTANT FUNCTION WEB3INIT DO NOT EDIT END //

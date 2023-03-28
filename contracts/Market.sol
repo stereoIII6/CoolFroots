@@ -8,73 +8,41 @@ import "./FrootyCoolTingz.sol";
 contract Market {
     address public admin; // CONTRACT OWNER
 
-    mapping(address => uint256) public myListCount; // LISTING COUNT FOR USER
-    mapping(uint256 => uint256) public tid2lc; // TAKES Token Id and returns ListCount
-    mapping(address => mapping(uint256 => Listing)) public myListings; // LISTINGS OF USER
-    uint256 l; // NUMBER OF LISTINGS
-    COOLFROOT public fct; // FROOT ADDRESS
-    ICE public ice;
-    Greenlist public gl;
+    ERC721[] public nft; // FROOT ADDRESS
+    uint256 n;
+    mapping(address => uint256) idByNFTAdr;
+    mapping(uint256 => NFT) NftById;
+
+    ERC20[] public coin;
+    uint256 e;
+    mapping(address => uint256) idByCoinAdr;
+    mapping(uint256 => Coin) CoinById;
+
     uint256 public roy;
     uint256 public fee;
 
-    struct Listing {
+    struct NFT {
         // STRUCT FOR SALES LISTINGS
         uint256 id;
-        address holder;
-        uint256 tid;
-        uint256 price;
-        uint256 deadline;
+        address contractAdr;
+        bytes info;
+        uint256 roy;
+        uint256 total;
+        address admin;
+    }
+    struct Coin {
+        // STRUCT FOR SALES LISTINGS
+        uint256 id;
+        address contractAdr;
+        bytes info;
+        uint256 roy;
+        uint256 max;
+        address admin;
     }
 
-    struct Auction {
-        // STRUCT FOR AUCTION LISTINGS
-        uint256 id;
-        address holder;
-        uint256 tid;
-        uint256 minprice;
-        uint256 iterSteps;
-        uint256 deadline;
-    }
-
-    struct Offer {
-        // STRUCT FOR OFFERS
-        uint256 id;
-        address holder;
-        uint256 tid;
-        address buyer;
-        uint256 price;
-        uint256 deadline;
-    }
-    struct AuctionOffer {
-        // STRUCT FOR AUCTION OFFERS
-        uint256 id;
-        address holder;
-        uint256 tid;
-        address buyer;
-        uint256 price;
-        uint256 deadline;
-    }
-    struct DedicatedListing {
-        // STRUCT FOR DEDICATED LISTING
-        uint256 id;
-        address holder;
-        uint256 tid;
-        address buyer;
-        uint256 price;
-        uint256 deadline;
-    }
-
-    constructor(
-        address _FCT,
-        address _ICE,
-        address _GL,
-        uint256 _t
-    ) {
+    constructor(uint256 _t) {
         admin = msg.sender;
-        fct = COOLFROOT(_FCT);
-        ice = ICE(_ICE);
-        gl = Greenlist(_GL);
+
         if (_t == 0) {
             roy = 5;
             fee = 0;
@@ -114,34 +82,25 @@ contract Market {
         }
     }
 
-    function makeListing(
-        address _adr,
-        uint256 _tid,
-        uint256 _price,
-        uint256 _dead
-    ) external returns (bool) {
-        // MAKE A LISTING
-        require(fct.holder(_tid) == _adr, "You are not the owner !");
-        myListings[_adr][myListCount[_adr]] = Listing(
-            l,
-            _adr,
-            _tid,
-            _price,
-            block.timestamp + _dead
-        );
-        tid2lc[myListCount[_adr]] = l;
-        myListCount[_adr]++;
-        return true;
+    function setNFT(
+        address _nft,
+        string memory _name,
+        uint256 _roy,
+        uint256 _total
+    ) external {
+        nft[n] = ERC721(_nft);
+        NftById[n] = NFT(n, _nft, bytes(_name), _roy, _total, msg.sender);
+        n++;
     }
 
-    function deleteListing(address _adr, uint256 _tid) external returns (bool) {
-        // DELETE A LISTING
-        Listing memory thisList = myListings[_adr][tid2lc[_tid]];
-        thisList.holder = 0x0000000000000000000000000000000000000000;
-        thisList.tid = 0;
-        thisList.price = 0;
-        thisList.deadline = 0;
-        myListings[_adr][tid2lc[_tid]] = thisList;
-        return true;
+    function setCoin(
+        address _coin,
+        string memory _name,
+        uint256 _roy,
+        uint256 _max
+    ) external {
+        coin[e] = ERC20(_coin);
+        CoinById[e] = Coin(e, _coin, bytes(_name), _roy, _max, msg.sender);
+        e++;
     }
 }

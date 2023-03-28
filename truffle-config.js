@@ -5,6 +5,11 @@ const mnemonic = process.env.MNEMONIC;
 
 module.exports = {
   contracts_build_directory: path.join(__dirname, "dist/contracts"),
+  plugins: ["truffle-plugin-verify"],
+  api_keys: {
+    polygonscan: process.env.POLY_API_KEY,
+    testnet_polygonscan: process.env.POLY_API_KEY,
+  },
   networks: {
     develop: {
       host: "127.0.0.1", // Localhost (default: none)
@@ -51,8 +56,6 @@ module.exports = {
       network_id: 421613,
       confirmations: 10,
       timeoutBlocks: 200,
-      gas: 1000000,
-      gasPrice: 1,
       skipDryRun: true,
     },
     optimism: {
@@ -161,13 +164,14 @@ module.exports = {
     solc: {
       version: "^0.8.0", // Fetch exact version from solc-bin (default: truffle's version)
       // docker: true,        // Use "0.5.1" you've installed locally with docker (default: false)
-      // settings: {          // See the solidity docs for advice about optimization and evmVersion
-      //  optimizer: {
-      //    enabled: false,
-      //    runs: 200
-      //  },
-      //  evmVersion: "byzantium"
-      // }
+      settings: {
+        // See the solidity docs for advice about optimization and evmVersion
+        optimizer: {
+          enabled: false,
+          runs: 200,
+        },
+        evmVersion: "london",
+      },
     },
   },
 };

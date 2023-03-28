@@ -97,6 +97,7 @@ input {
 }
 #set,
 #new_msg,
+#new_url,
 #inf {
   display: none;
 }
@@ -132,7 +133,9 @@ input {
 #glist,
 #profile,
 #adm,
-#arb {
+#arb,
+#rrrena,
+#drop {
   width: auto !important;
   font-size: 0.5em;
   margin-right: 1em;
@@ -140,7 +143,7 @@ input {
 }
 #swap,
 #soshill,
-#arena {
+#rrrena {
   display: none;
 }
 #title,
@@ -150,7 +153,8 @@ input {
 #uForm,
 #about,
 #road,
-#mint {
+#mint,
+#arena {
   text-align: center;
   width: 500px;
   position: relative;
@@ -327,10 +331,14 @@ li {
   grid-row: 1;
 }
 #adm {
-  grid-column: -7;
+  grid-column: -8;
   grid-row: 1;
 }
 #arb {
-  grid-column: -8;
+  grid-column: -7;
+  grid-row: 1;
+}
+#drop {
+  grid-column: -6;
   grid-row: 1;
 }
