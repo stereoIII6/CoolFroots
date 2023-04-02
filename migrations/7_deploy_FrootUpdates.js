@@ -1,8 +1,9 @@
 const FU = artifacts.require("FrootsUpdate");
-const Counter = artifacts.require("Counter");
+const GreenUpdate = artifacts.require("GreenUpdate");
 const FCT = artifacts.require("COOLFROOT");
+const Greenlist = artifacts.require("Greenlist");
 
 module.exports = function (deployer) {
   deployer.deploy(FU, FCT.address);
-  deployer.deploy(Counter, 60);
+  deployer.deploy(GreenUpdate, Greenlist.address);
 };

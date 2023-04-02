@@ -4,6 +4,8 @@ pragma solidity ^0.8.10;
 
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+error Done(address user);
+
 
 library wallets {
     address constant artist = 0x79E205680908c03047e3f3A4E63FD192Ff4Cf409; // 30%
@@ -19,11 +21,24 @@ library wallets {
 
 contract Greenlist {
     using wallets for *;
+    struct State{
+        uint id;
+        string message;
+        string url;
+        uint likes;
+        uint shares;
+        uint stamp;
+    }
     address public admin;
     uint256 constant digits = 10**18;
     uint256 public l;
     uint256 public max;
     string public message;
+    uint public likes;
+    uint public shares;
+    mapping(address => uint) public liked;
+    mapping(uint => State) public states;
+    uint m;
     string public url = "https://coolfroots.xyz";
     uint256 public stamp;
     uint256 public msgprice;
@@ -31,7 +46,7 @@ contract Greenlist {
     ERC20 public arb;
     COOLFROOT public FCT;
     mapping(address => bool) public isListed;
-    address[1234] public users;
+    address[1235] public users;
     modifier notListed(address _adr) {
         require(isListed[_adr] == false, "already listed");
         _;
@@ -59,9 +74,11 @@ contract Greenlist {
             arbprice = (40 * digits) / 10;
             arb = ERC20(wallets.arbcon);
         }
-        // already listed
-        _makeListing(0xdd1Bd431772634219Df4eF5eb65C064Fad76be6F);
+        // already listed for participating in testing
+        // _makeListing(0xdd1Bd431772634219Df4eF5eb65C064Fad76be6F); 
+        // _makeListing(0xe91113c521a526D40eA321697b725C8126DEBA5d); 
         message = "GET #FROOTS NOW !";
+        likes=1;
     }
 
     function setFCT(address _fct) external onlyA returns (bool) {
@@ -81,7 +98,6 @@ contract Greenlist {
     function _makeListing(address _adr)
         internal
         notListed(_adr)
-        onlyA
         returns (bool)
     {
         isListed[_adr] = true;
@@ -100,7 +116,12 @@ contract Greenlist {
         return _makeListing(_adr);
     }
 
-    function showUsers() external view returns (address[1234] memory) {
+    function giveLike() external returns(uint){
+        if(liked[msg.sender] > 0) revert Done(msg.sender);
+        likes++;
+        return liked[msg.sender] = likes;
+    }
+    function showUsers() external view returns (address[1235] memory) {
         return users;
     }
 
@@ -117,6 +138,13 @@ contract Greenlist {
         return true;
     }
 
+    function saveState() external {
+        states[m] = State(m,message,url,0,0,block.timestamp);
+        m++;
+    }
+    function getShareData() external {
+
+    }
     function setArbMsg(string memory _msg, string memory _url)
         external
         returns (bool)
@@ -183,8 +211,9 @@ contract ICE is ERC20 {
         admin = msg.sender;
         _domint(10000 * 10**18, wallets.artist);
         _domint(10000 * 10**18, wallets.comm);
-
+        
         _domint(1000 * 10**18, 0xdd1Bd431772634219Df4eF5eb65C064Fad76be6F);
+        _domint(1000 * 10**18, 0xe91113c521a526D40eA321697b725C8126DEBA5d);
 
         if (_t == 0) {
             price = (8 * digits) / 10000000;
@@ -363,14 +392,14 @@ contract COOLFROOT is ERC721 {
     function mint(
         uint256 _amnt,
         uint256 _diasID,
-        string memory _diasOBJ
+        string memory _diasOBJ,string memory _diasName
     ) external payable returns (uint256) {
         // INITIATES THE MINT OF UP TO 7 TOKENS IF ALLOWED
         require(minted <= max + 1, "SOLD");
         require(msg.value >= _amnt * price, "CASH LO");
         require(start == true, "SOON");
         ownedBy[minted] = msg.sender;
-        mintOne(msg.sender, _diasID, _diasOBJ);
+        mintOne(msg.sender, _diasID, _diasOBJ,_diasName);
         uint256 o = 1 + (block.timestamp % 9);
         return _earn(msg.sender, o);
     }
@@ -390,7 +419,7 @@ contract COOLFROOT is ERC721 {
     function arbmint(
         uint256 _amnt,
         uint256 _diasID,
-        string memory _diasOBJ
+        string memory _diasOBJ,string memory _diasName
     ) external payable returns (uint256) {
         // INITIATES THE MINT OF UP TO 7 TOKENS IF ALLOWED
         require(minted <= max + 1, "SOLD");
@@ -403,12 +432,12 @@ contract COOLFROOT is ERC721 {
         arb.transferFrom(msg.sender, wallets.promo, one * 10);
         arb.transferFrom(msg.sender, wallets.audit, one * 5);
         ownedBy[minted] = msg.sender;
-        mintOne(msg.sender, _diasID, _diasOBJ);
+        mintOne(msg.sender, _diasID, _diasOBJ,_diasName);
         uint256 o = 1 + (block.timestamp % 9);
         return _earn(msg.sender, o);
     }
 
-    function greenMint(uint256 _diasID, string memory _diasOBJ)
+    function greenMint(uint256 _diasID, string memory _diasOBJ,string memory _diasName)
         external
         returns (uint256)
     {
@@ -419,7 +448,7 @@ contract COOLFROOT is ERC721 {
         require(boo == true, "NOT LISZD");
         require(slots <= sloz, "ALL GON");
         ownedBy[minted] = msg.sender;
-        mintOne(msg.sender, _diasID, _diasOBJ);
+        mintOne(msg.sender, _diasID, _diasOBJ,_diasName);
         uint256 o = 1 + (block.timestamp % 9);
         slots++;
         return _earn(msg.sender, o);
@@ -512,12 +541,14 @@ contract COOLFROOT is ERC721 {
     function mintOne(
         address _adr,
         uint256 _diasID,
-        string memory _diasOBJ
+        string memory _diasOBJ,
+        string memory _name
     ) internal returns (uint256) {
         // INTERNAL // MINTS ONE TOKEN
         require(balanceOf(_adr) + 1 <= num, "XCDID WOLLIT MAX");
         require(minted <= max, "GON");
         _mint(_adr, minted);
+        status[minted] = _name;
         tid[minted] = _diasID;
         dias[minted] = bytes(_diasOBJ);
         meltbox[minted] = block.timestamp + (7 * 60 * 60 * 24);
@@ -527,6 +558,15 @@ contract COOLFROOT is ERC721 {
         return minted;
     }
 
+function showDIAS(uint _tID) external view returns(string memory){
+    return string(dias[_tID]);
+}
+
+    function _transfer(address from, address to, uint256 tokenId) internal virtual override {
+        require(ERC721.ownerOf(tokenId) == from, "NOT FROOT OWNA");
+        require(ERC721.balanceOf(to) == 0, "ALREDY OWNA");
+        require(to != address(0), "NOT TO ZERO");
+    }
     function withdraw() external onlyO returns (uint256) {
         uint256 one = ((address(this).balance - (address(this).balance % 100)) /
             100);

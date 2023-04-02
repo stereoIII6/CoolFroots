@@ -9,6 +9,8 @@ module.exports = {
   api_keys: {
     polygonscan: process.env.POLY_API_KEY,
     testnet_polygonscan: process.env.POLY_API_KEY,
+    snowtrace: process.env.SNOW_API_KEY,
+    testnet_snowtrace: process.env.SNOW_API_KEY,
   },
   networks: {
     develop: {

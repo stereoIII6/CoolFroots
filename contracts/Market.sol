@@ -45,7 +45,7 @@ contract Market {
 
         if (_t == 0) {
             roy = 5;
-            fee = 0;
+            fee = 1;
         } else {
             if (_t == 1) {
                 roy = 5;

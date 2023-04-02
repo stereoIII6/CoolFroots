@@ -33,7 +33,7 @@
   "license": "MIT",
   "dependencies": {
     "@babel/core": "^7.16.7",
-    "@chainlink/contracts": "^0.4.0",
+    "@chainlink/contracts": "^0.6.1",
     "@metamask/detect-provider": "^1.2.0",
     "@openzeppelin/contracts": "^4.8.2",
     "@openzeppelin/test-helpers": "^0.5.15",
