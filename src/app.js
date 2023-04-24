@@ -15,6 +15,7 @@ import { sha256 } from "crypto-hash";
 import UAuth from "@uauth/js";
 import { create } from "underscore";
 import { stripZeros } from "ethers/lib/utils";
+import * as htmlToImage from "html-to-image";
 // globals
 let accounts;
 let network;
@@ -152,6 +153,8 @@ const mintmax = document.getElementById("mintmax");
 const glp = document.getElementById("glp");
 const pp = document.getElementById("pp");
 const ip = document.getElementById("ip");
+
+const snap = document.getElementById("snap");
 
 // MAIN NAVIGATION LINKS
 
@@ -807,6 +810,7 @@ const draw = async () => {
   dias.addEventListener("mouseover", paralax);
   dias.addEventListener("mousemove", paralax);
   dias.addEventListener("mouseout", unlax);
+
   let go;
   if (String(rand)[5] + String(rand)[0] == undefined) go = "0" + String(rand)[0];
   else go = Math.floor(Number(String(rand)[5]));
@@ -827,6 +831,22 @@ const draw = async () => {
 };
 
 draw();
+
+const writePng = async () => {
+  console.log("writing png now");
+  htmlToImage
+    .toPng(dias)
+    .then((dataUrl) => {
+      let img = new Image();
+      img.src = dataUrl;
+      document.body.appendChild(img);
+      console.log("dataurl :: ", dataUrl);
+    })
+    .catch((error) => {
+      console.error("oops, render bug crawling !");
+      console.log(error);
+    });
+};
 
 const pdraw = async (diasID) => {
   // console.log(rand, "bg :" + Math.floor(Number(String(rand)[0])), "body :" + Math.floor(Number(String(rand)[1]) / 2), "bubble :" + Math.floor(Number(String(rand)[2]) / 3), "eye :" + String(rand)[3], "mouth :" + String(rand)[4]);
@@ -1252,6 +1272,7 @@ const onClickConnect = async (e) => {
       btn.addEventListener("click", goGreenList);
       profile.innerHTML = "PROFYL";
       profile.addEventListener("click", goProfile);
+      snap.addEventListener("click", writePng);
       let a;
       a = setCurr();
       const deploymentKey = await Object.keys(COOLFROOT.networks)[a];
@@ -1284,6 +1305,7 @@ const onClickConnect = async (e) => {
 
       setSlot();
       checkNav();
+
       if (Number(await GL.admin()) === Number(accounts[0])) {
         // set.removeEventListener("click", setNewMsg);
         set.addEventListener("click", setAdminMsg);
