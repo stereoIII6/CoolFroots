@@ -3,7 +3,7 @@ pragma solidity ^0.8.10;
 
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
-import "./FrootyCoolTingz.sol";
+import "./CoolFroots.sol";
 
 contract Market {
     address public admin; // CONTRACT OWNER
@@ -52,30 +52,6 @@ contract Market {
                 fee = 1;
             }
             if (_t == 2) {
-                roy = 5;
-                fee = 1;
-            }
-            if (_t == 3) {
-                roy = 5;
-                fee = 1;
-            }
-            if (_t == 4) {
-                roy = 5;
-                fee = 1;
-            }
-            if (_t == 5) {
-                roy = 5;
-                fee = 1;
-            }
-            if (_t == 6) {
-                roy = 5;
-                fee = 1;
-            }
-            if (_t == 7) {
-                roy = 5;
-                fee = 1;
-            }
-            if (_t == 8) {
                 roy = 5;
                 fee = 1;
             }

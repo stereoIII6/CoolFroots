@@ -26,7 +26,7 @@ let user;
 let bg_arr = ["mynt", "medo", "yello", "oca", "wood", "rose", "pynk", "vilet", "skay", "ceean"];
 let pat_arr = ["", "", "", "", "", "", "", "", "", ""];
 let bdy_arr = ["appl", "oranj", "huny", "pyn", "beri", "keewy", "lime", "coco", "melo", "piich"];
-let eye_arr = ["hypd", "boord", "stokd", "tyrd", "punchd", "dizzl", "droop", "wyne", "dout", "strez"];
+let eye_arr = ["hypd", "boord", "stokd", "tyrd", "punchd", "dizzl", "droop", "wyne", "dout", "strezd"];
 let brw_arr = ["", "", "", "", "", "", "", "", "", ""];
 let mth_arr = ["", "", "", "", "", "", "", "", "", ""];
 let bub_arr = ["", "", "", "", ""];
@@ -1242,19 +1242,19 @@ const onClickConnect = async (e) => {
     network = await ethereum.request({ method: "net_version" });
     var networkTag = "Switch Network";
     // evaluate legal networks
-    /* //
+    //
     if (Number(network) !== 137 && Number(network) !== 80001) {
       goMumbai();
-    } // /
+    } /*/ /
     if (Number(network) !== 5001 && Number(network) !== 5000) {
       goMantleTest();
-    } // */
+    } // /
     if (Number(network) !== 43114 && Number(network) !== 43113) {
       goFuji();
-    } /* / /
+    } // */
     if (Number(network) !== 137 && Number(network) !== 80001) {
       goPoly();
-    } // /
+    } /* //
     if (Number(network) !== 42161 && Number(network) !== 421613 && Number(network) !== 43113 && Number(network) !== 5001) {
       goArbig();
     } // /

@@ -74,9 +74,7 @@ contract Greenlist {
             arbprice = (40 * digits) / 10;
             arb = ERC20(wallets.arbcon);
         }
-        // already listed for participating in testing
-        // _makeListing(0xdd1Bd431772634219Df4eF5eb65C064Fad76be6F); 
-        // _makeListing(0xe91113c521a526D40eA321697b725C8126DEBA5d); 
+
         message = "GET #FROOTS NOW !";
         likes=1;
     }
@@ -198,10 +196,8 @@ contract ICE is ERC20 {
     using wallets for *;
     uint256 public constant digits = 10**18;
     uint256 public price; // Testnet :: 10000 // Mainnet :: 10
-    uint256 public arbprice;
     address public froots;
     address admin;
-    ERC20 public arb;
     modifier onlyA() {
         require(msg.sender == admin);
         _;
@@ -209,16 +205,8 @@ contract ICE is ERC20 {
 
     constructor(uint256 _t) ERC20("Incredibly Cool Essence", "ICE") {
         admin = msg.sender;
-        _domint(10000 * 10**18, wallets.artist);
-        _domint(10000 * 10**18, wallets.comm);
-        
-        _domint(1000 * 10**18, 0xdd1Bd431772634219Df4eF5eb65C064Fad76be6F);
-        _domint(1000 * 10**18, 0xe91113c521a526D40eA321697b725C8126DEBA5d);
-
         if (_t == 0) {
             price = (8 * digits) / 10000000;
-            arbprice = (15 * digits) / 100000;
-            arb = ERC20(wallets.arbcont);
         } else {
             if (_t == 1) {
                 price = (1 * digits) / 1000;
@@ -226,35 +214,11 @@ contract ICE is ERC20 {
             if (_t == 2) {
                 price = (1 * digits) / 1000;
             }
-            if (_t == 3) {
-                price = (1 * digits) / 1000;
-            }
-            if (_t == 4) {
-                price = (1 * digits) / 1000;
-            }
-            if (_t == 5) {
-                price = (1 * digits) / 1000;
-            }
-            if (_t == 6) {
-                price = (1 * digits) / 1000;
-            }
-            if (_t == 7) {
-                price = (1 * digits) / 1000;
-            }
-            if (_t == 8) {
-                price = (1 * digits) / 1000;
-            }
-            if (_t == 9) {
-                price = (8 * digits) / 10000;
-                arbprice = (15 * digits) / 10;
-                arb = ERC20(wallets.arbcon);
-            }
         }
     }
 
-    function setPrices(uint256 _ice, uint256 _arb) external onlyA {
+    function setPrices(uint256 _ice) external onlyA {
         price = (_ice * digits) / 10000;
-        arbprice = (_arb * digits) / 10;
     }
 
     function _domint(uint256 _amnt, address _adr) internal returns (uint256) {
@@ -282,23 +246,6 @@ contract ICE is ERC20 {
         return _domint(_amnt * digits, _adr);
     }
 
-    function arbuy(uint256 _amnt, address _adr) external returns (uint256) {
-        require(_amnt >= 10, "MO ICE");
-        require(
-            arb.balanceOf(msg.sender) >= arbprice * _amnt,
-            "INSUFFICIENT FUNDS"
-        );
-        uint256 one = ((arbprice * _amnt) - ((arbprice * _amnt) % 100));
-        arb.transferFrom(msg.sender, wallets.artist, one * 30);
-        arb.transferFrom(msg.sender, wallets.comm, one * 30);
-        arb.transferFrom(msg.sender, wallets.opsec, one * 10);
-        arb.transferFrom(msg.sender, wallets.promo, one * 10);
-        arb.transferFrom(msg.sender, wallets.vc, one * 10);
-        arb.transferFrom(msg.sender, wallets.web3dev, one * 5);
-        arb.transferFrom(msg.sender, wallets.audit, one * 5);
-        return _domint(_amnt * digits, _adr);
-    }
-
     function move() external {
         _domint(1000000 * digits, address(froots));
     }
@@ -322,8 +269,6 @@ contract COOLFROOT is ERC721 {
     // Public Constants
     uint256 public price; // PRICE VAL Testnet
     uint256 public statusprice;
-    uint256 public arbprice; // PRICE VAL Testnet
-    uint256 public arbstatusprice;
     uint256 public digits = 1 * 10**18; // PRICE VAL Mainnet
     uint256 public constant num = 1; // MAX MINTS / WALLET
 
@@ -346,7 +291,6 @@ contract COOLFROOT is ERC721 {
     mapping(address => uint256) public minter; // Token ID by Address
     ICE public ice;
     Greenlist public GLC;
-    ERC20 public arb;
 
     modifier onlyO() {
         // ONLY OWNER CAN USE MOD FUNX
@@ -368,19 +312,15 @@ contract COOLFROOT is ERC721 {
         if (_t == 0) {
             max = 10;
             sloz = GLC.max();
-            price = (4 * digits) / 100000; // 0.00005ETH
-            statusprice = digits / 1000000; // 0.000001ETH
-            arbprice = (7 * digits) / 1000; // 0.0007 ARB
-            arbstatusprice = (2 * digits) / 10000; // 0.0002ARB
-            arb = ERC20(wallets.arbcont);
+            price = (5 * digits) / 100000; // 0.00005 MATIC
+            statusprice = digits / 1000000; // 0.000001 MATIC
+
         } else {
             max = 5555;
             sloz = 1234;
-            price = (4 * digits) / 100; // 0.05ETH
-            statusprice = digits / 1000; // 0.001ETH
-            arbprice = (7 * digits); // 7 ARB
-            arbstatusprice = (2 * digits) / 10; // 0.2ARB
-            arb = ERC20(wallets.arbcon);
+            price = 88 * digits; // MATIC
+            statusprice = 1 * digits; // MATIC
+
         }
     }
 
@@ -404,37 +344,9 @@ contract COOLFROOT is ERC721 {
         return _earn(msg.sender, o);
     }
 
-    function setPrices(
-        uint256 _price,
-        uint256 _arb,
-        uint256 _sts,
-        uint256 _asts
-    ) external onlyO {
+    function setPrices(uint256 _price, uint256 _sts) external onlyO {
         price = (_price * digits) / 100; // 0.05ETH
         statusprice = (_sts * digits) / 1000; // 0.001ETH
-        arbprice = (_arb * digits); // 7 ARB
-        arbstatusprice = (_asts * digits) / 10; // 0.2ARB
-    }
-
-    function arbmint(
-        uint256 _amnt,
-        uint256 _diasID,
-        string memory _diasOBJ,string memory _diasName
-    ) external payable returns (uint256) {
-        // INITIATES THE MINT OF UP TO 7 TOKENS IF ALLOWED
-        require(minted <= max + 1, "SOLD");
-        require(arb.balanceOf(msg.sender) >= _amnt * price, "CASH LO");
-        require(start == true, "SOON");
-        uint256 one = (((_amnt * price) - ((_amnt * price) % 100)) / 100);
-        arb.transferFrom(msg.sender, wallets.artist, one * 45);
-        arb.transferFrom(msg.sender, wallets.comm, one * 30);
-        arb.transferFrom(msg.sender, wallets.opsec, one * 10);
-        arb.transferFrom(msg.sender, wallets.promo, one * 10);
-        arb.transferFrom(msg.sender, wallets.audit, one * 5);
-        ownedBy[minted] = msg.sender;
-        mintOne(msg.sender, _diasID, _diasOBJ,_diasName);
-        uint256 o = 1 + (block.timestamp % 9);
-        return _earn(msg.sender, o);
     }
 
     function greenMint(uint256 _diasID, string memory _diasOBJ,string memory _diasName)
@@ -484,29 +396,6 @@ contract COOLFROOT is ERC721 {
         return "FRESH";
     }
 
-    function arbSetStatus(uint256 _id, string memory _status)
-        external
-        returns (string memory)
-    {
-        require(ownedBy[_id] == msg.sender, "NOT UR'S");
-        // require(start == false, "MINT IS STILL IN PROGRESS");
-        require(arb.balanceOf(msg.sender) >= arbstatusprice, "LO ICE");
-        uint256 one = ((arbstatusprice - (arbstatusprice % 100)) / 100);
-        arb.transferFrom(msg.sender, wallets.artist, one * 45);
-        arb.transferFrom(msg.sender, wallets.comm, one * 30);
-        arb.transferFrom(msg.sender, wallets.opsec, one * 10);
-        arb.transferFrom(msg.sender, wallets.promo, one * 10);
-        arb.transferFrom(msg.sender, wallets.audit, one * 5);
-        if (block.timestamp % 9 < 3) {
-            icebox[_id] += 1;
-            if (meltbox[_id] == 0)
-                meltbox[_id] = block.timestamp + 1 * 60 * 60 * 24;
-            else meltbox[_id] += 1 * 60 * 60 * 24;
-        }
-        status[_id] = _status;
-        return "FRESH";
-    }
-
     function addIce(uint256 _amount, uint256 _id)
         external
         returns (string memory)
@@ -524,11 +413,6 @@ contract COOLFROOT is ERC721 {
         return state = ((meltleft - (meltleft % 3600)) / 3600);
     }
 
-    /*
-    function changeMintState() external onlyO returns (bool) {
-        return cMS();
-    }
-    */
     function changeMS() external returns (bool) {
         require(msg.sender == address(GLC), "NOT CONTRACT !");
         return cMS();
@@ -558,15 +442,16 @@ contract COOLFROOT is ERC721 {
         return minted;
     }
 
-function showDIAS(uint _tID) external view returns(string memory){
-    return string(dias[_tID]);
-}
+    function showDIAS(uint _tID) external view returns(string memory) {
+        return string(dias[_tID]);
+    }
 
     function _transfer(address from, address to, uint256 tokenId) internal virtual override {
         require(ERC721.ownerOf(tokenId) == from, "NOT FROOT OWNA");
         require(ERC721.balanceOf(to) == 0, "ALREDY OWNA");
         require(to != address(0), "NOT TO ZERO");
     }
+
     function withdraw() external onlyO returns (uint256) {
         uint256 one = ((address(this).balance - (address(this).balance % 100)) /
             100);
@@ -577,33 +462,6 @@ function showDIAS(uint _tID) external view returns(string memory){
         payable(wallets.audit).transfer(one * 5);
         return address(this).balance;
     }
-    /*
-
-    function flushERC20(address _erc) external onlyO returns (uint256) {
-        // WITHDRAW ALL COIN FROM CONTRACT
-        ERC20 coin = ERC20(_erc);
-        coin.transferFrom(
-            address(this),
-            0x79E205680908c03047e3f3A4E63FD192Ff4Cf409,
-            coin.balanceOf(address(this))
-        );
-        return coin.balanceOf(address(this));
-    }
-
-    function flushERC721(address _erc, uint256 _id)
-        external
-        onlyO
-        returns (uint256)
-    {
-        // WITHDRAW ALL NFT FROM CONTRACT
-        ERC721 coin = ERC721(_erc);
-        coin.transferFrom(
-            address(this),
-            0x79E205680908c03047e3f3A4E63FD192Ff4Cf409,
-            _id
-        );
-        return _id;
-    }
-
-    */
 }
+
+

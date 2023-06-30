@@ -2,7 +2,7 @@
 pragma solidity >=0.7.0 <0.9.0;
 
 import "@chainlink/contracts/src/v0.8/AutomationCompatible.sol";
-import {COOLFROOT, Greenlist} from "./FrootyCoolTingz.sol";
+import {COOLFROOT, Greenlist} from "./CoolFroots.sol";
 
 error NotOwner(address user);
 error NoChange(uint256 id);
